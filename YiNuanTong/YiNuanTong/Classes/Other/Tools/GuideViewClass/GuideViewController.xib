@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GuideViewController">
+            <connections>
+                <outlet property="backView" destination="edp-XA-6Dl" id="eID-M4-JbX"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="widthConstraints" destination="2rQ-Zv-6so" id="l4e-Cv-hdL"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R28-hY-PQs">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="edp-XA-6Dl">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="667"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="320" id="2rQ-Zv-6so"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="edp-XA-6Dl" secondAttribute="trailing" id="59R-2A-FS3"/>
+                        <constraint firstItem="edp-XA-6Dl" firstAttribute="leading" secondItem="R28-hY-PQs" secondAttribute="leading" id="BJK-oS-u0u"/>
+                        <constraint firstAttribute="bottom" secondItem="edp-XA-6Dl" secondAttribute="bottom" id="DhS-tz-jY3"/>
+                        <constraint firstItem="edp-XA-6Dl" firstAttribute="centerY" secondItem="R28-hY-PQs" secondAttribute="centerY" id="Xw5-9H-mTv"/>
+                        <constraint firstItem="edp-XA-6Dl" firstAttribute="top" secondItem="R28-hY-PQs" secondAttribute="top" id="fdJ-k5-V1l"/>
+                    </constraints>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="R28-hY-PQs" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="X4G-EM-Gp8"/>
+                <constraint firstAttribute="bottom" secondItem="R28-hY-PQs" secondAttribute="bottom" id="fQb-Wj-Mgb"/>
+                <constraint firstItem="R28-hY-PQs" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hZ7-NP-ekq"/>
+                <constraint firstAttribute="trailing" secondItem="R28-hY-PQs" secondAttribute="trailing" id="hm7-cF-ea3"/>
+            </constraints>
+            <point key="canvasLocation" x="340" y="445"/>
+        </view>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
+</document>
