@@ -45,6 +45,10 @@
 @property (nonatomic,copy) NSString *goodsNum;
 /**是否折叠*/
 @property (nonatomic,assign) BOOL isFold;
+/**当前输出值*/
+@property (nonatomic,copy) NSString *currentNumber;
+
+
 @end
 static NSString *identifier = @"shopCell";
 @implementation YNTShopingCarViewController
@@ -340,7 +344,16 @@ static NSString *identifier = @"shopCell";
         NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"-1",@"cat_id":model.cat_id};
         [self modifyGoodNumbRequestData:param andtitle:@"加号"];
     };
-    
+ 
+    // 把输入后的值传出去
+    shopHeadView.numberTextFiledInputText = ^(NSString *str){
+        self.currentNumber = str;
+    };
+    // 点击键盘完成事件
+    shopHeadView.confirmBtnBlock = ^(){
+        NSInteger current = [self.currentNumber integerValue];
+        NSInteger textNum = [model.num integerValue];
+    };
     
     //无属性的时候要隐藏
     if (model.good_attr.count == 0) {

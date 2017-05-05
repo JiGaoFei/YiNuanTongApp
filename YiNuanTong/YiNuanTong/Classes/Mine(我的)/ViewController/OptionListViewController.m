@@ -26,17 +26,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
-    SingLeton *singLeton = [SingLeton shareSingLetonHelper];
-    singLeton.middleRoundBtn.hidden = YES;
+  
     self.tabBarController.tabBar.hidden = YES;
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    SingLeton *singLeton = [SingLeton shareSingLetonHelper];
-    singLeton.middleRoundBtn.hidden = NO;
     self.tabBarController.tabBar.hidden = NO;
+ 
 }
 
 
@@ -170,6 +168,10 @@
         [self  commitData];
     }
     
+    // 回调刷新
+    if (self.editSuccessBlock) {
+        self.editSuccessBlock();
+    }
   
     
     
@@ -201,10 +203,7 @@
             NSLog(@"上传成功 %@", responseObject);
             NSString *msg = responseObject[@"msg"];
             if ([msg isEqualToString:@"success"]) {
-                // 回调刷新
-                if (self.editSuccessBlock) {
-                    self.editSuccessBlock();
-                }
+               
                 [self.navigationController popViewControllerAnimated:YES];
                 [GFProgressHUD showSuccess:responseObject[@"info"]];
                 
@@ -232,10 +231,7 @@
             if ([msg isEqualToString:@"success"]) {
                 [self.navigationController popViewControllerAnimated:YES];
                 [GFProgressHUD showSuccess:responseObject[@"info"]];
-                // 回调刷新
-                if (self.editSuccessBlock) {
-                    self.editSuccessBlock();
-                }
+            
                 NSLog(@"没有照片的时候 上传 成功");
                 
             }
@@ -245,7 +241,7 @@
         }];
     }
 
-    
+  
 }
 #pragma mark - 调用相册
 - (void)loadAlum

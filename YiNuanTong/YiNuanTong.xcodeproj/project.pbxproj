@@ -1837,7 +1837,7 @@
 				TargetAttributes = {
 					BBC911FC1DFEA7BF00473CA7 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = 86V352F7YW;
+						DevelopmentTeam = C9KC8282A7;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -2237,7 +2237,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer: LeNing Yuan (5S9ZFW923H)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 86V352F7YW;
+				DEVELOPMENT_TEAM = C9KC8282A7;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2292,7 +2292,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CODE_SIGN_IDENTITY = "iPhone Developer: LeNing Yuan (5S9ZFW923H)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 86V352F7YW;
+				DEVELOPMENT_TEAM = C9KC8282A7;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

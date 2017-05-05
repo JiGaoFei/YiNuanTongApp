@@ -37,9 +37,9 @@ static NSString *optionCell = @"optionCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
-
+ 
     self.tabBarController.tabBar.hidden = YES;
-        [self loadData];
+    
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -53,7 +53,7 @@ static NSString *optionCell = @"optionCell";
     [super viewDidLoad];
     self.title = @"意见反馈";
     self.view.backgroundColor = [UIColor whiteColor];
-
+    [self loadData];
   
   }
     // 加载数据
@@ -70,26 +70,30 @@ static NSString *optionCell = @"optionCell";
         NSLog(@"%@",responseObject);
         NSDictionary *returnDic = [NSDictionary dictionaryWithDictionary:responseObject];
         NSArray *dataArr = returnDic[@"data"];
-        NSString*codeh = [NSString stringWithFormat:@"%@",responseObject[@"code"]];
-        if ([codeh isEqualToString:@"0"]) {
-            // 加载子视图
-            [self setUpChildrenViews];
-            // 加载底部视图
-            [self setUpBottomViews];
-        }else{
+        
             
-            for (NSDictionary *dic in dataArr) {
+        for (NSDictionary *dic in dataArr) {
                 MineConmentListModel *model = [[MineConmentListModel alloc]init];
                 [model setValuesForKeysWithDictionary:dic];
                 [self.dataArray addObject:model];
-                // 加载子视图
-                [self setUpChildrenViews];
-                // 加载底部视图
-                [self setUpBottomViews];
+             
                 
             }
-
+      
+            if (self.tableView) {
+                [self.tableView reloadData];
+            }else{
+                // 加载子视图
+                [self setUpChildrenViews];
+             
+            }
+          
+        if (self.dataArray.count >0) {
+            // 加载底部视图
+            [self setUpBottomViews];
         }
+        
+     
         
     } enError:^(NSError *error) {
         NSLog(@"%@",error);
@@ -123,11 +127,15 @@ static NSString *optionCell = @"optionCell";
     self.addOptionBtn = addOptionBtn;
     [self.view addSubview:addOptionBtn];
 }
-#pragma mark - 保存按钮的点击事件
+#pragma mark - 新增按钮的点击事件
 - (void)addOptionBtnAction:(UIButton *)sender
 {
     NSLog(@"我是新增地址反馈");
     OptionListViewController *optionListVC = [[OptionListViewController alloc]init];
+    optionListVC.editSuccessBlock = ^(){
+        self.tableView.frame =CGRectMake(0, 0, KScreenW, kScreenH-64-52);
+        [self loadData];
+    };
     
     [self.navigationController pushViewController:optionListVC animated:YES];
     
@@ -188,6 +196,7 @@ static NSString *optionCell = @"optionCell";
     NSLog(@"你要想添加吗");
     OptionListViewController *optionListVC = [[OptionListViewController alloc]init];
     optionListVC.editSuccessBlock = ^(){
+        self.tableView.frame =CGRectMake(0, 0, KScreenW, kScreenH-64-52);
         [self loadData];
     };
     
