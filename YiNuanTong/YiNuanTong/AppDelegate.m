@@ -154,9 +154,9 @@
             
             NSLog(@"支付宝返回结果result = %@",resultDic);
             //创建一个消息对象
-           // NSNotification * notice = [NSNotification notificationWithName:@"aliPayReslutYnt" object:nil userInfo:nil];
-            //发送消息
-          //  [[NSNotificationCenter defaultCenter]postNotification:notice];
+            NSNotification * notice = [NSNotification notificationWithName:@"aliPayReslutYnt" object:nil userInfo:nil];
+         //  发送消息
+            [[NSNotificationCenter defaultCenter]postNotification:notice];
             
                     }];
         

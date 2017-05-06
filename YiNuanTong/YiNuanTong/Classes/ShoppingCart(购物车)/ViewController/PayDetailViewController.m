@@ -29,9 +29,9 @@
     [super viewWillDisappear:animated];
    
     self.tabBarController.tabBar.hidden = NO;
-//     NSNotification * notice = [NSNotification notificationWithName:@"paySuccess" object:nil userInfo:nil];
-//
-//      [[NSNotificationCenter defaultCenter]postNotification:notice];
+     NSNotification * notice = [NSNotification notificationWithName:@"paySuccess" object:nil userInfo:nil];
+
+      [[NSNotificationCenter defaultCenter]postNotification:notice];
 }
 
 

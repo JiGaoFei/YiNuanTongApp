@@ -22,6 +22,7 @@
 @property (nonatomic,copy) NSString *xiaoLiang;
 /**价格区间*/
 @property (nonatomic,copy) NSString *qujian;
+@property (nonatomic,copy) NSDictionary *dic;
 
 
 

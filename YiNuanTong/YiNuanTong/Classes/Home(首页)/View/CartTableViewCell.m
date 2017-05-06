@@ -67,8 +67,8 @@
     self.nameLabel.numberOfLines = 0;
     [self.contentView addSubview:self.nameLabel];
     // 创建编号lab
-    self.shopNumberLabel = [YNTUITools createLabel:CGRectMake(170 *kWidthScale, 70 *kHeightScale, 200 *kWidthScale, 12 *kHeightScale) text:@"1个规格" textAlignment:NSTextAlignmentLeft textColor:CGRGray bgColor:nil font:12 *kHeightScale];
-    [self.contentView addSubview:self.shopNumberLabel];
+  //  self.shopNumberLabel = [YNTUITools createLabel:CGRectMake(170 *kWidthScale, 70 *kHeightScale, 200 *kWidthScale, 12 *kHeightScale) text:@"1个规格" textAlignment:NSTextAlignmentLeft textColor:CGRGray bgColor:nil font:12 *kHeightScale];
+   // [self.contentView addSubview:self.shopNumberLabel];
     
     
        // 创建价格lab

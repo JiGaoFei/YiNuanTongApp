@@ -353,6 +353,11 @@ static NSString *identifier = @"shopCell";
     shopHeadView.confirmBtnBlock = ^(){
         NSInteger current = [self.currentNumber integerValue];
         NSInteger textNum = [model.num integerValue];
+        NSInteger variableNum = (current - textNum);
+        NSString *num = [NSString stringWithFormat:@"%ld",(long)variableNum];
+        NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":num,@"cat_id":model.cat_id};
+        [self modifyGoodNumbRequestData:param andtitle:@"完成 "];
+        
     };
     
     //无属性的时候要隐藏

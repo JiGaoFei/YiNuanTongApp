@@ -20,9 +20,10 @@
 #import "PayDetailViewController.h"
 #import "Order.h"
 #import <DZNEmptyDataSet/DZNEmptyDataSet-umbrella.h>
-
+#import "YNTShopingCarViewController.h"
 #import <AlipaySDK/AlipaySDK.h>
 #import "WXApi.h"
+#import "HomeGoodListSingLeton.h"
 @interface YNTNewOrderViewController ()<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 /**tableView*/
 @property (nonatomic,strong) UITableView *tableView;
@@ -59,6 +60,7 @@ static NSString *identier = @"orderNewCell";
     }
     return _sectionModelArr;
 }
+
 #pragma mark - 生命周期
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -251,6 +253,11 @@ static NSString *identier = @"orderNewCell";
       OrderListSectionModel *sectionModel = self.sectionModelArr[indexPath.section];
     
     OrderNewDetailViewController *detailVC = [[OrderNewDetailViewController alloc]init];
+    detailVC.operationSuccessBlock = ^(){
+        // 回调刷新
+        self.currentStatus = @"";
+        [self loadData];
+    };
     detailVC.good_id = sectionModel.good_id;
     detailVC.orderPostStatus= [NSString stringWithFormat:@"%@",sectionModel.ord_status];
     [self.navigationController pushViewController:detailVC animated:YES];
@@ -351,9 +358,11 @@ static NSString *identier = @"orderNewCell";
             {// 待收货
           
     
-                [self operationOrderWithAct:@"zaimai" andGood_id:sectionModel.good_id];
+               
+                [self secondBuyRequestDataWithGoodID:sectionModel.good_id];
                 
             }
+                 break;
             case 4:
             {//已完成
                 
@@ -370,7 +379,7 @@ static NSString *identier = @"orderNewCell";
      
     };
     
-    OrderConfirmViewController *orderConfirmVC = [[OrderConfirmViewController alloc]init];
+
     
     footerView.secondBuyBtnBloock = ^()
     {
@@ -397,10 +406,12 @@ static NSString *identier = @"orderNewCell";
             case 3:
             {// 待收货
                
-                [self operationOrderWithAct:@" queren" andGood_id:sectionModel.good_id];
+                [self operationOrderWithAct:@"queren" andGood_id:sectionModel.good_id];
 
                 
             }
+            break;
+                    
             case 4:
             {//已完成
                    [self operationOrderWithAct:@"zaimai" andGood_id:sectionModel.good_id];
@@ -593,7 +604,8 @@ static NSString *identier = @"orderNewCell";
     [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
         NSLog(@"%@",responseObject);
         self.payDic = responseObject;
-        
+        HomeGoodListSingLeton *singLetong = [HomeGoodListSingLeton shareHomeGoodListSingLeton];
+        singLetong.dic = self.payDic;
         payDetailVC.orderNumber = self.payDic[@"sn"];
         if ([[NSString stringWithFormat:@"%@",self.payDic[@"status"]] isEqualToString:@"1"]) {
             payDetailVC.payStatus = @"支付成功";
@@ -612,8 +624,8 @@ static NSString *identier = @"orderNewCell";
             NSString *sign = self.payDic[@"sign"];
             
             [self doAlipayPay:sign];
-            [self.navigationController pushViewController:payDetailVC animated:YES];
-
+         //   [self.navigationController pushViewController:payDetailVC animated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
             
         }
         
@@ -622,7 +634,8 @@ static NSString *identier = @"orderNewCell";
             NSDictionary *data = self.payDic[@"sign"];
             
             [self WXZhiFUWith:data];
-            [self.navigationController pushViewController:payDetailVC animated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
+          //  [self.navigationController pushViewController:payDetailVC animated:YES];
             
         }
 
@@ -901,12 +914,32 @@ static NSString *identier = @"orderNewCell";
         NSString *status = [NSString stringWithFormat:@"%@",responseObject[@"status"]];
         if ([status isEqualToString:@"1"]) {
             [GFProgressHUD showSuccess:responseObject[@"msg"]];
+            
+            
             if ([act isEqualToString:@"del"]) {
                   [self loadData];
+            }
+            
+            
+         
+            
+            if ([act isEqualToString:@"quxiao"]) {
+                [self loadData];
+            }
+            
+            if ([act isEqualToString:@"queren"]) {
+                [self loadData];
+            }
+            
+            
+            if ([act isEqualToString:@"zaimai"]) {
+                YNTShopingCarViewController *shopCarVC = [[YNTShopingCarViewController alloc]init];
+                [self.navigationController pushViewController:shopCarVC animated:YES];
             }
         }else{
             [GFProgressHUD showFailure:responseObject[@"msg"]];
         }
+       
         
     } enError:^(NSError *error) {
         
@@ -914,7 +947,21 @@ static NSString *identier = @"orderNewCell";
 }
 
 
-
+#pragma mark - 再次购买
+- (void)secondBuyRequestDataWithGoodID:(NSString *)goodid;
+{
+    UserInfo *userInfo = [UserInfo currentAccount];
+    
+    NSString *url =  [NSString  stringWithFormat:@"%@api/order.php",baseUrl];
+    NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":goodid,@"act":@"zaimai"};
+    [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
+        YNTShopingCarViewController *shopCarVC = [[YNTShopingCarViewController alloc]init];
+        [self.navigationController pushViewController:shopCarVC animated:YES];
+        
+    } enError:^(NSError *error) {
+        
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -164,26 +164,12 @@ static NSString *goodPramsCell = @"goodParamsCell";
     self.shoopCarNum = @"1";
     self.cengji = @"";
     [self setUpNavView];
-    [self setUpRightItem];
+
     // 加载子视图
     [self setUpChildrenViews];
     [self setUpBottomViews];
     
 }
-/**
- *创建右item
- */
-- (void)setUpRightItem
-{
-    UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    rightBtn.frame= CGRectMake(0, 0, 40, 40);
-    [rightBtn addTarget:self action:@selector(rightBarButtonItemAction:) forControlEvents:UIControlEventTouchUpInside];
-    UIImage *rightImage = [UIImage imageNamed:@"shopCar_order"];
-    [rightBtn setImage:rightImage forState:UIControlStateNormal];
-    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc]initWithCustomView:rightBtn];
-    self.navigationItem.rightBarButtonItem = rightBarItem;
-}
-
 #pragma mark - 购物车按钮的点击事件
 
 - (void)rightBarButtonItemAction:(UIButton *)sender
@@ -432,23 +418,29 @@ static NSString *goodPramsCell = @"goodParamsCell";
     // 创建线
     UILabel *lineLab = [[UILabel alloc]initWithFrame:CGRectMake(60*kWidthScale, 6*kHeightScale, 1*kWidthScale, 36 *kHeightScale)];
     lineLab.backgroundColor = [UIColor grayColor];
-    [bagView addSubview:lineLab];
+  //  [bagView addSubview:lineLab];
     
     
     
     // 创建客服按钮
-    UIButton *customerServiceBtn =  [YNTUITools createCustomButton:CGRectMake(82*kWidthScale, 6 *kHeightScale, 28 *kWidthScale, 36 *kHeightScale) bgColor:RGBA(251, 251, 251, 1) title:nil titleColor:nil image:@"customer_service" action:@selector(customerServiceBtnAction:) vc:self];
+    UIButton *customerServiceBtn =  [YNTUITools createCustomButton:CGRectMake(65*kWidthScale, 6 *kHeightScale, 28 *kWidthScale, 36 *kHeightScale) bgColor:RGBA(251, 251, 251, 1) title:nil titleColor:nil image:@"customer_service" action:@selector(customerServiceBtnAction:) vc:self];
     [bagView addSubview:customerServiceBtn];
     
-    // 创建加入购物车按钮
-    UIButton*carBtn = [YNTUITools createButton:CGRectMake(250 *kWidthScale , 0, 124 *kWidthScale, 50)  bgColor:CGRBlue title:@"加入购物车" titleColor:[UIColor whiteColor] action:@selector(carBtnAction:) vc:self];
+    // 创建客服按钮
+    UIButton *goShopVCBtn =  [YNTUITools createCustomButton:CGRectMake(110*kWidthScale, 6 *kHeightScale, 36 *kWidthScale, 36 *kHeightScale) bgColor:RGBA(251, 251, 251, 1) title:nil titleColor:nil image:@"goods-details-receipt" action:@selector(goShopVCBtn:) vc:self];
+    [bagView addSubview:goShopVCBtn];
     
-    [bagView addSubview:carBtn];
     
     // 创建立刻购买
-    UIButton*imdedateBtn = [YNTUITools createButton:CGRectMake(125 *kWidthScale, 0, 124 *kWidthScale, 50)  bgColor:CGRBlue title:@"立刻购买" titleColor:[UIColor whiteColor] action:@selector(imdedateAction:) vc:self];
+    UIButton*imdedateBtn = [YNTUITools createButton:CGRectMake(154 *kWidthScale, 0, (KScreenW - 154 *kWidthScale)/2 , 50)  bgColor:CGRBlue title:@"立刻购买" titleColor:[UIColor whiteColor] action:@selector(imdedateAction:) vc:self];
     
     [bagView addSubview:imdedateBtn];
+    
+    // 创建加入购物车按钮
+    UIButton*carBtn = [YNTUITools createButton:CGRectMake(KScreenW / 2 +78*kWidthScale, 0, (KScreenW - 154 *kWidthScale)/2, 50)  bgColor:CGRBlue title:@"加入购物车" titleColor:[UIColor whiteColor] action:@selector(carBtnAction:) vc:self];
+    
+    [bagView addSubview:carBtn];
+ 
     
 }
 #pragma mark- 底部按钮的点击事件
@@ -522,10 +514,15 @@ static NSString *goodPramsCell = @"goodParamsCell";
     
     UIWebView *webView = [[UIWebView alloc]init];
     [self.view addSubview:webView];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"tel://10086"]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"tel://4007713123"]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [webView loadRequest:request];
     
+}
+- (void)goShopVCBtn:(UIButton *)sender
+{
+    YNTShopingCarViewController *shopCarVC = [[YNTShopingCarViewController alloc]init];
+    [self.navigationController pushViewController:shopCarVC animated:YES];
 }
 #pragma mark - 请求商品详情数据
 - (void)requestGoodDetaiDataWith

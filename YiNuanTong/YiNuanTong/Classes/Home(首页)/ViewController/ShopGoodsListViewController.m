@@ -25,7 +25,6 @@
 #import "ShopGoodDetailNoViewController.h"
 #import "ShopGooodDetailMoreViewController.h"
 #import "PayDetailViewController.h"
-#import "HomeGoodListSingLeton.h"
 @interface ShopGoodsListViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,UICollectionViewDelegate,UICollectionViewDataSource ,UICollectionViewDelegateFlowLayout>
 
 /**tableView*/
@@ -109,8 +108,12 @@
 @property (nonatomic,copy) NSString  *searchStr;
 /**品牌id*/
 @property (nonatomic,copy) NSString *brand_id;
+/**更多品牌id*/
+@property (nonatomic,copy) NSString *moreBrand_id;
 /**价格区间*/
 @property (nonatomic,copy) NSString *price_qujian;
+/**销量*/
+@property (nonatomic,copy) NSString * saleNum;
 /**数据源*/
 @property (nonatomic,strong) NSMutableDictionary *dataDic;
 
@@ -204,6 +207,8 @@ static NSString *listCell = @"listCell";
     self.view.backgroundColor = [UIColor grayColor];
   // self.isPriceLowToHigh = NO;
     self.brandStr = @"";
+    self.brand_id = @"";
+    self.moreBrand_id = @"";
     
     self.isBrand = YES;
     self.isSelectViewApperar = NO;
@@ -231,7 +236,6 @@ static NSString *listCell = @"listCell";
     
  
   
-    HomeGoodListSingLeton *singLeton = [HomeGoodListSingLeton shareHomeGoodListSingLeton];
     
     UserInfo *userInfo = [UserInfo currentAccount];
     if (_serialNumber == 1) {//默认
@@ -245,33 +249,33 @@ static NSString *listCell = @"listCell";
         
     }
     if (_serialNumber == 3) {//搜索品牌
-        self.params = @{@"brand_id":singLeton.brand,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id};
+        self.params = @{@"brand_id":self.brand_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id};
         
     }
 
     if (_serialNumber == 4) {//价格从低到高
-        self.params = @{@"zongHeOrder":@"1",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":singLeton.brand};
+        self.params = @{@"zongHeOrder":@"1",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":self.brand_id};
         
     }
     if (_serialNumber == 5) {//价格从高到低
-           self.params = @{@"zongHeOrder":@"0",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":singLeton.brand};
+           self.params = @{@"zongHeOrder":@"0",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":self.brand_id};
         
     }
     if (_serialNumber == 6) {//搜索更多
-        self.params = @{@"cat_id":singLeton.catBrand,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"brand_id":singLeton.brand};
+        self.params = @{@"cat_id":self.moreBrand_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"brand_id":self.brand_id};
         
     }
     if (_serialNumber == 7) {//筛选价格区间
-        self.params = @{@"price_qujian":self.price_qujian,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":singLeton.brand,@"cat_id":singLeton.catBrand};
+        self.params = @{@"price_qujian":self.price_qujian,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.moreBrand_id};
         
     }
     if (_serialNumber == 8) {//销量从高到低
-        self.params = @{@"salesOrderBy":@"1",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":singLeton.brand,@"cat_id":singLeton.catBrand};
+        self.params = @{@"salesOrderBy":@"1",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.moreBrand_id};
         
     }
     
     if (_serialNumber == 9) {//销量从低到高
-       self.params = @{@"salesOrderBy":@"0",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":singLeton.brand,@"cat_id":singLeton.catBrand};
+       self.params = @{@"salesOrderBy":@"0",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.moreBrand_id};
     }
     NSString *goodListUrl = [NSString stringWithFormat:@"%@/api/goodsclass.php",baseUrl];
     
@@ -783,12 +787,12 @@ static NSString *listCell = @"listCell";
     
     
 // 创建确定 取消按钮
-    UIButton *cancelBtn =[YNTUITools  createButton:CGRectMake(0, 200, KScreenW / 2, 40) bgColor:[UIColor whiteColor] title:@"取消" titleColor:[UIColor blackColor] action:@selector(cancelBtnAction:) vc:self];
+  //  UIButton *cancelBtn =[YNTUITools  createButton:CGRectMake(0, 200, KScreenW / 2, 40) bgColor:[UIColor whiteColor] title:@"取消" titleColor:[UIColor blackColor] action:@selector(cancelBtnAction:) vc:self];
     
     
-    [self.dropDownView addSubview:cancelBtn];
+   // [self.dropDownView addSubview:cancelBtn];
     
-    UIButton *confirmBtn =[YNTUITools createButton:CGRectMake(KScreenW/2, 200, KScreenW / 2, 40) bgColor:CGRBlue title:@"确定" titleColor:[UIColor whiteColor] action:@selector(confirmBtnAction:) vc:self];
+    UIButton *confirmBtn =[YNTUITools createButton:CGRectMake(0, 200, KScreenW , 40) bgColor:CGRBlue title:@"取消" titleColor:[UIColor whiteColor] action:@selector(confirmBtnAction:) vc:self];
     [self.dropDownView addSubview:confirmBtn];
     
     
@@ -833,7 +837,8 @@ static NSString *listCell = @"listCell";
     self.chooseView = [[ShopListChooseView alloc]initWithFrame:CGRectMake(0, height, KScreenW, 200*kHeightScale)];
 
     self.chooseView.backgroundColor = [UIColor whiteColor];
-    HomeGoodListSingLeton *singLeton = [HomeGoodListSingLeton shareHomeGoodListSingLeton];
+ 
+    
     
     __weak typeof (self) weakSelf = self;
   weakSelf.chooseView.btnClicked = ^(NSInteger index){
@@ -890,7 +895,7 @@ static NSString *listCell = @"listCell";
                 
             NSString *price_qujian = [NSString stringWithFormat:@"%@_%@",self.chooseView.minTextField.text,self.chooseView.maxTextField.text];
                 self.price_qujian = price_qujian;
-                singLeton.qujian = price_qujian;
+            
                 // 只要一个为空就不处理
                 if (self.chooseView.minTextField.text.length == 0 || self.chooseView.maxTextField.text.length ==0) {
                          [weakSelf.chooseView removeFromSuperview];
@@ -983,17 +988,16 @@ static NSString *listCell = @"listCell";
             _downCell.lab.text = model.catname;
             self.serialNumber = 3;
             self.brand_id = model.brand_id;
-            HomeGoodListSingLeton *singLeton = [HomeGoodListSingLeton shareHomeGoodListSingLeton];
-            singLeton.brand= model.brand_id;
+            
+         
             [self loadData];
           //  [self requestBrandDataWithModel:model];
         }else{
             MoreBrandModel *model = self.transmitArray[indexPath.row];
             _downCell.lab.text = model.catname;
             self.serialNumber = 6;
-            self.brand_id = model.catson_id;
-            HomeGoodListSingLeton *singLeton = [HomeGoodListSingLeton shareHomeGoodListSingLeton];
-            singLeton.catBrand= model.catson_id;
+            self.moreBrand_id = model.catson_id;
+          
             [self loadData];
            // [self requestMoreBrandData:model];
         }

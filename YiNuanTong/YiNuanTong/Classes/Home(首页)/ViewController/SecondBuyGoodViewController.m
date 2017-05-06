@@ -18,6 +18,7 @@
 #import "UIImageView+WebCache.h"
 #import "OrderConfirmViewController.h"
 #import "UIScrollView+EmptyDataSet.h"
+#import "YNTShopingCarViewController.h"
 @interface SecondBuyGoodViewController ()<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 /**tableView*/
 @property (nonatomic,strong) UITableView *tableView;
@@ -69,23 +70,38 @@ static NSString *identier = @"orderNewCell";
     // 请求数据
     NSString *url = [NSString stringWithFormat:@"%@api/orderlist.php",baseUrl];
     UserInfo *userInfo = [UserInfo currentAccount];
-    NSDictionary *params = @{@"user_id":userInfo.user_id,@"page":@"1",@"status":@"3"};
+    NSDictionary *params = @{@"user_id":userInfo.user_id,@"page":@"1",@"status":@"4"};
     [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
         NSLog(@"请求订单列表数据成功%@",responseObject);
         //获取订单数据数组
         NSMutableArray *array = responseObject[@"order"];
-        for (NSDictionary *dic in array) {
-            OrderListSectionModel *model = [[OrderListSectionModel alloc]init];
-            model.isOpen = NO;
-            [model setValuesForKeysWithDictionary:dic];
-            [self.sectionModelArr addObject:model];
-        }
-        if (self.tableView) {
-            [self.tableView reloadData];
+        if (array.count == 0) {
+            // 数据为空
+            [self emptyDataOperation];
+          
         }else{
+            // 数据非空
+            for (NSDictionary *dic in array) {
+                OrderListSectionModel *model = [[OrderListSectionModel alloc]init];
+                model.isOpen = NO;
+                [model setValuesForKeysWithDictionary:dic];
+                [self.sectionModelArr addObject:model];
+            }
             
-            [self setUpTableView];
+            if (self.tableView) {
+                [self.tableView reloadData];
+            }else{
+                
+                [self setUpTableView];
+            }
+
+            
+            
+            
         }
+        
+    
+    
     } enError:^(NSError *error) {
         NSLog(@"请求订单列表数据失败%@",error);
     }];
@@ -98,8 +114,7 @@ static NSString *identier = @"orderNewCell";
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.emptyDataSetSource = self;
-    self.tableView.emptyDataSetDelegate = self;
+
     // 注册cell
     [self.tableView registerClass:[OrderNewTableViewCell class] forCellReuseIdentifier:identier];
     [self.view addSubview:self.tableView];
@@ -145,7 +160,11 @@ static NSString *identier = @"orderNewCell";
     OrderListSectionModel *sectionModel = self.sectionModelArr[indexPath.section];
     
     OrderNewDetailViewController *detailVC = [[OrderNewDetailViewController alloc]init];
+    detailVC.oftenSettingTableBlock = ^(){
+        self.tableView.frame = CGRectMake(0, 0, KScreenW, kScreenH);
+    };
     detailVC.good_id = sectionModel.good_id;
+    detailVC.orderPostStatus = @"4";
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -292,7 +311,7 @@ static NSString *identier = @"orderNewCell";
             case 4:
             {//已完成
                 [self orderRequestDataWithOid:sectionModel.good_id andActstr:@"zaimai" andActstr:@"再次购买"];
-                [self.navigationController pushViewController:orderConfirmVC animated:YES];
+        
                 
             }
                 
@@ -445,23 +464,28 @@ static NSString *identier = @"orderNewCell";
     // 请求数据
     NSString *url = [NSString stringWithFormat:@"%@api/order.php",baseUrl];
     UserInfo *userInfo = [UserInfo currentAccount];
-    NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":Oid,@"act":@"del"};
+    NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":Oid,@"act":act};
     [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
         NSLog(@"%@请求数据成功%@",title,responseObject);
-        //获取订单数据数组
-        NSMutableArray *array = responseObject[@"order"];
-        for (NSDictionary *dic in array) {
-            OrderListSectionModel *model = [[OrderListSectionModel alloc]init];
-            [model setValuesForKeysWithDictionary:dic];
-            [self.sectionModelArr addObject:model];
-        }
-        if (self.tableView) {
-            [self.tableView reloadData];
-        }else{
+    
+        NSString *status = [NSString stringWithFormat:@"%@",responseObject[@"status"]];
+        if ([status isEqualToString:@"1"]) {
+            [GFProgressHUD showSuccess:responseObject[@"msg"]];
             
-            [self setUpTableView];
+            if ([act isEqualToString:@"zaimai"]) {
+                YNTShopingCarViewController *shopCarVC = [[YNTShopingCarViewController alloc]init];
+                [self.navigationController pushViewController:shopCarVC animated:YES];
+            }
+            if ([act isEqualToString:@"del"]) {
+                [self loadData];
+            }
+
         }
         
+            
+
+        
+       
     } enError:^(NSError *error) {
         NSLog(@"%@请求数据成功%@",title,error);
         
@@ -469,45 +493,16 @@ static NSString *identier = @"orderNewCell";
     
     
 }
-#pragma mark - 数据为空时处理
-- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
+
+#pragma mark - 空数据处理
+
+- (void)emptyDataOperation
 {
-    //[self.shopBottomView removeFromSuperview];
-    return [UIImage imageNamed:@"feedback_empty"];
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"温馨提示:" message:@"空空哒,快去逛逛吧!" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    [alertVC addAction:action];
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
-- (UIImage *)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state
-{
-    return [UIImage imageNamed:@"orde_-list_-empty_casually_browse"];
-}
-- (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button
-{
-    NSLog(@"你要想添加吗");
-
-    [self.navigationController popViewControllerAnimated:YES];
-
-}
-- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
-{
-    NSString *text = @"空空的,去挑几件好货吧!";
-
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:18.0f],
-                                 NSForegroundColorAttributeName: [UIColor darkGrayColor]};
-
-    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
-}
-- (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView
-{
-    NSString *text = @"";
-
-    NSMutableParagraphStyle *paragraph = [NSMutableParagraphStyle new];
-    paragraph.lineBreakMode = NSLineBreakByWordWrapping;
-    paragraph.alignment = NSTextAlignmentCenter;
-
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14.0f],
-                                 NSForegroundColorAttributeName: [UIColor lightGrayColor],
-                                 NSParagraphStyleAttributeName: paragraph};
-
-    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
-}
-
 @end

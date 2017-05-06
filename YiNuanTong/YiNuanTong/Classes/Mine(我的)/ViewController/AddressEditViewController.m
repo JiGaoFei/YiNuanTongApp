@@ -317,6 +317,7 @@ static NSString *addressSwitchCell = @"addressSwichCell";
 {
     if (indexPath.row ==2) {
         NSLog(@"点击的是省市区县");
+        [self.view endEditing:YES];
         [self.areasView startAnimationFunction];
     }
     

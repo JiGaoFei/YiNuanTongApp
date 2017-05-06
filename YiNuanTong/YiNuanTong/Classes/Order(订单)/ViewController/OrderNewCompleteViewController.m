@@ -14,6 +14,7 @@
 #import <AlipaySDK/AlipaySDK.h>
 #import "WXApi.h"
 #import "PayDetailViewController.h"
+#import "HomeGoodListSingLeton.h"
 @interface OrderNewCompleteViewController ()
 
 @end
@@ -80,7 +81,11 @@
     
 }
 - (void)payBtnAction:(UIButton *)sender
-{  PayDetailViewController *payDetailVC = [[PayDetailViewController alloc]init];
+{
+    HomeGoodListSingLeton *singLetong = [HomeGoodListSingLeton shareHomeGoodListSingLeton];
+    singLetong.dic = self.payDic;
+    PayDetailViewController *payDetailVC = [[PayDetailViewController alloc]init];
+    
     payDetailVC.orderNumber = self.payDic[@"sn"];
     if ([[NSString stringWithFormat:@"%@",self.payDic[@"status"]] isEqualToString:@"1"]) {
         payDetailVC.payStatus = @"支付成功";
@@ -94,8 +99,9 @@
         NSString *sign = self.payDic[@"sign"];
                
               [self doAlipayPay:sign];
+            [self.navigationController popViewControllerAnimated:YES];
          
-               [self.navigationController pushViewController:payDetailVC animated:YES];
+         //      [self.navigationController pushViewController:payDetailVC animated:YES];
                
    
 
@@ -105,7 +111,7 @@
         NSDictionary *data = self.payDic[@"sign"];
 
         [self WXZhiFUWith:data];
-        [self.navigationController pushViewController:payDetailVC animated:YES];
+                   [self.navigationController popViewControllerAnimated:YES];
 
        
     }

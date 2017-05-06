@@ -34,6 +34,7 @@
 #import "PayDetailViewController.h"
 #import "HomePicModel.h"
 #import "UIImageView+WebCache.h"
+#import "HomeGoodListSingLeton.h"
 @interface YNTHomeViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,SDCycleScrollViewDelegate>
 
 /**collectionView*/
@@ -170,9 +171,26 @@ static NSString *homeThreeCell = @"homeThreeCell";
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     // 添加当前类对象为一个观察者,name 和obeject设置为nil,表示接收一切消息
     [center addObserver:self selector:@selector(receiveNotificiation:) name:@"paySuccess" object:nil];
+    [center addObserver:self selector:@selector(aliPayNotition:) name:@"aliPayReslutYnt" object:nil];
+
 
     }
 
+- (void)aliPayNotition:(NSNotification *)info
+{
+    PayDetailViewController *payDetailVC = [[PayDetailViewController alloc]init];
+   
+    HomeGoodListSingLeton *singLeton = [HomeGoodListSingLeton shareHomeGoodListSingLeton];
+  
+    payDetailVC.orderNumber =   singLeton.dic[@"sn"];
+    if ([[NSString stringWithFormat:@"%@",  singLeton.dic[@"status"]] isEqualToString:@"1"]) {
+        payDetailVC.payStatus = @"支付成功";
+    }
+    payDetailVC.payType =   singLeton.dic[@"payname"];
+    payDetailVC.money =   singLeton.dic[@"price"];
+    payDetailVC.order_id =   singLeton.dic[@"order_id"];
+    [self.navigationController pushViewController:payDetailVC animated:YES];
+}
 - (void)receiveNotificiation:(NSNotification *)info
 {
     [self loadData];

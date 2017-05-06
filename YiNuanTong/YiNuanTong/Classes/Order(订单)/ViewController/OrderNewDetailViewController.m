@@ -24,6 +24,7 @@
 #import "WXApi.h"
 #import "AddressViewController.h"
 #import "OrderShipModel.h"
+#import "YNTShopingCarViewController.h"
 @interface OrderNewDetailViewController ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
 @property (nonatomic,strong) UITableView *tableView;
 /**sectionModel数组*/
@@ -93,6 +94,9 @@ static NSString *identifier = @"orderDetailCell";
 {
     [super viewWillDisappear:animated];
     self.tabBarController.tabBar.hidden = NO;
+    if (self.oftenSettingTableBlock) {
+        self.oftenSettingTableBlock();
+    }
 
 }
 - (void)viewDidLoad {
@@ -339,6 +343,8 @@ static NSString *identifier = @"orderDetailCell";
     if ([self.orderPostStatus isEqualToString:@"1"]) {
         // 待付款
          [self operationOrderWithAct:@"quxiao"];
+        self.orderPostStatus = @"0";
+        [self refreshData];
       
     }
     
@@ -356,7 +362,10 @@ static NSString *identifier = @"orderDetailCell";
     if ([self.orderPostStatus isEqualToString:@"4"]) {
         // 已完成
         [self operationOrderWithAct:@"del"];
-        
+        [self.navigationController popViewControllerAnimated:YES];
+        if (self.operationSuccessBlock) {
+            self.operationSuccessBlock();
+        }
 
     }
     
@@ -367,10 +376,14 @@ static NSString *identifier = @"orderDetailCell";
 // 去付款
 - (void)payBtnAction:(UIButton *)sender
 {
-    NSLog(@"去付款");
     if ([self.orderPostStatus isEqualToString:@"0"]) {
-       // 取消订单
+       // 删除订单
       [self operationOrderWithAct:@"del"];
+       
+      [self.navigationController popViewControllerAnimated:YES];
+        if (self.operationSuccessBlock) {
+            self.operationSuccessBlock();
+        }
     }
     if ([self.orderPostStatus isEqualToString:@"1"]) {
         // 待付款
@@ -387,6 +400,8 @@ static NSString *identifier = @"orderDetailCell";
     if ([self.orderPostStatus isEqualToString:@"3"]) {
         // 待收货
         [self operationOrderWithAct:@"queren"];
+        self.orderPostStatus = @"4";
+        [self refreshData];
         
     }
     
@@ -729,70 +744,68 @@ static NSString *identifier = @"orderDetailCell";
 {
     [self.sectionModelArr removeAllObjects];
     [self.tableView reloadData];
-//    
-//    NSString *url =  [NSString stringWithFormat:@"%@api/order.php",baseUrl];
-//    UserInfo *userInfo = [UserInfo currentAccount];
-//    NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":self.good_id};
-//    [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
-//        NSLog(@"请求订单详情数据成功%@",responseObject);
-//        NSDictionary *dataDic = responseObject;
-//        
-// 
-//        // 为总价赋值
-//        self.totallMoneyLab.text = @"";
-//        // 为客服电话赋值
-//        self.customerTel = @"";
-//        // 为支付id赋值
-//        self.pay_id = @"";
-//        // 为配送id赋值
-//        self.ship_id = @"";
-//        // 为总价赋值
-//        self.totallMoneyLab.text =@"";
-//        // 为客服电话赋值
-//        self.customerTel = self.dataDic[@"kefu"];
-//        // 为支付id赋值
-//        self.pay_id = [NSString stringWithFormat:@"%@",dataDic[@"pay_id"]];
-//        // 为配送id赋值
-//        self.ship_id = [NSString stringWithFormat:@"%@",dataDic[@"shipping_id"]];
-//        
-//        self.totallMoneyLab.textColor = [UIColor redColor];
-//        NSArray *dataArray = responseObject[@"cart_goods"];
-//        // 清空数据源
-//        [self.sectionModelArr removeAllObjects];
-//        for (NSDictionary *dic in dataArray) {
-//            OrderNewDetailSectionModel *model = [[OrderNewDetailSectionModel alloc]init];
-//            model.isOpen =YES;
-//            [model setValuesForKeysWithDictionary:dic];
-//            [self.sectionModelArr addObject:model];
-//        }
-//        
-//        if (self.tableView) {
-//            [self.tableView reloadData];
-//        }else{
-//            [self setUpTableView];
-//            [self setUpBottomView];
-//            
-//        }
-//        self.shipnamelab.text = [NSString stringWithFormat:@"(%@)",dataDic[@"shippingname"]];
-//        self.payNameLab.text =[NSString stringWithFormat:@"(%@)",dataDic[@"payname"]];
-//        self.orderStatus = [NSString stringWithFormat:@"%@",dataDic[@"order_status"]];
-//        if ([self.orderStatus isEqualToString:@"2"]) {
-//            self.payView.weChatPayBtn.hidden = YES;
-//            self.payView.aliPayBtn.hidden = YES;
-//            self.shipView.ziquBtn.hidden = YES;
-//            self.shipView.mianfeiBtn.hidden = YES;
-//        }
-//        if ([self.orderStatus isEqualToString:@"3"]) {
-//            self.payView.weChatPayBtn.hidden = YES;
-//            self.payView.aliPayBtn.hidden = YES;
-//            self.shipView.ziquBtn.hidden = YES;
-//            self.shipView.mianfeiBtn.hidden = YES;
-//        }
-//        
-//        
-//    } enError:^(NSError *error) {
-//        NSLog(@"请求订单详情数据失败%@",error);
-//    }];
+    
+    NSString *url =  [NSString stringWithFormat:@"%@api/order.php",baseUrl];
+    UserInfo *userInfo = [UserInfo currentAccount];
+    NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":self.good_id};
+    [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
+        NSLog(@"请求订单详情数据成功%@",responseObject);
+        NSDictionary *dataDic = responseObject;
+        
+ 
+        // 为总价赋值
+        self.totallMoneyLab.text = @"";
+        // 为客服电话赋值
+        self.customerTel = @"";
+        // 为支付id赋值
+        self.pay_id = @"";
+        // 为配送id赋值
+        self.ship_id = @"";
+        // 为总价赋值
+        self.totallMoneyLab.text =@"";
+        // 为客服电话赋值
+        self.customerTel = self.dataDic[@"kefu"];
+        // 为支付id赋值
+        self.pay_id = [NSString stringWithFormat:@"%@",dataDic[@"pay_id"]];
+        // 为配送id赋值
+        self.ship_id = [NSString stringWithFormat:@"%@",dataDic[@"shipping_id"]];
+        
+        self.totallMoneyLab.textColor = [UIColor redColor];
+        NSArray *dataArray = responseObject[@"cart_goods"];
+        // 清空数据源
+        [self.sectionModelArr removeAllObjects];
+        for (NSDictionary *dic in dataArray) {
+            OrderNewDetailSectionModel *model = [[OrderNewDetailSectionModel alloc]init];
+            model.isOpen =YES;
+            [model setValuesForKeysWithDictionary:dic];
+            [self.sectionModelArr addObject:model];
+        }
+        
+        
+            [self setUpTableView];
+            [self setUpBottomView];
+            [self.tableView reloadData];
+       
+        self.shipnamelab.text = [NSString stringWithFormat:@"(%@)",dataDic[@"shippingname"]];
+        self.payNameLab.text =[NSString stringWithFormat:@"(%@)",dataDic[@"payname"]];
+        self.orderStatus = [NSString stringWithFormat:@"%@",dataDic[@"order_status"]];
+        if ([self.orderStatus isEqualToString:@"2"]) {
+            self.payView.weChatPayBtn.hidden = YES;
+            self.payView.aliPayBtn.hidden = YES;
+            self.shipView.ziquBtn.hidden = YES;
+            self.shipView.mianfeiBtn.hidden = YES;
+        }
+        if ([self.orderStatus isEqualToString:@"3"]) {
+            self.payView.weChatPayBtn.hidden = YES;
+            self.payView.aliPayBtn.hidden = YES;
+            self.shipView.ziquBtn.hidden = YES;
+            self.shipView.mianfeiBtn.hidden = YES;
+        }
+        
+        
+    } enError:^(NSError *error) {
+        NSLog(@"请求订单详情数据失败%@",error);
+    }];
 
 }
 #pragma mark  修改地址和支付方式的请求参数
@@ -1154,9 +1167,12 @@ static NSString *identifier = @"orderDetailCell";
         }else{
             [GFProgressHUD showFailure:responseObject[@"msg"]];
         }
-        if ([act isEqualToString:@"quxiao"]) {
-            [self refreshData];
+        
+        if ([act isEqualToString:@"zaimai"]) {
+            YNTShopingCarViewController *shopCarVC =  [[YNTShopingCarViewController alloc]init];
+            [self.navigationController pushViewController:shopCarVC animated:YES];
         }
+       
 
     } enError:^(NSError *error) {
         

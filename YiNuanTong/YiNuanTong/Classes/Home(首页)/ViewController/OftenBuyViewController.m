@@ -211,9 +211,9 @@ static NSString *listCell = @"listCell";
 -(void)creatData
 {
     UserInfo *userInfo = [UserInfo currentAccount];
-    self.params = @{@"act":@"list",@"user_id":userInfo.user_id,@"page":@"0",@"tpagesize":@"10"};
-    //清空数据源
-    [dataArray removeAllObjects];
+    NSString *page = [NSString stringWithFormat:@"%ld",(long)self.page];
+    self.params = @{@"act":@"list",@"user_id":userInfo.user_id,@"page":page,@"tpagesize":@"10"};
+
     // 请求列表数据
     NSString *goodListUrl = [NSString stringWithFormat:@"%@api/goods_often.php",baseUrl];
     [YNTNetworkManager requestPOSTwithURLStr:goodListUrl paramDic:self.params finish:^(id responseObject) {
@@ -226,18 +226,29 @@ static NSString *listCell = @"listCell";
         
         
         NSArray *dataArr= returnDic[@"goods"];
+        if (dataArr.count == 0) {
+            // 无数据时
+            [GFProgressHUD showInfoMsg:@"没有你想要的商品了"];
+            return ;
+        }
+        
+        // 有数据时
+        [dataArray removeAllObjects];
+
         for (NSDictionary *dic in dataArr) {
             
             HomeGoodsModel *model = [[HomeGoodsModel alloc]init];
             [model setValuesForKeysWithDictionary:dic];
-         
-            [dataArray addObject:model];
             
+            [dataArray addObject:model];
         }
+     
+        
+        
         
         if (myTableView) {
             [myTableView reloadData];
-            [myTableView setContentOffset:CGPointMake(0,0) animated:NO];
+           // [myTableView setContentOffset:CGPointMake(0,0) animated:NO];
             
         }
         else
@@ -302,7 +313,7 @@ static NSString *listCell = @"listCell";
 #pragma mark - 设置主视图
 -(void)setupMainView
 {
-        myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 110, KScreenW, kScreenH - 155) style:UITableViewStylePlain];
+        myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 110, KScreenW, kScreenH - 110) style:UITableViewStylePlain];
         myTableView.delegate = self;
         myTableView.dataSource = self;
     myTableView.emptyDataSetDelegate = self;
@@ -312,7 +323,7 @@ static NSString *listCell = @"listCell";
         // 下拉刷新的时候 ,将主动page改为 0
         
         self.isUp = NO;// 标识下拉
-        self.page = 1;
+        self.page -= 1;
         [self creatData];
      
     }];
@@ -461,44 +472,6 @@ static NSString *listCell = @"listCell";
 }
 
 
-#pragma mark - 数据为空时处理
-- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
-{
-    [self.bottomView removeFromSuperview];
-    return [UIImage imageNamed:@"no_data"];
-}
-- (UIImage *)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state
-{
-    return [UIImage imageNamed:@"visit-"];
-}
-- (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button
-{
-    NSLog(@"你要想添加吗");
-    [self.navigationController popViewControllerAnimated:YES];
-}
-- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
-{
-    NSString *text = @"空空哒,快去逛逛吧!";
-    
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:18.0f],
-                                 NSForegroundColorAttributeName: [UIColor darkGrayColor]};
-    
-    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
-}
-- (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView
-{
-    NSString *text = @"";
-    
-    NSMutableParagraphStyle *paragraph = [NSMutableParagraphStyle new];
-    paragraph.lineBreakMode = NSLineBreakByWordWrapping;
-    paragraph.alignment = NSTextAlignmentCenter;
-    
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14.0f],
-                                 NSForegroundColorAttributeName: [UIColor lightGrayColor],
-                                 NSParagraphStyleAttributeName: paragraph};
-    
-    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
-}
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     self.serialNumber = 2;
@@ -572,5 +545,6 @@ static NSString *listCell = @"listCell";
                                       }];
     
 }
+
 @end
 
