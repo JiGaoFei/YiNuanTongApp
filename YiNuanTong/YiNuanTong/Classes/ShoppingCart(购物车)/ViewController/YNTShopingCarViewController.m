@@ -110,7 +110,7 @@ static NSString *identifier = @"shopCell";
         if (self.tableView) {
             
             [self.tableView reloadData];
-            [self.emptyViews removeFromSuperview];
+        
     
         }else{
             // 加载tableView
@@ -122,6 +122,8 @@ static NSString *identifier = @"shopCell";
         if (self.sectionModelArr.count >0) {
         [self.emptyViews removeFromSuperview];
         [self setUpBottomView];
+        }else{
+            [self setUpEmptyViews];
         }
         
 //        if (self.sectionModelArr.count == 0) {

@@ -28,7 +28,7 @@
         [self addSubview:self.orderSnLab];
     // 线1
     UILabel *linlab1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 30 *kHeightScale, KScreenW, 2)];
-    linlab1.backgroundColor = [UIColor grayColor];
+    linlab1.backgroundColor =  RGBA(241, 241, 241, 1);
     [self addSubview:linlab1];
     // 地址背景
     UIView *bagView = [[UIView alloc]initWithFrame:CGRectMake(0, 35 *kHeightScale, KScreenW, 75 *kHeightScale)];
@@ -57,7 +57,7 @@
     
     // 线2
     UILabel *linlab2 = [[UILabel alloc]initWithFrame:CGRectMake(0, 80 *kHeightScale, KScreenW, 2)];
-    linlab2.backgroundColor = [UIColor grayColor];
+    linlab2.backgroundColor =  RGBA(241, 241, 241, 1);
     [bagView addSubview:linlab2];
     // 货品清单
     UILabel *goodTitleLab = [[UILabel alloc]initWithFrame:CGRectMake(15 *kWidthScale, 132 *kHeightScale, 80*kWidthScale, 20*kHeightScale)];

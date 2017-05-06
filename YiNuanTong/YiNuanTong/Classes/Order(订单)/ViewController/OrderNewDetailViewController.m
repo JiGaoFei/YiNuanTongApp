@@ -429,7 +429,7 @@ static NSString *identifier = @"orderDetailCell";
    
     // 配送方式
     UILabel *line1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 1)];
-    line1.backgroundColor = [UIColor grayColor];
+    line1.backgroundColor =  RGBA(241, 241, 241, 1);
     [bagView addSubview:line1];
     
     UILabel *lab1  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 15 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"配送方式" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
@@ -498,7 +498,7 @@ static NSString *identifier = @"orderDetailCell";
 
     // 支付方式
     UILabel *line3 = [[UILabel alloc]initWithFrame:CGRectMake(0, 170 *kHeightScale, KScreenW, 1)];
-    line3.backgroundColor = [UIColor grayColor];
+    line3.backgroundColor =  RGBA(241, 241, 241, 1);
     [bagView addSubview:line3];
 
     UILabel *lab3  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 180 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"支付方式" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
@@ -560,7 +560,7 @@ static NSString *identifier = @"orderDetailCell";
     
     // 发票信息
     UILabel *line4= [[UILabel alloc]initWithFrame:CGRectMake(0, 335 *kHeightScale, KScreenW, 1)];
-    line4.backgroundColor = [UIColor grayColor];
+    line4.backgroundColor =  RGBA(241, 241, 241, 1);
     [bagView addSubview:line4];
     
     UILabel *lab4  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 350 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"备注信息:" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];

@@ -156,7 +156,7 @@
     NSLog(@"点击的是减号");
     NSInteger textNumber = [self.numberTextField.text integerValue];
     textNumber -=1;
-    if (textNumber <0) {
+    if (textNumber <1) {
         return;
     }
        self.numberTextField.text = [NSString stringWithFormat:@"%ld",(long)textNumber];

@@ -29,7 +29,8 @@
 @property (nonatomic,strong) UITableView *tableView;
 /**paydic*/
 @property (nonatomic,strong) NSMutableDictionary *payDic;
-
+/**emptyViews*/
+@property (nonatomic,strong) UIView  * emptyViews;
 /**线*/
 @property (nonatomic,strong) UILabel *lineLab;
 /**选中按钮*/
@@ -140,19 +141,29 @@ static NSString *identier = @"orderNewCell";
         NSLog(@"请求订单列表数据成功%@",responseObject);
         //获取订单数据数组
         NSMutableArray *array = responseObject[@"order"];
-        for (NSDictionary *dic in array) {
-            OrderListSectionModel *model = [[OrderListSectionModel alloc]init];
-            model.isOpen = NO;
-            [model setValuesForKeysWithDictionary:dic];
-            [self.sectionModelArr addObject:model];
-        }
-        if (self.tableView) {
-            [self.tableView reloadData];
+        if (array.count == 0) {
+            // 无数据
+            [self setUpEmptyViews];
         }else{
-            [self setUpTitleBtn];
-            [self setUpTableView];
+            // 移除空视图
+            [self.emptyViews removeFromSuperview];
+            // 有数据
+            for (NSDictionary *dic in array) {
+                OrderListSectionModel *model = [[OrderListSectionModel alloc]init];
+                model.isOpen = NO;
+                [model setValuesForKeysWithDictionary:dic];
+                [self.sectionModelArr addObject:model];
+            }
+            
+            if (self.tableView) {
+                [self.tableView reloadData];
+            }else{
+                [self setUpTitleBtn];
+                [self setUpTableView];
+            }
+
         }
-    } enError:^(NSError *error) {
+           } enError:^(NSError *error) {
         NSLog(@"请求订单列表数据失败%@",error);
     }];
 
@@ -197,7 +208,7 @@ static NSString *identier = @"orderNewCell";
        self.lineLab.frame = rec;
    }];
      self.selectBtn = sender;
-  
+    
 }
 // 创建tableView
 - (void)setUpTableView
@@ -535,19 +546,37 @@ static NSString *identier = @"orderNewCell";
     [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
         NSLog(@"%@数据成功%@",title,responseObject);
         //获取订单数据数组
-        NSMutableArray *array = responseObject[@"order"];
-        for (NSDictionary *dic in array) {
-            OrderListSectionModel *model = [[OrderListSectionModel alloc]init];
-            [model setValuesForKeysWithDictionary:dic];
-            [self.sectionModelArr addObject:model];
-        }
-        if (self.tableView) {
-            [self.tableView reloadData];
-        }else{
-            [self setUpTitleBtn];
-            [self setUpTableView];
-        }
+//        NSMutableArray *arr = [[NSMutableArray alloc]init];
+//        for (  OrderListSectionModel *model in self.sectionModelArr) {
+//            NSString *str = [NSString stringWithFormat:@"%@",model.ord_status];
+//            if ([str isEqualToString:self.currentStatus]) {
+//                [arr addObject:model];
+//            }
+//        }
+//        if (arr.count == 0) {
+//            [self emptyDataOperation];
+//        }
 
+        NSMutableArray *array = responseObject[@"order"];
+        if (array.count == 0) {
+            [self setUpEmptyViews];
+        }else{
+            //  移除空视图
+            [self.emptyViews removeFromSuperview];
+            for (NSDictionary *dic in array) {
+                OrderListSectionModel *model = [[OrderListSectionModel alloc]init];
+                [model setValuesForKeysWithDictionary:dic];
+                [self.sectionModelArr addObject:model];
+            }
+            if (self.tableView) {
+                [self.tableView reloadData];
+            }else{
+                [self setUpTitleBtn];
+                [self setUpTableView];
+            }
+
+        }
+       
     } enError:^(NSError *error) {
         NSLog(@"%@数据失败%@",title,error);
     }];
@@ -624,8 +653,8 @@ static NSString *identier = @"orderNewCell";
             NSString *sign = self.payDic[@"sign"];
             
             [self doAlipayPay:sign];
-         //   [self.navigationController pushViewController:payDetailVC animated:YES];
-            [self.navigationController popViewControllerAnimated:YES];
+   
+            
             
         }
         
@@ -634,8 +663,7 @@ static NSString *identier = @"orderNewCell";
             NSDictionary *data = self.payDic[@"sign"];
             
             [self WXZhiFUWith:data];
-            [self.navigationController popViewControllerAnimated:YES];
-          //  [self.navigationController pushViewController:payDetailVC animated:YES];
+        
             
         }
 
@@ -906,45 +934,108 @@ static NSString *identier = @"orderNewCell";
 #pragma mark 操作订单请求数据(取消,提醒,确认)
 - (void)operationOrderWithAct:(NSString *)act andGood_id:(NSString *)good_id
 {
-    UserInfo *userInfo = [UserInfo currentAccount];
-  
-    NSString *url =  [NSString  stringWithFormat:@"%@api/order.php",baseUrl];
-    NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":good_id,@"act":act};
-    [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
-        NSString *status = [NSString stringWithFormat:@"%@",responseObject[@"status"]];
-        if ([status isEqualToString:@"1"]) {
-            [GFProgressHUD showSuccess:responseObject[@"msg"]];
-            
-            
-            if ([act isEqualToString:@"del"]) {
-                  [self loadData];
-            }
-            
-            
-         
-            
-            if ([act isEqualToString:@"quxiao"]) {
-                [self loadData];
-            }
-            
-            if ([act isEqualToString:@"queren"]) {
-                [self loadData];
-            }
-            
-            
-            if ([act isEqualToString:@"zaimai"]) {
-                YNTShopingCarViewController *shopCarVC = [[YNTShopingCarViewController alloc]init];
-                [self.navigationController pushViewController:shopCarVC animated:YES];
-            }
-        }else{
-            [GFProgressHUD showFailure:responseObject[@"msg"]];
-        }
-       
+    // 如果点击的是确认
+    if ([act isEqualToString:@"queren"]) {
         
-    } enError:^(NSError *error) {
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"温馨提示:" message:@"您是否收到了商品?" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            return ;
+        }];
         
-    }];
-}
+        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            
+            
+            
+            UserInfo *userInfo = [UserInfo currentAccount];
+            
+            NSString *url =  [NSString  stringWithFormat:@"%@api/order.php",baseUrl];
+            NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":good_id,@"act":act};
+            [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
+                NSString *status = [NSString stringWithFormat:@"%@",responseObject[@"status"]];
+                if ([status isEqualToString:@"1"]) {
+                    [GFProgressHUD showSuccess:responseObject[@"msg"]];
+                    
+                    
+                    if ([act isEqualToString:@"queren"]) {
+                        [self loadData];
+                    }
+                    
+                    
+               
+                }else{
+                    [GFProgressHUD showFailure:responseObject[@"msg"]];
+                }
+                
+                
+            } enError:^(NSError *error) {
+                
+            }];
+            
+            
+
+            
+        }];
+        
+        [alertVC addAction:action1];
+        [alertVC addAction:action2];
+        [self presentViewController:alertVC animated:YES completion:nil];
+        
+        
+    }else{
+        
+        
+        UserInfo *userInfo = [UserInfo currentAccount];
+        
+        NSString *url =  [NSString  stringWithFormat:@"%@api/order.php",baseUrl];
+        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":good_id,@"act":act};
+        [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
+            NSString *status = [NSString stringWithFormat:@"%@",responseObject[@"status"]];
+            if ([status isEqualToString:@"1"]) {
+                [GFProgressHUD showSuccess:responseObject[@"msg"]];
+                
+                
+                if ([act isEqualToString:@"del"]) {
+                    [self loadData];
+                }
+                
+                
+                
+                
+                if ([act isEqualToString:@"quxiao"]) {
+                    [self loadData];
+                }
+                
+                if ([act isEqualToString:@"queren"]) {
+                    [self loadData];
+                }
+                
+                
+                if ([act isEqualToString:@"zaimai"]) {
+                    YNTShopingCarViewController *shopCarVC = [[YNTShopingCarViewController alloc]init];
+                    [self.navigationController pushViewController:shopCarVC animated:YES];
+                }
+            }else{
+                [GFProgressHUD showFailure:responseObject[@"msg"]];
+            }
+            
+            
+        } enError:^(NSError *error) {
+            
+        }];
+
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+   }
 
 
 #pragma mark - 再次购买
@@ -963,6 +1054,37 @@ static NSString *identier = @"orderNewCell";
     }];
 }
 
+#pragma mark - 空数据处理
+
+- (void)setUpEmptyViews
+{
+    self.emptyViews = [[UIView alloc]initWithFrame:CGRectMake(0, 105, KScreenW, kScreenH)];
+    self.emptyViews.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.emptyViews];
+    
+    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenW / 2 - 50 *kWidthScale, 83 *kHeightScale, 100 *kWidthScale, 124 *kHeightScale)];
+    imgView.image = [UIImage imageNamed:@"orde_-list_-empty"];
+    [self.emptyViews addSubview:imgView];
+    
+    UILabel *titleLab = [[UILabel alloc]initWithFrame:CGRectMake(65 *kWidthScale, 296 *kHeightScale, KScreenW - 130 *kWidthScale, 16*kHeightScale)];
+    titleLab.font = [UIFont systemFontOfSize:16 *kHeightScale];
+    titleLab.text = @"进货单空空的,去挑几件好货吧!";
+    titleLab.textColor = RGBA(102, 102, 102, 1);
+    titleLab.textAlignment = NSTextAlignmentCenter;
+    [self.emptyViews addSubview:titleLab];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(147 *kWidthScale, 330 *kHeightScale, 80 *kWidthScale, 30 *kHeightScale);
+    [btn setImage:[UIImage imageNamed:@"orde_-list_-empty_casually_browse"] forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(goButAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.emptyViews addSubview:btn];
+    
+    
+}
+- (void)goButAction:(UIButton *)sender
+{
+    self.tabBarController.selectedIndex = 0;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

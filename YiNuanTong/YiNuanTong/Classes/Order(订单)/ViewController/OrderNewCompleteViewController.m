@@ -36,8 +36,11 @@
     self.view.backgroundColor = [UIColor whiteColor];
     // 加载自定义视图
     [self setUpChildrenViews];
+   
+
     // Do any additional setup after loading the view.
 }
+
 #pragma mark - 自定义视图
 - (void)setUpChildrenViews
 {
@@ -99,7 +102,7 @@
         NSString *sign = self.payDic[@"sign"];
                
               [self doAlipayPay:sign];
-            [self.navigationController popViewControllerAnimated:YES];
+          //  [self.navigationController popViewControllerAnimated:YES];
          
          //      [self.navigationController pushViewController:payDetailVC animated:YES];
                
@@ -111,7 +114,7 @@
         NSDictionary *data = self.payDic[@"sign"];
 
         [self WXZhiFUWith:data];
-                   [self.navigationController popViewControllerAnimated:YES];
+                 //  [self.navigationController popViewControllerAnimated:YES];
 
        
     }

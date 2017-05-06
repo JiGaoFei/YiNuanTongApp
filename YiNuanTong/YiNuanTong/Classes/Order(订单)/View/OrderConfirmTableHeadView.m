@@ -49,7 +49,7 @@
     
     // 线2
     UILabel *linlab2 = [[UILabel alloc]initWithFrame:CGRectMake(0, 80 *kHeightScale, KScreenW, 2)];
-    linlab2.backgroundColor = [UIColor grayColor];
+    linlab2.backgroundColor =RGBA(248, 248, 248, 1);
     [bagView addSubview:linlab2];
     // 货品清单
     UILabel *goodTitleLab = [[UILabel alloc]initWithFrame:CGRectMake(15 *kWidthScale, 95 *kHeightScale, 80*kWidthScale, 20*kHeightScale)];
@@ -62,6 +62,7 @@
     // 添加手势
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction:)];
     [self addGestureRecognizer:tapGesture];
+    
 }
 - (void)tapAction:(UITapGestureRecognizer *)sender
 {

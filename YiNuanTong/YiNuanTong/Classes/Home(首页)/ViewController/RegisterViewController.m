@@ -130,7 +130,7 @@
     
     // 创建邀请码输入
     
-    self.invitationTextField= [YNTUITools creatTextField:CGRectMake(20*kWidthScale, 340*kHeightScale, KScreenW -40*kWidthScale, 50*kHeightScale) bgColor:[UIColor whiteColor] borderStyle:UITextBorderStyleRoundedRect placeHolder:@"邀请码" keyboardType:UIKeyboardTypeDefault   font:15 secureTextEntry:YES clearButtonMode:UITextFieldViewModeAlways];
+    self.invitationTextField= [YNTUITools creatTextField:CGRectMake(20*kWidthScale, 340*kHeightScale, KScreenW -40*kWidthScale, 50*kHeightScale) bgColor:[UIColor whiteColor] borderStyle:UITextBorderStyleRoundedRect placeHolder:@"邀请码" keyboardType:UIKeyboardTypeDefault   font:15 secureTextEntry:NO clearButtonMode:UITextFieldViewModeAlways];
     self.invitationTextField.delegate = self;
     // 监听文字的改变
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFiledChange:) name:UITextFieldTextDidChangeNotification object:self.invitationTextField];

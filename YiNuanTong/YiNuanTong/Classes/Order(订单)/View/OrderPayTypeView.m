@@ -34,7 +34,7 @@
     [self addSubview:_aliPayBtn];
     
     UILabel *linelab1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 44 *kHeightScale, KScreenW, 1)];
-    linelab1.backgroundColor = [UIColor grayColor];
+    linelab1.backgroundColor =  RGBA(241, 241, 241, 1);
     [self addSubview:linelab1];
     
     // 微信支付
@@ -51,7 +51,7 @@
     [self.weChatPayBtn addTarget:self action:@selector(weChatPayBtnAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_weChatPayBtn];
     UILabel *linelab2 = [[UILabel alloc]initWithFrame:CGRectMake(0, 106 *kHeightScale, KScreenW, 1)];
-    linelab2.backgroundColor = [UIColor grayColor];
+    linelab2.backgroundColor = RGBA(241, 241, 241, 1);
     [self addSubview:linelab2];
                             
 }

@@ -36,7 +36,7 @@
     
     //  创建线
     UILabel *linLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 39 *kHeightScale, KScreenW, 2)];
-    linLab.backgroundColor = [UIColor grayColor];
+    linLab.backgroundColor =  RGBA(248, 248, 248, 1);
     [bagView addSubview:linLab];
     // 创建按钮
     
@@ -48,7 +48,7 @@
     [bagView addSubview:_seconBuyBtn];
   
     UILabel *lineLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 104 *kHeightScale, KScreenW, 6*kHeightScale)];
-    lineLab.backgroundColor = [UIColor grayColor];
+    lineLab.backgroundColor =  RGBA(241, 241, 241, 1);
     [bagView addSubview:lineLab];
     [self addSubview:bagView];
 }

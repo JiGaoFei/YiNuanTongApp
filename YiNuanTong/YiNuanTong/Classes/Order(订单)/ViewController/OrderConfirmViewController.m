@@ -30,7 +30,7 @@
 @property (nonatomic,strong) OrderShipModel  * addressModel;
 /**备注信息*/
 @property (nonatomic,strong) UITextView *textView;
-
+@property (nonatomic,strong) UIView *emptyViews;
 /**存放sectonModel数组*/
 @property (nonatomic,strong) NSMutableArray  * sectionModelArray;
 
@@ -148,19 +148,38 @@ static NSString *identifier = @"confirmCell";
         
         
         [self.sectionModelArray removeAllObjects];
-        for (NSDictionary *dic in arr) {
-            OrderConfirmModel  *model = [[OrderConfirmModel alloc]init];
-            // 用来控制是否要展示
-            model.isOpen = YES;
-            [model setValuesForKeysWithDictionary:dic];
-            [self.sectionModelArray addObject:model];
-        }
-        if (self.tableView) {
-            [self.tableView reloadData];
+        // 无数据
+        if (arr.count == 0) {
+            [self setUpEmptyViews];
+            
+//            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"此商品已经提交,去我的订单查看吧!" preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction *action1 =[UIAlertAction actionWithTitle:@"去看看" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                [self.navigationController popViewControllerAnimated:YES];
+//                self.tabBarController.selectedIndex = 3;
+//            }];
+//            
+//            
+//            [alertVC addAction:action1];
+//            [self presentViewController:alertVC animated:YES completion:nil];
+            
         }else{
-            [self setUpChildrenViews];
-            [self setUpBottomView];
-          
+            // 有数据
+            [self.emptyViews removeFromSuperview];
+            for (NSDictionary *dic in arr) {
+                OrderConfirmModel  *model = [[OrderConfirmModel alloc]init];
+                // 用来控制是否要展示
+                model.isOpen = YES;
+                [model setValuesForKeysWithDictionary:dic];
+                [self.sectionModelArray addObject:model];
+            }
+            if (self.tableView) {
+                [self.tableView reloadData];
+            }else{
+                [self setUpChildrenViews];
+                [self setUpBottomView];
+                
+            }
+
         }
         
         
@@ -248,7 +267,7 @@ static NSString *identifier = @"confirmCell";
     
     // 配送方式
     UILabel *line1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 1)];
-    line1.backgroundColor = [UIColor grayColor];
+    line1.backgroundColor = RGBA(241, 241, 241, 1);
     [_bagView addSubview:line1];
     
     UILabel *lab1  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 15 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"配送方式" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
@@ -298,7 +317,7 @@ static NSString *identifier = @"confirmCell";
     
     // 支付方式
     UILabel *line3 = [[UILabel alloc]initWithFrame:CGRectMake(0, 170 *kHeightScale, KScreenW, 1)];
-    line3.backgroundColor = [UIColor grayColor];
+    line3.backgroundColor = RGBA(241, 241, 241, 1);
     [_bagView addSubview:line3];
     
     UILabel *lab3  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 180 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"支付方式" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
@@ -346,7 +365,7 @@ static NSString *identifier = @"confirmCell";
     
     // 发票信息
     UILabel *line4= [[UILabel alloc]initWithFrame:CGRectMake(0, 335 *kHeightScale, KScreenW, 1)];
-    line4.backgroundColor = [UIColor grayColor];
+    line4.backgroundColor =RGBA(241, 241, 241, 1);
     [_bagView addSubview:line4];
     
     UILabel *lab4  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 350 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"备注信息:" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
@@ -462,7 +481,7 @@ static NSString *identifier = @"confirmCell";
     }
     
     ShopCarModel *model = sectionModel.modelArr[indexPath.row];
-      cell.shopNumberLab.text = model.namestr;
+      cell.goodName.text = model.namestr;
     cell.orderMoneyLab.text = model.attrprice;
     cell.shopNumberLab.text= model.num;
     
@@ -593,8 +612,10 @@ static NSString *identifier = @"confirmCell";
             OrderNewCompleteViewController *ordelCompleteVC =[[OrderNewCompleteViewController alloc]init];
             ordelCompleteVC.payDic = responseObject;
             ordelCompleteVC.pay_id = self.pay_id;
-            
-            [self.navigationController pushViewController:ordelCompleteVC animated:YES];
+        
+                 [self.navigationController pushViewController:ordelCompleteVC animated:YES];
+        
+           
             
         } enError:^(NSError *error) {
             NSLog(@"提交订单请求数据失败%@",error);
@@ -604,6 +625,35 @@ static NSString *identifier = @"confirmCell";
     
    }
 
+- (void)setUpEmptyViews
+{
+    self.emptyViews = [[UIView alloc]initWithFrame:CGRectMake(0, 64, KScreenW, kScreenH)];
+    self.emptyViews.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.emptyViews];
+    
+    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenW / 2 - 50 *kWidthScale, 133 *kHeightScale, 100 *kWidthScale, 124 *kHeightScale)];
+    imgView.image = [UIImage imageNamed:@"orde_-list_-empty"];
+    [self.emptyViews addSubview:imgView];
+    
+    UILabel *titleLab = [[UILabel alloc]initWithFrame:CGRectMake(65 *kWidthScale, 296 *kHeightScale, KScreenW - 130 *kWidthScale, 16*kHeightScale)];
+    titleLab.font = [UIFont systemFontOfSize:16 *kHeightScale];
+    titleLab.text = @"订单空空的,去挑几件好货吧!";
+    titleLab.textColor = RGBA(102, 102, 102, 1);
+    titleLab.textAlignment = NSTextAlignmentCenter;
+    [self.emptyViews addSubview:titleLab];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(147 *kWidthScale, 330 *kHeightScale, 80 *kWidthScale, 30 *kHeightScale);
+    [btn setImage:[UIImage imageNamed:@"orde_-list_-empty_casually_browse"] forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(goButAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.emptyViews addSubview:btn];
+    
+    
+}
+- (void)goButAction:(UIButton *)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 
 - (void)didReceiveMemoryWarning {

@@ -74,8 +74,10 @@
     // 更新应用启动次数
     [UserDefaults setLaunchTimes:[NSString stringWithFormat:@"%ld",[[UserDefaults getLaunchTimes] integerValue] + 1]];
     // 注册微信id
-   // [WXApi registerApp:@"wxc4cf6018a3b7aacf"];
-    [WXApi registerApp:@"wxc4cf6018a3b7aacf" withDescription:@"demo 2.0"];
+  // [WXApi registerApp:@"wxc4cf6018a3b7aacf"];
+   [WXApi registerApp:@"wxc4cf6018a3b7aacf" withDescription:@"demo 2.0"];
+    
+    
     //向微信注册wxd930ea5d5a258f4f
      
     // 监测网络状态
@@ -139,32 +141,43 @@
     }];
 }
 
-
-
-// NOTE: 9.0以后使用新API接口
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary*)options
 {
     // 微信支付代理
     [WXApi handleOpenURL:url delegate:self];
-
+    
     
     if ([url.host isEqualToString:@"safepay"]) {
         // 支付跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
             
             NSLog(@"支付宝返回结果result = %@",resultDic);
-            //创建一个消息对象
-            NSNotification * notice = [NSNotification notificationWithName:@"aliPayReslutYnt" object:nil userInfo:nil];
-         //  发送消息
-            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            if ([resultDic[@"resultStatus"] isEqualToString:@"9000"]) {
+                
+                //创建一个消息对象
+                NSNotification * notice = [NSNotification notificationWithName:@"aliPayReslutYnt" object:nil userInfo:nil];
+                //  发送消息
+                [[NSNotificationCenter defaultCenter]postNotification:notice];
+                
+            }
+            if([resultDic[@"resultStatus"] isEqualToString:@"6001"])
+            {
+                NSLog(@"已取消支付");
+                NSNotification * notice = [NSNotification notificationWithName:@"aliPayReslutYntCancel" object:nil userInfo:nil];
+                //  发送消息
+                [[NSNotificationCenter defaultCenter]postNotification:notice];
+                
+
+            }
+          
             
-                    }];
+        }];
         
         // 授权跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processAuth_V2Result:url standbyCallback:^(NSDictionary *resultDic) {
             NSLog(@"宝宝result = %@",resultDic);
             
-                      
+            
             
             
             
@@ -184,7 +197,55 @@
         }];
     }
     return YES;
+
 }
+
+//// NOTE: 9.0以后使用新API接口
+//- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
+//{
+//    // 微信支付代理
+//    [WXApi handleOpenURL:url delegate:self];
+//
+//    
+//    if ([url.host isEqualToString:@"safepay"]) {
+//        // 支付跳转支付宝钱包进行支付，处理支付结果
+//        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+//            
+//            NSLog(@"支付宝返回结果result = %@",resultDic);
+//            //创建一个消息对象
+//            NSNotification * notice = [NSNotification notificationWithName:@"aliPayReslutYnt" object:nil userInfo:nil];
+//         //  发送消息
+//            [[NSNotificationCenter defaultCenter]postNotification:notice];
+//            
+//                    }];
+//        
+//        // 授权跳转支付宝钱包进行支付，处理支付结果
+//        [[AlipaySDK defaultService] processAuth_V2Result:url standbyCallback:^(NSDictionary *resultDic) {
+//            NSLog(@"宝宝result = %@",resultDic);
+//            
+//                      
+//            
+//            
+//            
+//            // 解析 auth code
+//            NSString *result = resultDic[@"result"];
+//            NSString *authCode = nil;
+//            if (result.length>0) {
+//                NSArray *resultArr = [result componentsSeparatedByString:@"&"];
+//                for (NSString *subResult in resultArr) {
+//                    if (subResult.length > 10 && [subResult hasPrefix:@"auth_code="]) {
+//                        authCode = [subResult substringFromIndex:10];
+//                        break;
+//                    }
+//                }
+//            }
+//            NSLog(@"授权结果 authCode = %@", authCode?:@"");
+//        }];
+//    }
+//    return YES;
+//}
+//
+//
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -212,6 +273,7 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+
 // 微信
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     return  [WXApi handleOpenURL:url delegate:self];
@@ -221,4 +283,42 @@
     return [WXApi handleOpenURL:url delegate:self];
 }
 
+
+
+
+-(void)onResp:(BaseResp *)resp {
+   
+
+    
+    NSString *strMsg = [NSString stringWithFormat:@"errcode:%d", resp.errCode];
+    NSString *strTitle;
+    
+    
+    if([resp isKindOfClass:[PayResp class]]){
+        //支付返回结果，实际支付结果需要去微信服务器端查询
+        strTitle = [NSString stringWithFormat:@"支付结果"];
+        
+        switch (resp.errCode) {
+            case WXSuccess:{
+                //创建一个消息对象
+                NSNotification * notice1 = [NSNotification notificationWithName:@"weChatPaySuccessYNT" object:nil userInfo:nil];
+                //  发送消息
+                [[NSNotificationCenter defaultCenter]postNotification:notice1];
+                
+                break;
+            }
+            case WXErrCodeUserCancel:{
+              
+                break;
+            }
+            default:{
+                
+                              break;
+            }
+        }
+        
+       
+    }
+
+}
 @end

@@ -27,7 +27,7 @@
 - (void)setUpChildrenViews
 {
     UILabel *lineLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 2 *kHeightScale)];
-    lineLab.backgroundColor = [UIColor grayColor];
+    lineLab.backgroundColor =  RGBA(248, 248, 248, 1);
     [self addSubview:lineLab];
 
     

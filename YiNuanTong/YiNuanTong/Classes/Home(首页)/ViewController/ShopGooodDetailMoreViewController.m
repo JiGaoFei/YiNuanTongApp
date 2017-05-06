@@ -557,7 +557,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
     [bagView addSubview:imdedateBtn];
     
     // 创建加入购物车按钮
-    UIButton*carBtn = [YNTUITools createButton:CGRectMake(KScreenW / 2 +78*kWidthScale, 0, (KScreenW - 154 *kWidthScale)/2, 50)  bgColor:CGRBlue title:@"加入购物车" titleColor:[UIColor whiteColor] action:@selector(carBtnAction:) vc:self];
+    UIButton*carBtn = [YNTUITools createButton:CGRectMake(KScreenW / 2 +78*kWidthScale, 0, (KScreenW - 154 *kWidthScale)/2, 50)  bgColor:CGRBlue title:@"加入进货单" titleColor:[UIColor whiteColor] action:@selector(carBtnAction:) vc:self];
     
     [bagView addSubview:carBtn];
     

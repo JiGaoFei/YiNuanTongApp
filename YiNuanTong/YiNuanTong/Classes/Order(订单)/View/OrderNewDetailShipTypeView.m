@@ -44,7 +44,7 @@
     [self.ziquBtn addTarget:self action:@selector(ziquBtnAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_ziquBtn];
     UILabel *linelab2 = [[UILabel alloc]initWithFrame:CGRectMake(0, 106 *kHeightScale, KScreenW, 1)];
-    linelab2.backgroundColor = [UIColor grayColor];
+    linelab2.backgroundColor =  RGBA(241, 241, 241, 1);
     [self addSubview:linelab2];
     
 }

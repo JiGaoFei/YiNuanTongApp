@@ -14,13 +14,15 @@
 #import "YNTNetworkManager.h"
 #import <MJExtension/MJExtension.h>
 #import "MineConmentListModel.h"
-#import "UIScrollView+EmptyDataSet.h"
 
-@interface OptionViewController ()<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
+
+@interface OptionViewController ()<UITableViewDelegate,UITableViewDataSource>
 /**tableView*/
 @property (nonatomic,strong) UITableView  * tableView;
 /**存放数据*/
 @property (nonatomic,strong) NSMutableArray  * dataArray;
+/**emptyViews*/
+@property (nonatomic,strong) UIView  * emptyViews;
 /**新增反馈地址*/
 @property (nonatomic,strong)  UIButton *addOptionBtn;
 @end
@@ -91,6 +93,9 @@ static NSString *optionCell = @"optionCell";
         if (self.dataArray.count >0) {
             // 加载底部视图
             [self setUpBottomViews];
+            [self.emptyViews removeFromSuperview];
+        }else{
+            [self setUpEmptyViews];
         }
         
      
@@ -109,8 +114,7 @@ static NSString *optionCell = @"optionCell";
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, KScreenW, kScreenH-64-52) style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.emptyDataSetDelegate = self;
-    self.tableView.emptyDataSetSource = self;
+  
     self.tableView.tableFooterView = [UIView new];
     // 注册cell
     [self.tableView registerClass:[OptionCell class] forCellReuseIdentifier:optionCell];
@@ -181,19 +185,35 @@ static NSString *optionCell = @"optionCell";
           return  titleLabelSize.height + 55 *kHeightScale ;
   }
 
-#pragma mark - 数据为空时处理
-- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView
+#pragma mark - 空数据处理
+
+- (void)setUpEmptyViews
 {
-    [self.addOptionBtn removeFromSuperview];
-    return [UIImage imageNamed:@"feedback_empty"];
+    self.emptyViews = [[UIView alloc]initWithFrame:CGRectMake(0, 105, KScreenW, kScreenH)];
+    self.emptyViews.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.emptyViews];
+    
+    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenW / 2 - 50 *kWidthScale, 83 *kHeightScale, 100 *kWidthScale, 124 *kHeightScale)];
+    imgView.image = [UIImage imageNamed:@"feedback_empty"];
+    [self.emptyViews addSubview:imgView];
+    
+    UILabel *titleLab = [[UILabel alloc]initWithFrame:CGRectMake(65 *kWidthScale, 296 *kHeightScale, KScreenW - 130 *kWidthScale, 16*kHeightScale)];
+    titleLab.font = [UIFont systemFontOfSize:16 *kHeightScale];
+    titleLab.text = @"请告诉我们,您遇到的问题";
+    titleLab.textColor = RGBA(102, 102, 102, 1);
+    titleLab.textAlignment = NSTextAlignmentCenter;
+    [self.emptyViews addSubview:titleLab];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(147 *kWidthScale, 330 *kHeightScale, 80 *kWidthScale, 30 *kHeightScale);
+    [btn setImage:[UIImage imageNamed:@"address_-empty_to_add"] forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(goButAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.emptyViews addSubview:btn];
+    
+    
 }
-- (UIImage *)buttonImageForEmptyDataSet:(UIScrollView *)scrollView forState:(UIControlState)state
+- (void)goButAction:(UIButton *)sender
 {
-    return [UIImage imageNamed:@"address_-empty_to_add"];
-}
-- (void)emptyDataSet:(UIScrollView *)scrollView didTapButton:(UIButton *)button
-{
-    NSLog(@"你要想添加吗");
     OptionListViewController *optionListVC = [[OptionListViewController alloc]init];
     optionListVC.editSuccessBlock = ^(){
         self.tableView.frame =CGRectMake(0, 0, KScreenW, kScreenH-64-52);
@@ -202,28 +222,6 @@ static NSString *optionCell = @"optionCell";
     
     [self.navigationController pushViewController:optionListVC animated:YES];
 }
-- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView
-{
-    NSString *text = @"请告诉我们,您遇到的问题!";
-    
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:18.0f],
-                                 NSForegroundColorAttributeName: [UIColor darkGrayColor]};
-    
-    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
-}
-- (NSAttributedString *)descriptionForEmptyDataSet:(UIScrollView *)scrollView
-{
-    NSString *text = @"";
-    
-    NSMutableParagraphStyle *paragraph = [NSMutableParagraphStyle new];
-    paragraph.lineBreakMode = NSLineBreakByWordWrapping;
-    paragraph.alignment = NSTextAlignmentCenter;
-    
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:14.0f],
-                                 NSForegroundColorAttributeName: [UIColor lightGrayColor],
-                                 NSParagraphStyleAttributeName: paragraph};
-    
-    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
-}
+
 
 @end

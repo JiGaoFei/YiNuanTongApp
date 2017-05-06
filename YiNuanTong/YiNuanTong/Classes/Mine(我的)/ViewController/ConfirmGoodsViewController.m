@@ -78,19 +78,27 @@ static NSString *identier = @"orderNewCell";
         NSLog(@"请求订单列表数据成功%@",responseObject);
         //获取订单数据数组
         NSMutableArray *array = responseObject[@"order"];
-        for (NSDictionary *dic in array) {
-            OrderListSectionModel *model = [[OrderListSectionModel alloc]init];
-            model.isOpen = NO;
-            [model setValuesForKeysWithDictionary:dic];
-            [self.sectionModelArr addObject:model];
-        }
-        if (self.tableView) {
-            [self.tableView reloadData];
+        if (array.count == 0) {
+            [self emptyDataOperation];
+            return ;
         }else{
-          
-            [self setUpTableView];
+            for (NSDictionary *dic in array) {
+                OrderListSectionModel *model = [[OrderListSectionModel alloc]init];
+                model.isOpen = NO;
+                [model setValuesForKeysWithDictionary:dic];
+                [self.sectionModelArr addObject:model];
+            }
+            if (self.tableView) {
+                [self.tableView reloadData];
+            }else{
+                
+                [self setUpTableView];
+            }
+
         }
-    } enError:^(NSError *error) {
+        
+        
+          } enError:^(NSError *error) {
         NSLog(@"请求订单列表数据失败%@",error);
     }];
     
@@ -410,31 +418,63 @@ static NSString *identier = @"orderNewCell";
 - (void)orderRequestDataWithOid:(NSString *)Oid andActstr:(NSString *)act andActstr:(NSString *)title
 {
     
-    //清空数据源
-    [self.sectionModelArr removeAllObjects];
+    UIAlertController *alertVC   = [UIAlertController alertControllerWithTitle:@"温馨提示:" message:@"您是否收到了商品?" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"否" style:       UIAlertActionStyleCancel  handler:^(UIAlertAction * _Nonnull action) {
+  
+        return ;
+    }];
     
-    // 请求数据
-    NSString *url = [NSString stringWithFormat:@"%@api/order.php",baseUrl];
-    UserInfo *userInfo = [UserInfo currentAccount];
-    NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":Oid,@"act":@"queren"};
-    [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
-        NSLog(@"%@请求数据成功%@",title,responseObject);
-        if ([act isEqualToString:@"queren"]) {
-            NSString *status = [NSString stringWithFormat:@"%@",responseObject[@"status"]];
-            
-            if ([status isEqualToString: @"1"]) {
-                [GFProgressHUD showSuccess:responseObject[@"msg"]];
-            }
-            
-        }
-        [self loadData];
+    //
+    UIAlertAction *action2= [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
-    } enError:^(NSError *error) {
-        NSLog(@"%@请求数据成功%@",title,error);
+        //清空数据源
+        [self.sectionModelArr removeAllObjects];
+        
+        // 请求数据
+        NSString *url = [NSString stringWithFormat:@"%@api/order.php",baseUrl];
+        UserInfo *userInfo = [UserInfo currentAccount];
+        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":Oid,@"act":@"queren"};
+        [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
+            NSLog(@"%@请求数据成功%@",title,responseObject);
+            if ([act isEqualToString:@"queren"]) {
+                NSString *status = [NSString stringWithFormat:@"%@",responseObject[@"status"]];
+                
+                if ([status isEqualToString: @"1"]) {
+                    [GFProgressHUD showSuccess:responseObject[@"msg"]];
+                }
+                
+            }
+            [self loadData];
+            
+        } enError:^(NSError *error) {
+            NSLog(@"%@请求数据成功%@",title,error);
+            
+        }];
+        
+        
+
         
     }];
     
+  
+    [alertVC addAction:action2];
+    [alertVC addAction:action1];
+    [self presentViewController:alertVC animated:YES completion:nil];
+
     
+    
+    }
+
+#pragma mark - 空数据处理
+
+- (void)emptyDataOperation
+{
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"温馨提示:" message:@"空空哒,快去逛逛吧!" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    [alertVC addAction:action];
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

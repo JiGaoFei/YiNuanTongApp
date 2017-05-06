@@ -241,41 +241,41 @@ static NSString *listCell = @"listCell";
     if (_serialNumber == 1) {//默认
        
      
-      self.params = @{@"cat_id":self.cat_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10"};
+      self.params = @{@"cat_id":self.cat_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9"};
 
     }
     if (_serialNumber == 2) {//商品搜索
-        self.params = @{@"searchstr":self.searchStr,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id};
+        self.params = @{@"searchstr":self.searchStr,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id};
         
     }
     if (_serialNumber == 3) {//搜索品牌
-        self.params = @{@"brand_id":self.brand_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id};
+        self.params = @{@"brand_id":self.brand_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id};
         
     }
 
     if (_serialNumber == 4) {//价格从低到高
-        self.params = @{@"zongHeOrder":@"1",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":self.brand_id};
+        self.params = @{@"zongHeOrder":@"1",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id};
         
     }
     if (_serialNumber == 5) {//价格从高到低
-           self.params = @{@"zongHeOrder":@"0",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":self.brand_id};
+           self.params = @{@"zongHeOrder":@"0",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id};
         
     }
     if (_serialNumber == 6) {//搜索更多
-        self.params = @{@"cat_id":self.moreBrand_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"brand_id":self.brand_id};
+        self.params = @{@"cat_id":self.cat_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"brand_id":self.brand_id};
         
     }
     if (_serialNumber == 7) {//筛选价格区间
-        self.params = @{@"price_qujian":self.price_qujian,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.moreBrand_id};
+        self.params = @{@"price_qujian":self.price_qujian,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.cat_id};
         
     }
     if (_serialNumber == 8) {//销量从高到低
-        self.params = @{@"salesOrderBy":@"1",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.moreBrand_id};
+        self.params = @{@"salesOrderBy":@"1",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.cat_id};
         
     }
     
     if (_serialNumber == 9) {//销量从低到高
-       self.params = @{@"salesOrderBy":@"0",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.moreBrand_id};
+       self.params = @{@"salesOrderBy":@"0",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id,};
     }
     NSString *goodListUrl = [NSString stringWithFormat:@"%@/api/goodsclass.php",baseUrl];
     
@@ -996,7 +996,7 @@ static NSString *listCell = @"listCell";
             MoreBrandModel *model = self.transmitArray[indexPath.row];
             _downCell.lab.text = model.catname;
             self.serialNumber = 6;
-            self.moreBrand_id = model.catson_id;
+            self.cat_id = model.catson_id;
           
             [self loadData];
            // [self requestMoreBrandData:model];
@@ -1014,6 +1014,7 @@ static NSString *listCell = @"listCell";
    }
 
 #pragma mark - tableView代理方法
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.modelArr.count;

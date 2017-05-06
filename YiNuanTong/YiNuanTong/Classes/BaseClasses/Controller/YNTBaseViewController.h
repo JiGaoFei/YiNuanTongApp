@@ -14,4 +14,6 @@
 /**隐藏加载圈*/
 - (void)hiddenHUD;
 - (void)setUpPlaceholdViews;
+
+
 @end

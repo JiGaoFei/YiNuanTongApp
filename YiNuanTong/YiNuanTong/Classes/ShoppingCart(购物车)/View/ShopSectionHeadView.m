@@ -37,7 +37,7 @@
 - (void)setUpChildrenViews
 {
     UILabel *lineLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 10 *kHeightScale)];
-    lineLab.backgroundColor = [UIColor grayColor];
+    lineLab.backgroundColor = RGBA(248, 248, 248, 1);
     [self addSubview:lineLab];
     //选中按钮
    self.selectBtn = [YNTUITools createButton:CGRectMake(15 *kWidthScale, 49 *kHeightScale, 18 *kWidthScale, 18 *kWidthScale) bgColor:nil title:@"" titleColor:nil action:@selector(btnAction:) vc:self];
@@ -149,7 +149,7 @@
     NSLog(@"点击的是减号");
     NSInteger textNumber = [self.numberTextField.text integerValue];
     textNumber -=1;
-    if (textNumber <0) {
+    if (textNumber <1) {
         return;
     }
     self.numberTextField.text = [NSString stringWithFormat:@"%ld",(long)textNumber];
