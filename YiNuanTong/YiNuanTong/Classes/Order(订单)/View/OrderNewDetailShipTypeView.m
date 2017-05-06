@@ -23,7 +23,7 @@
     // 物流免费
     UILabel *title1 = [[UILabel alloc]initWithFrame:CGRectMake(15 *kWidthScale, 12 *kHeightScale, 120 *kWidthScale, 20 *kHeightScale)];
     title1.font = [UIFont systemFontOfSize:15 *kHeightScale];
-    title1.text = @"送货上门";
+    title1.text = @"物流配送";
     [self addSubview:title1];
     self.mianfeiBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.mianfeiBtn.frame = CGRectMake(KScreenW - 35 *kWidthScale, 10 *kHeightScale, 18 *kWidthScale, 18 *kWidthScale) ;

@@ -189,6 +189,7 @@ static NSString *identifier = @"shopCell";
 - (void)setUpEmptyViews
 {
     self.emptyViews = [[UIView alloc]initWithFrame:CGRectMake(0, 64, KScreenW, kScreenH)];
+    self.emptyViews.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.emptyViews];
     
     UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenW / 2 - 50 *kWidthScale, 133 *kHeightScale, 100 *kWidthScale, 124 *kHeightScale)];
