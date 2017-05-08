@@ -200,6 +200,20 @@ static NSString *identifier = @"GFChooseOneViewCell";
         
         
     };
+    cell.confirmBtnBlock= ^(NSString *str){
+        // 重新为数量赋值
+        model.num = str;
+        // 更换数据源
+        [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
+        
+        [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+        // 计算价格
+        [self countSizeTableViewAllShopGoodNums:self.modelArray];
+        
+        // 刷新该行数据源
+        [self.tableView reloadData];
+        
+    };
 
     return cell;
 

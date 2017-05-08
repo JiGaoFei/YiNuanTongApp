@@ -26,7 +26,7 @@
 /**减号按钮的回调*/
 @property (nonatomic,copy) void (^cutBtnBloock)(NSString *str);
 /**完成按钮的回调事件*/
-@property (nonatomic,copy) void (^confirmBtnBlock)();
+@property (nonatomic,copy) void (^confirmBtnBlock)(NSString *str);
 /**把输入后的值传递出去*/
 @property (nonatomic,copy) void (^numberTextFiledInputText)(NSString* str);
 /**勾选按钮回调事件*/

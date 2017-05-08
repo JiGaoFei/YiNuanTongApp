@@ -95,6 +95,7 @@ static NSString *optionCell = @"optionCell";
             [self setUpBottomViews];
             [self.emptyViews removeFromSuperview];
         }else{
+            [self.emptyViews removeFromSuperview];
             [self setUpEmptyViews];
         }
         
@@ -217,6 +218,7 @@ static NSString *optionCell = @"optionCell";
     OptionListViewController *optionListVC = [[OptionListViewController alloc]init];
     optionListVC.editSuccessBlock = ^(){
         self.tableView.frame =CGRectMake(0, 0, KScreenW, kScreenH-64-52);
+        [self.emptyViews removeFromSuperview];
         [self loadData];
     };
     

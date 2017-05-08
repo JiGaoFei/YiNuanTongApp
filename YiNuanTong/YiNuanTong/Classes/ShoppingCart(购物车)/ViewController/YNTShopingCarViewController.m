@@ -65,6 +65,7 @@ static NSString *identifier = @"shopCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.emptyViews removeFromSuperview];
     [self loadData];
 }
 - (void)viewDidLoad {
@@ -72,6 +73,7 @@ static NSString *identifier = @"shopCell";
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"进货单";
     self.isFold = NO;
+    
     
     [self setUpNavRightBtn];
     [self setUpTableView];
@@ -599,15 +601,35 @@ static NSString *identifier = @"shopCell";
    
     
     // 点击完成时的数
-    cell.confirmBtnBlock = ^(){
+    cell.confirmBtnBlock = ^(NSString *str){
         NSInteger currentNember = [self.goodsNum integerValue];
         NSInteger  netNumber = [model.num  integerValue];
         NSInteger resultNumber = (currentNember - netNumber);
         NSLog(@"数量变化了:%ld",(long)resultNumber);
         NSLog(@"我是完成按钮的回调");
-        NSString *resultStr = [NSString stringWithFormat:@"%ld",(long)resultNumber];
-        NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":resultStr,@"cat_attrid":model.cat_attrid};
-        [self modifyGoodNumbRequestData:param andtitle:@"完成"];
+       
+        if ([str isEqualToString:@"0"] || [str isEqualToString:@""]) {
+         
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"温馨提示: " message:@"数量不能为空!" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *action1= [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+         
+                NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"0",@"cat_attrid":model.cat_attrid};
+                [self modifyGoodNumbRequestData:param andtitle:@"完成"];
+            }];
+            [alertVC addAction:action1];
+            [self presentViewController:alertVC animated:YES completion:nil];
+        }else{
+            NSString *resultStr = [NSString stringWithFormat:@"%ld",(long)resultNumber];
+            NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":resultStr,@"cat_attrid":model.cat_attrid};
+            [self modifyGoodNumbRequestData:param andtitle:@"完成"];
+        }
+//        if (resultNumber == 0) {
+//            resultNumber =1;
+//        }
+//        if ([str isEqualToString:@"0"]) {
+//            resultNumber = 1;
+//        }
+      
 
     };
     

@@ -290,7 +290,7 @@
    
 
     
-    NSString *strMsg = [NSString stringWithFormat:@"errcode:%d", resp.errCode];
+   
     NSString *strTitle;
     
     

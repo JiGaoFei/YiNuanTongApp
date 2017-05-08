@@ -88,7 +88,9 @@ static NSString *identifier = @"orderDetailCell";
 {
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
-    [self loadData];
+ 
+
+
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -97,12 +99,14 @@ static NSString *identifier = @"orderDetailCell";
     if (self.oftenSettingTableBlock) {
         self.oftenSettingTableBlock();
     }
+    [self.tableView removeFromSuperview];
 
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"订单详情";
+       [self loadData];
     // 刚开始不折叠,
     self.isFold = NO;
     [self setUpNavRightBtn];
@@ -111,10 +115,6 @@ static NSString *identifier = @"orderDetailCell";
 #pragma mark - 加载数据
 - (void)loadData
 {
-    
-    
-    
-    
     
     NSString *url =  [NSString stringWithFormat:@"%@api/order.php",baseUrl];
     UserInfo *userInfo = [UserInfo currentAccount];
@@ -141,7 +141,7 @@ static NSString *identifier = @"orderDetailCell";
             [model setValuesForKeysWithDictionary:dic];
             [self.sectionModelArr addObject:model];
         }
-        
+       
         if (self.tableView) {
             [self.tableView reloadData];
         }else{
@@ -203,7 +203,7 @@ static NSString *identifier = @"orderDetailCell";
 // 创建tableView
 - (void)setUpTableView
 {
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, KScreenW, kScreenH - 48 *kHeightScale - 64) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, kScreenH - 48 *kHeightScale) style:UITableViewStyleGrouped];
     self.tableView.backgroundColor =[UIColor whiteColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -1147,6 +1147,7 @@ static NSString *identifier = @"orderDetailCell";
             NSString *sign =  responseObject[@"sign"];
             [self doAlipayPay:sign];
         }
+    
         
     } enError:^(NSError *error) {
         NSLog(@"请求支付数据失败%@",error);

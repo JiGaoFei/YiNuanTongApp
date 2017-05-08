@@ -239,10 +239,10 @@ static NSString *goodPramsCell = @"goodParamsCell";
     [YNTNetworkManager requestPOSTwithURLStr:url paramDic:param finish:^(id responseObject) {
         NSLog(@"商品详情数据请求成功%@",responseObject);
         
-        NSDictionary *dataDic= responseObject[@"data"];
+
         self.jiagequjian = responseObject[@"jiafanwei"];
         self.cengji = responseObject[@"cengji"];
-        NSInteger cengjiNumber = [self.cengji integerValue];
+
         
         
         //

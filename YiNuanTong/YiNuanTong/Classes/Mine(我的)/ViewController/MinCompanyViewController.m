@@ -128,10 +128,7 @@ static NSString *cellling =@"cell";
     } enError:^(NSError *error) {
         
     }];
-//    if (!userInfo) {
-//        return;
-//    }
-//    
+
 
 }
 

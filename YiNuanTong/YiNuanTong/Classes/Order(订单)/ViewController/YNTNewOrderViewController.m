@@ -142,6 +142,7 @@ static NSString *identier = @"orderNewCell";
         //获取订单数据数组
         NSMutableArray *array = responseObject[@"order"];
         if (array.count == 0) {
+            [self.emptyViews removeFromSuperview];
             // 无数据
             [self setUpEmptyViews];
         }else{
@@ -559,6 +560,7 @@ static NSString *identier = @"orderNewCell";
 
         NSMutableArray *array = responseObject[@"order"];
         if (array.count == 0) {
+            [self.emptyViews removeFromSuperview];
             [self setUpEmptyViews];
         }else{
             //  移除空视图

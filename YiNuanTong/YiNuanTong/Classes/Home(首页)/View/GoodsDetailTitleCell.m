@@ -33,15 +33,15 @@
     self.priceLab = [YNTUITools createLabel:CGRectMake(34 *kPlus, 65, KScreenW - 34 *2 *kPlus, 45) text:@"3.20" textAlignment:NSTextAlignmentLeft textColor:CGRRed bgColor:nil font:17];
     [self.contentView addSubview:self.priceLab];
     // 创建编号lab
-    self.numberLab = [YNTUITools createLabel:CGRectMake(17 *kWidthScale, 134, 100*kWidthScale, 10) text:@"已成交1000件" textAlignment:NSTextAlignmentLeft textColor:CGRGray bgColor:nil font:10];
+    self.numberLab = [YNTUITools createLabel:CGRectMake(17 *kWidthScale, 134, 100*kWidthScale, 10) text:@"已成交1000件" textAlignment:NSTextAlignmentLeft textColor:CGRGray bgColor:nil font:12];
 
     [self.contentView addSubview:self.numberLab];
     
-    // 创建价格lab
-    self.shipLab= [YNTUITools createLabel:CGRectMake(100 *kWidthScale, 134,140*kWidthScale, 10) text:@"快递:包邮" textAlignment:NSTextAlignmentLeft textColor:CGRGray bgColor:nil font:10];
-    [self.contentView addSubview:self.shipLab];
+//    // 创建价格lab
+//    self.shipLab= [YNTUITools createLabel:CGRectMake(100 *kWidthScale, 134,140*kWidthScale, 10) text:@"快递:包邮" textAlignment:NSTextAlignmentLeft textColor:CGRGray bgColor:nil font:10];
+//    [self.contentView addSubview:self.shipLab];
 
-    self.sendAddressLab = [YNTUITools createLabel:CGRectMake(260 *kWidthScale, 134, 130 *kWidthScale, 10) text:@"发货地:河南 郑州" textAlignment:NSTextAlignmentLeft textColor:CGRGray bgColor:nil font:10];
+    self.sendAddressLab = [YNTUITools createLabel:CGRectMake(260 *kWidthScale, 134, 130 *kWidthScale, 10) text:@"发货地:河南 郑州" textAlignment:NSTextAlignmentLeft textColor:CGRGray bgColor:nil font:12];
     [self.contentView addSubview:self.sendAddressLab];
 
 

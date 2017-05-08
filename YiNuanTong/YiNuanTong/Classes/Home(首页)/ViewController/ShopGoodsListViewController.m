@@ -114,6 +114,9 @@
 @property (nonatomic,copy) NSString *price_qujian;
 /**销量*/
 @property (nonatomic,copy) NSString * saleNum;
+/**价格*/
+@property (nonatomic,copy) NSString * salePrice;
+
 /**数据源*/
 @property (nonatomic,strong) NSMutableDictionary *dataDic;
 
@@ -209,6 +212,7 @@ static NSString *listCell = @"listCell";
     self.brandStr = @"";
     self.brand_id = @"";
     self.moreBrand_id = @"";
+    self.salePrice = @"0";
     
     self.isBrand = YES;
     self.isSelectViewApperar = NO;
@@ -249,33 +253,33 @@ static NSString *listCell = @"listCell";
         
     }
     if (_serialNumber == 3) {//搜索品牌
-        self.params = @{@"brand_id":self.brand_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id};
+        self.params = @{@"brand_id":self.brand_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"zongHeOrder":self.salePrice};
         
     }
 
     if (_serialNumber == 4) {//价格从低到高
-        self.params = @{@"zongHeOrder":@"1",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id};
+        self.params = @{@"zongHeOrder":self.salePrice,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id};
         
     }
     if (_serialNumber == 5) {//价格从高到低
-           self.params = @{@"zongHeOrder":@"0",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id};
+           self.params = @{@"zongHeOrder":self.salePrice,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id};
         
     }
     if (_serialNumber == 6) {//搜索更多
-        self.params = @{@"cat_id":self.cat_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"brand_id":self.brand_id};
+        self.params = @{@"cat_id":self.cat_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"brand_id":self.brand_id,@"zongHeOrder":self.salePrice};
         
     }
     if (_serialNumber == 7) {//筛选价格区间
-        self.params = @{@"price_qujian":self.price_qujian,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.cat_id};
+        self.params = @{@"price_qujian":self.price_qujian,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.cat_id,@"zongHeOrder":self.salePrice};
         
     }
     if (_serialNumber == 8) {//销量从高到低
-        self.params = @{@"salesOrderBy":@"1",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.cat_id};
+        self.params = @{@"salesOrderBy":@"1",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.cat_id,@"zongHeOrder":self.salePrice};
         
     }
     
     if (_serialNumber == 9) {//销量从低到高
-       self.params = @{@"salesOrderBy":@"0",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id,};
+       self.params = @{@"salesOrderBy":@"0",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"zongHeOrder":self.salePrice};
     }
     NSString *goodListUrl = [NSString stringWithFormat:@"%@/api/goodsclass.php",baseUrl];
     
@@ -375,8 +379,8 @@ static NSString *listCell = @"listCell";
     
 
     NSLog(@"点击的是右边items");
-    YNTShopingCarViewController *shopingVC = [[YNTShopingCarViewController alloc]init];
-    [self.navigationController pushViewController:shopingVC animated:YES];
+    
+    self.tabBarController.selectedIndex = 1;
     
 }
 /**
@@ -506,7 +510,8 @@ static NSString *listCell = @"listCell";
                             NSLog(@"价格从低到高排序");
                             i = @"1";
                             self.serialNumber =4;
-                            
+                            self.salePrice = @"1";
+                 
                             self.isPriceLowToHigh = NO;
                            [self loadData];
                             [self selectSetBtnImage:weakSelf.twoBtn andImageName:@"双箭头上"];
@@ -516,6 +521,7 @@ static NSString *listCell = @"listCell";
                             self.serialNumber = 5;
                             
                             i = @"0";
+                            self.salePrice = @"2";
                             [self loadData];
 
                           [self selectSetBtnImage:weakSelf.twoBtn andImageName:@"双箭头下"];
@@ -1139,7 +1145,7 @@ static NSString *listCell = @"listCell";
     [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
         NSLog(@"筛选品牌请求数据成功%@",responseObject);
         NSDictionary *returnDic = [NSDictionary dictionaryWithDictionary:responseObject];
-        NSArray *dataArray = returnDic[@"data"];
+    
         NSString *msg = responseObject[@"err_msg"];
         
         if ([msg isEqualToString:@"fail"]) {
@@ -1152,9 +1158,7 @@ static NSString *listCell = @"listCell";
         // 判断当有数据的时候展示
         // 清空数据源
         [self.modelArr removeAllObjects];
-        for (NSDictionary *dic in dataArray) {
-            
-        }
+   
         
         [self.dropDownView removeFromSuperview];
         [self.tableView reloadData];

@@ -116,6 +116,7 @@ static NSString *homeThreeCell = @"homeThreeCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = NO;
   
        UserInfo *userInfo = [UserInfo currentAccount];
        // 首页出现后设置角标
@@ -394,7 +395,7 @@ static NSString *homeThreeCell = @"homeThreeCell";
             self.headElseView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:headViewElseIdentifier  forIndexPath:indexPath];
             
             ShopThreeCooperationView *shopHeadView = [[ShopThreeCooperationView alloc]initWithFrame:CGRectMake(0, 10, KScreenW, 20*kHeightScale)];
-            shopHeadView.titileNameLab.text = @"进口壁挂炉";
+            shopHeadView.titileNameLab.text = @"第三方合作平台";
             
             [self.headElseView addSubview:shopHeadView];
         }

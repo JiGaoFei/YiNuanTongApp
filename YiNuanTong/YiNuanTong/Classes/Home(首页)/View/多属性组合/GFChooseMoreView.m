@@ -27,10 +27,14 @@
 @property (nonatomic,strong ) GFChooseMoreTitleCell *twoSelectCell;
 @property (nonatomic,strong ) GFChooseMoreTitleCell *threeSelectCell;
 @property (nonatomic,strong ) GFChooseMoreTitleCell *fourSelectCell;
-/**总件数*/
+/**单项总件数*/
 @property (nonatomic,assign) double totalNumber;
-/**总钱数*/
+/**单项总钱数*/
 @property (nonatomic,assign) double totalMoney;
+/**总件数*/
+@property (nonatomic,assign) double alltotalNumber;
+/**总钱数*/
+@property (nonatomic,assign) double alltotalMoney;
 /**存放要添加到购物车的dic*/
 @property (nonatomic,strong) NSMutableDictionary *shopCarGoodsDic;
 /**数据源*/
@@ -46,7 +50,7 @@
 /**类型名字*/
 @property (nonatomic,strong) NSMutableArray *attrtypeDataArr;
 @end
-static NSString *identifier = @"GFChooseOneViewCell";
+static NSString *identifier = @"GFChooseOneViewCell1";
 static NSString *identifierTitle1 = @"GFChooseOneViewCellTitle1";
 static NSString *identifierTitle2 = @"GFChooseOneViewCellTitle2";
 static NSString *identifierTitle3 = @"GFChooseOneViewCellTitl3";
@@ -366,13 +370,20 @@ static NSString *identifierTitle4 = @"GFChooseOneViewCellTitl4";
             
             // 更换数据源
             [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
+             NSInteger number = [model.num integerValue];
+            if (number == 0) {
+                return ;
+            }else{
+                [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+                // 计算价格
+                [self countSizeTableViewAllShopGoodNums:self.modelArray];
+                
+                // 刷新该行数据源
+                [self.tableView reloadData];
+            }
             
-            [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
-            // 计算价格
-            [self countSizeTableViewAllShopGoodNums:self.modelArray];
-            
-            // 刷新该行数据源
-            [self.tableView reloadData];
+           
+        
             
             
             
@@ -385,6 +396,31 @@ static NSString *identifierTitle4 = @"GFChooseOneViewCellTitl4";
             model.num = str;
             // 更换数据源
             [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
+            NSInteger number = [model.num integerValue];
+            if (number == 0) {
+                return ;
+            }else{
+                [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+                
+                // 计算价格
+                [self countSizeTableViewAllShopGoodNums:self.sizeDataOneArr];
+                
+                // 刷新该行数据源
+                [self.tableView reloadData];
+                
+            }
+            
+    
+            
+            
+        };
+
+        cell.confirmBtnBlock = ^(NSString *str){
+            
+            // 重新为数量赋值
+            model.num = str;
+            // 更换数据源
+            [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
             
             [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
             // 计算价格
@@ -392,12 +428,7 @@ static NSString *identifierTitle4 = @"GFChooseOneViewCellTitl4";
             
             // 刷新该行数据源
             [self.tableView reloadData];
-            
-            
-            
         };
-
-        
    
              return cell;
     
@@ -553,7 +584,7 @@ static NSString *identifierTitle4 = @"GFChooseOneViewCellTitl4";
             NSString *good_id = [NSString stringWithFormat:@"%@,%@,%@",model1.attrid,model2.attrid,model.attrid];
             [self.delegate GFChooseMoreViewLine:2 andWithGoodIDs:good_id];
         }
-        
+
         [self.sizeDataThreeArr insertObject:model atIndex:0];
         [self.titleThreetableView reloadData];
         self.titleThreetableView.contentOffset = CGPointMake(0,0);
@@ -562,7 +593,7 @@ static NSString *identifierTitle4 = @"GFChooseOneViewCellTitl4";
     if ([tableView isEqual:self.titleFouretableView]) {
         HomeShopListSizeModel *model = self.sizeDataFourArr[indexPath.row];
         [self.sizeDataFourArr removeObject:model];
-        
+      
         if ([self.delegate respondsToSelector:@selector(GFChooseMoreViewLine:andWithGoodIDs:)]) {
             HomeShopListSizeModel *model1 = self.sizeDataOneArr[0];
             HomeShopListSizeModel *model2 = self.sizeDataTwoArr[0];
@@ -875,27 +906,44 @@ static NSString *identifierTitle4 = @"GFChooseOneViewCellTitl4";
 #pragma mark - 计算单个sizeTableView列表的件数
 - (NSInteger)countSizeTableViewAllShopGoodNums:(NSMutableArray *)arr
 {
-    self.totalNumber  = 0;
+    self.alltotalNumber  = 0;
+    self.alltotalMoney = 0;
     self.totalMoney = 0;
+    self.totalNumber = 0;
+
+    for (HomeShopListSizeModel *model in self.modelArray) {
+                // 单项总数量
+                self.totalNumber += [model.num doubleValue];
+                // 单价
+                double price = [model.price doubleValue];
+                // 单项总钱数
+                self.totalMoney += [model.num integerValue] *price;
+                NSLog(@"%f",self.totalMoney);
+    }
     
-    // 计算单项
-    for (HomeShopListSizeModel *model in arr) {
+    HomeShopListSizeModel *oneModel = self.sizeDataOneArr[0];
+    oneModel.num =[NSString stringWithFormat:@"%f",self.totalNumber];
+    oneModel.price = [NSString stringWithFormat:@"%f",self.totalMoney];
+    [self.sizeDataOneArr replaceObjectAtIndex:0 withObject:oneModel];
+    
+    // 计算总的
+    for (HomeShopListSizeModel *model in self.sizeDataOneArr) {
         // 单项总数量
-        self.totalNumber += [model.num doubleValue];
+        self.alltotalNumber += [model.num doubleValue];
         // 单价
         double price = [model.price doubleValue];
         // 单项总钱数
-        self.totalMoney += [model.num integerValue] *price;
+        self.alltotalMoney += price;
         NSLog(@"%f",self.totalMoney);
     }
     
     
     // 为件数赋值
-    [self setToatalNumberColor:self.goodsNumberLab andStr:[NSString stringWithFormat:@"共%ld件",(long)self.totalNumber]];
+    [self setToatalNumberColor:self.goodsNumberLab andStr:[NSString stringWithFormat:@"共%ld件",(long)self.alltotalNumber]];
     // 为总价格赋值
-    [self setToatalNumberColor:self.totallMoneyLab andStr:[NSString stringWithFormat:@"¥%.2f",self.totalMoney]];
+    [self setToatalNumberColor:self.totallMoneyLab andStr:[NSString stringWithFormat:@"¥%.2f",self.alltotalMoney]];
     
-    return self.totalNumber;
+    return self.alltotalNumber;
 }
 #pragma mark - 设置字体颜色
 - (void)setToatalNumberColor:(UILabel *)lab andStr:(NSString *)str

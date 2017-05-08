@@ -27,7 +27,7 @@
     self.nameLab.layer.borderColor =[RGBA(220, 220, 220, 1) CGColor];
     self.nameLab.layer.cornerRadius = 5;
     self.nameLab.layer.masksToBounds = YES;
-   self.nameLab.font = [UIFont systemFontOfSize:15*kHeightScale];
+    self.nameLab.font = [UIFont systemFontOfSize:15*kHeightScale];
     self.nameLab.layer.borderWidth = 1;
     self.nameLab.text = @"上进下出";
      self.nameLab.textAlignment = NSTextAlignmentCenter;

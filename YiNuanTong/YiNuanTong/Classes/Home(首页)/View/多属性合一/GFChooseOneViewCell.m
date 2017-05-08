@@ -103,7 +103,7 @@
 - (void)confrimBtnAction:(UIButton *)sender
 {
     if (self.confirmBtnBlock) {
-        self.confirmBtnBlock();
+        self.confirmBtnBlock(self.numberTextField.text);
     }
     //  NSLog(@"点击的是键盘上的完成按钮");
     [UIView animateWithDuration:0.3 animations:^{
@@ -144,12 +144,15 @@
     self.shopNameLabel.text = [NSString stringWithFormat:@"%@%@",attrModle.name,model.name];
     self.shopPriceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
     self.stockNumLab.text = [NSString stringWithFormat:@"库存:%@",model.stock];
+    self.numberTextField.text = [NSString stringWithFormat:@"%@",model.num];
+
 }
 - (void)setValueWithModel:(HomeShopListSizeModel *)model
 {
     self.shopNameLabel.text = model.name;
     self.shopPriceLabel.text = [NSString stringWithFormat:@"¥%@",model.price];
     self.stockNumLab.text = [NSString stringWithFormat:@"库存:%@",model.stock];
+    self.numberTextField.text = [NSString stringWithFormat:@"%@",model.num];
 }
 - (void)awakeFromNib {
     [super awakeFromNib];
