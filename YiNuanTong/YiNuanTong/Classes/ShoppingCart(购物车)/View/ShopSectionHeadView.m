@@ -122,7 +122,7 @@
 - (void)confrimBtnAction:(UIButton *)sender
 {
     if (self.confirmBtnBlock) {
-        self.confirmBtnBlock();
+        self.confirmBtnBlock(self.numberTextField.text);
     }
     //  NSLog(@"点击的是键盘上的完成按钮");
     [UIView animateWithDuration:0.3 animations:^{

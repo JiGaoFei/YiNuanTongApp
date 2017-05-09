@@ -398,8 +398,11 @@ static NSString *identifierTitle4 = @"GFChooseOneViewCellTitl4";
             [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
             NSInteger number = [model.num integerValue];
             if (number == 0) {
-                return ;
+                //数据源
+                [self.shopCarGoodsDic removeObjectForKey:model.good_attid];
+              
             }else{
+                // 添加数据源
                 [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
                 
                 // 计算价格
@@ -421,8 +424,15 @@ static NSString *identifierTitle4 = @"GFChooseOneViewCellTitl4";
             model.num = str;
             // 更换数据源
             [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
-            
-            [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+            if ([str isEqualToString:@""]||[str isEqualToString:@"0"]) {
+              // 数据为空时移除
+                [self.shopCarGoodsDic removeObjectForKey:model.good_attid];
+                
+            }else{
+                // 数据不为空时添加数据源
+                 [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+            }
+           
             // 计算价格
             [self countSizeTableViewAllShopGoodNums:self.modelArray];
             

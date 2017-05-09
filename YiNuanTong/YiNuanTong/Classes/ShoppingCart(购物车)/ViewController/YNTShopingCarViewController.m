@@ -355,13 +355,29 @@ static NSString *identifier = @"shopCell";
         self.currentNumber = str;
     };
     // 点击键盘完成事件
-    shopHeadView.confirmBtnBlock = ^(){
-        NSInteger current = [self.currentNumber integerValue];
-        NSInteger textNum = [model.num integerValue];
-        NSInteger variableNum = (current - textNum);
-        NSString *num = [NSString stringWithFormat:@"%ld",(long)variableNum];
-        NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":num,@"cat_id":model.cat_id};
-        [self modifyGoodNumbRequestData:param andtitle:@"完成 "];
+    shopHeadView.confirmBtnBlock = ^(NSString *str){
+          [self.view endEditing:YES];
+        if ([str isEqualToString:@""]||[str isEqualToString:@"0"]) {
+            
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"温馨提示:" message:@"亲,数量不能为空哟!" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+                NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"0",@"cat_id":model.cat_id};
+                
+                [self modifyGoodNumbRequestData:param andtitle:@"完成"];
+            }];
+            [alertVC addAction:action];
+            [self presentViewController:alertVC animated:YES completion:nil];
+            
+        }else{
+            NSInteger current = [self.currentNumber integerValue];
+            NSInteger textNum = [model.num integerValue];
+            NSInteger variableNum = (current - textNum);
+            NSString *num = [NSString stringWithFormat:@"%ld",(long)variableNum];
+            NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":num,@"cat_id":model.cat_id};
+            [self modifyGoodNumbRequestData:param andtitle:@"完成 "];
+        }
+    
         
     };
     
@@ -614,6 +630,7 @@ static NSString *identifier = @"shopCell";
             UIAlertAction *action1= [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
          
                 NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"0",@"cat_attrid":model.cat_attrid};
+         
                 [self modifyGoodNumbRequestData:param andtitle:@"完成"];
             }];
             [alertVC addAction:action1];

@@ -170,8 +170,11 @@ static NSString *identifier = @"GFChooseOneViewCell";
         
         // 更换数据源
         [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
-        //添加数据源
+    
+       //添加数据源
        [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+  
+ 
         
         // 计算价格
         [self countSizeTableViewAllShopGoodNums:self.modelArray];
@@ -190,7 +193,13 @@ static NSString *identifier = @"GFChooseOneViewCell";
         // 更换数据源
         [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
 
-        [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+        if ([str isEqualToString:@"0"]) {
+            // 数量为0时移除数据源
+            [self.shopCarGoodsDic removeObjectForKey:model.good_attid];
+        }else{
+            //添加数据源
+            [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+        }
         // 计算价格
         [self countSizeTableViewAllShopGoodNums:self.modelArray];
         
@@ -206,7 +215,13 @@ static NSString *identifier = @"GFChooseOneViewCell";
         // 更换数据源
         [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
         
-        [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+        if ([str isEqualToString:@"0"]) {
+            // 数量为0时移除数据源
+            [self.shopCarGoodsDic removeObjectForKey:model.good_attid];
+        }else{
+            //添加数据源
+            [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+        }
         // 计算价格
         [self countSizeTableViewAllShopGoodNums:self.modelArray];
         
