@@ -68,22 +68,22 @@
     [self.view addSubview:invationSn];
     
     UILabel *linLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 64+305*kHeightScale, KScreenW, 1)];
-    linLab.backgroundColor = RGBA(216, 216, 216, 1);
+    linLab.backgroundColor = RGBA(248, 248, 248, 1);
     [self.view addSubview:linLab];
     
-    UILabel *iosLab =[YNTUITools createLabel:CGRectMake(48 *kWidthScale, 64+330*kHeightScale, 110 *kWidthScale, 20 *kHeightScale) text:@"苹果客户端" textAlignment:NSTextAlignmentCenter textColor:nil bgColor:nil font:18 *kHeightScale];
+    UILabel *iosLab =[YNTUITools createLabel:CGRectMake(48 *kWidthScale, 64+490*kHeightScale, 110 *kWidthScale, 20 *kHeightScale) text:@"苹果客户端" textAlignment:NSTextAlignmentCenter textColor:nil bgColor:nil font:18 *kHeightScale];
     [self.view addSubview:iosLab];
 
-    UILabel *andriodLab =[YNTUITools createLabel:CGRectMake(KScreenW-158 *kWidthScale, 64+330*kHeightScale, 110 *kWidthScale, 20 *kHeightScale) text:@"安卓客户端" textAlignment:NSTextAlignmentCenter textColor:nil bgColor:nil font:18 *kHeightScale];
+    UILabel *andriodLab =[YNTUITools createLabel:CGRectMake(KScreenW-158 *kWidthScale, 64+490*kHeightScale, 110 *kWidthScale, 20 *kHeightScale) text:@"安卓客户端" textAlignment:NSTextAlignmentCenter textColor:nil bgColor:nil font:18 *kHeightScale];
     [self.view addSubview:andriodLab];
     
     
     
-    UIImageView *iosImgView = [[UIImageView alloc]initWithFrame:CGRectMake(22.5 *kWidthScale, 64+360*kHeightScale, 150 *kWidthScale, 150 *kWidthScale)];
+    UIImageView *iosImgView = [[UIImageView alloc]initWithFrame:CGRectMake(22.5 *kWidthScale, 64+330*kHeightScale, 150 *kWidthScale, 150 *kWidthScale)];
     [iosImgView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",self.dataDic[@"ioserweima"]]]];
     [self.view addSubview:iosImgView];
     
-    UIImageView *andriodImgView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenW-172.5 *kWidthScale, 64+360*kHeightScale, 150 *kWidthScale, 150 *kWidthScale)];
+    UIImageView *andriodImgView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenW-172.5 *kWidthScale, 64+330*kHeightScale, 150 *kWidthScale, 150 *kWidthScale)];
         [andriodImgView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",self.dataDic[@"androiderweima"]]]];
     [self.view addSubview:andriodImgView];
     

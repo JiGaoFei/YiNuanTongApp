@@ -393,7 +393,7 @@ static NSString *listCell = @"listCell";
     
     // 去掉搜索框的边界线
     [_searchBar setBackgroundImage:[[UIImage alloc]init] ];
-
+    _searchBar.tintColor = [UIColor grayColor];
     
     _searchBar.placeholder = @"商品搜索";
     _searchBar.delegate = self;

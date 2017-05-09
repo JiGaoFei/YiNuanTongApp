@@ -206,6 +206,10 @@
 		F194AEA51EA9CD3D00495917 /* GFChooseOneViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F194AEA41EA9CD3D00495917 /* GFChooseOneViewCell.m */; };
 		F194AEA81EA9F07B00495917 /* ShopGooodDetailMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F194AEA71EA9F07B00495917 /* ShopGooodDetailMoreViewController.m */; };
 		F194AEAC1EA9F2B500495917 /* GFChooseMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = F194AEAB1EA9F2B500495917 /* GFChooseMoreView.m */; };
+		F19509DF1EC16929007E7758 /* OrderConfirmHeadSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F19509DE1EC16929007E7758 /* OrderConfirmHeadSectionView.m */; };
+		F19509E21EC18722007E7758 /* OrderConfrimHeadSectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F19509E11EC18722007E7758 /* OrderConfrimHeadSectionCell.m */; };
+		F19509E51EC1952E007E7758 /* OrderConfirmPayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F19509E41EC1952E007E7758 /* OrderConfirmPayModel.m */; };
+		F19509E81EC19DB5007E7758 /* OrderConfirmShippingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F19509E71EC19DB5007E7758 /* OrderConfirmShippingCell.m */; };
 		F19982961E9CC3F600C150BC /* OrderConfirmModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F19982951E9CC3F600C150BC /* OrderConfirmModel.m */; };
 		F19982991E9CCC6300C150BC /* OrderNewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F19982981E9CCC6300C150BC /* OrderNewCell.m */; };
 		F19AAAD11EA48E5A00402160 /* HomeWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F19AAAD01EA48E5A00402160 /* HomeWebViewController.m */; };
@@ -688,6 +692,14 @@
 		F194AEA71EA9F07B00495917 /* ShopGooodDetailMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopGooodDetailMoreViewController.m; sourceTree = "<group>"; };
 		F194AEAA1EA9F2B500495917 /* GFChooseMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFChooseMoreView.h; sourceTree = "<group>"; };
 		F194AEAB1EA9F2B500495917 /* GFChooseMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFChooseMoreView.m; sourceTree = "<group>"; };
+		F19509DD1EC16929007E7758 /* OrderConfirmHeadSectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderConfirmHeadSectionView.h; sourceTree = "<group>"; };
+		F19509DE1EC16929007E7758 /* OrderConfirmHeadSectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderConfirmHeadSectionView.m; sourceTree = "<group>"; };
+		F19509E01EC18722007E7758 /* OrderConfrimHeadSectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderConfrimHeadSectionCell.h; sourceTree = "<group>"; };
+		F19509E11EC18722007E7758 /* OrderConfrimHeadSectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderConfrimHeadSectionCell.m; sourceTree = "<group>"; };
+		F19509E31EC1952E007E7758 /* OrderConfirmPayModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderConfirmPayModel.h; sourceTree = "<group>"; };
+		F19509E41EC1952E007E7758 /* OrderConfirmPayModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderConfirmPayModel.m; sourceTree = "<group>"; };
+		F19509E61EC19DB5007E7758 /* OrderConfirmShippingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderConfirmShippingCell.h; sourceTree = "<group>"; };
+		F19509E71EC19DB5007E7758 /* OrderConfirmShippingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderConfirmShippingCell.m; sourceTree = "<group>"; };
 		F19982941E9CC3F600C150BC /* OrderConfirmModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderConfirmModel.h; sourceTree = "<group>"; };
 		F19982951E9CC3F600C150BC /* OrderConfirmModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderConfirmModel.m; sourceTree = "<group>"; };
 		F19982971E9CCC6300C150BC /* OrderNewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderNewCell.h; sourceTree = "<group>"; };
@@ -1409,6 +1421,8 @@
 				BBBB7AB31E9E6A5C00D3280F /* OrderNewDetailListModel.m */,
 				F1D3D3721EB088ED00EB1F02 /* MineCompanyModel.h */,
 				F1D3D3731EB088ED00EB1F02 /* MineCompanyModel.m */,
+				F19509E31EC1952E007E7758 /* OrderConfirmPayModel.h */,
+				F19509E41EC1952E007E7758 /* OrderConfirmPayModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1448,6 +1462,12 @@
 				F1CA931A1E9DFB9800B3F596 /* OrderNewListSectionFooterView.m */,
 				F1B64E731E9F19D200359EB4 /* OrderNewDetailShipTypeView.h */,
 				F1B64E741E9F19D200359EB4 /* OrderNewDetailShipTypeView.m */,
+				F19509DD1EC16929007E7758 /* OrderConfirmHeadSectionView.h */,
+				F19509DE1EC16929007E7758 /* OrderConfirmHeadSectionView.m */,
+				F19509E01EC18722007E7758 /* OrderConfrimHeadSectionCell.h */,
+				F19509E11EC18722007E7758 /* OrderConfrimHeadSectionCell.m */,
+				F19509E61EC19DB5007E7758 /* OrderConfirmShippingCell.h */,
+				F19509E71EC19DB5007E7758 /* OrderConfirmShippingCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1958,6 +1978,7 @@
 				F1B64E751E9F19D200359EB4 /* OrderNewDetailShipTypeView.m in Sources */,
 				BBC9122D1DFEAE3A00473CA7 /* YNTBaseModel.m in Sources */,
 				BB8FF8381E10A80E002ABBA8 /* MinOrderDetailViewController.m in Sources */,
+				F19509E21EC18722007E7758 /* OrderConfrimHeadSectionCell.m in Sources */,
 				BB0ADDE91E28649D00C204D4 /* ApplyRefundViewController.m in Sources */,
 				F116F88F1E9C5F51007C489C /* OrderNewDetailTableHeadView.m in Sources */,
 				F116F8C71E9C5F51007C489C /* BrandModel.m in Sources */,
@@ -2037,6 +2058,7 @@
 				F1DC0E0A1E5E8655008D8976 /* Extension.m in Sources */,
 				F116F88D1E9C5F51007C489C /* OrderNewDetailFooterView.m in Sources */,
 				F116F8BB1E9C5F51007C489C /* WriteOrderLabCell.m in Sources */,
+				F19509E81EC19DB5007E7758 /* OrderConfirmShippingCell.m in Sources */,
 				F116F8E31E9C5F51007C489C /* ShopThreeCooperationView.m in Sources */,
 				BB0E85011E5573480099D6E1 /* AddressEditViewController.m in Sources */,
 				F116F8971E9C5F51007C489C /* OrderListViewController.m in Sources */,
@@ -2052,6 +2074,7 @@
 				BB439E311E00F7F200949B1E /* DQAreasView.m in Sources */,
 				BBC912301DFEAE6A00473CA7 /* YNTTabBarViewController.m in Sources */,
 				BBDA5A381E1DE10C003DD1B2 /* UserDefaults.m in Sources */,
+				F19509E51EC1952E007E7758 /* OrderConfirmPayModel.m in Sources */,
 				BB13CE101E270F2200435233 /* PhoneAccessModel.m in Sources */,
 				F1FDB2081E667D5000E743A3 /* NSString+MD5.m in Sources */,
 				BBE87D281E5144EB00523F40 /* APAuthV2Info.m in Sources */,
@@ -2065,6 +2088,7 @@
 				F116F8C91E9C5F51007C489C /* HomeGoodDetailModel.m in Sources */,
 				BB2BF9231E03CF8600A8AA3E /* MinLineCell.m in Sources */,
 				F19982991E9CCC6300C150BC /* OrderNewCell.m in Sources */,
+				F19509DF1EC16929007E7758 /* OrderConfirmHeadSectionView.m in Sources */,
 				F116F88E1E9C5F51007C489C /* OrderNewDetailSectionView.m in Sources */,
 				F116F8EE1E9C5F51007C489C /* ShopGoodsDeitalViewController.m in Sources */,
 				F116F8E21E9C5F51007C489C /* ShopListChooseView.m in Sources */,

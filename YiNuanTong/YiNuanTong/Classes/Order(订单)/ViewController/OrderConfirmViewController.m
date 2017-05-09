@@ -23,6 +23,10 @@
 #import "OrderNewDetailShipTypeView.h"
 #import "AddAddressViewController.h"
 #import "AddressViewController.h"
+#import "OrderConfirmHeadSectionView.h"
+#import "OrderConfrimHeadSectionCell.h"
+#import "OrderConfirmShippingCell.h"
+#import "OrderConfirmPayModel.h"
 @interface OrderConfirmViewController ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
 /**tableView*/
 @property (nonatomic,strong) UITableView  * tableView;
@@ -59,16 +63,47 @@
 @property (nonatomic,copy) NSString *customerTel;
 /**背景view*/
 @property (nonatomic,strong) UIView *bagView;
+/**支付方式数据源*/
+@property (nonatomic,strong) NSMutableArray *payArray;
+/**配送方式数据源*/
+@property (nonatomic,strong) NSMutableArray *shippingArray;
+
+
 ///**折叠数据源*/
 //@property (nonatomic,strong) NSMutableArray *foldDataArray;
 /**是否折叠*/
 @property (nonatomic,assign) BOOL isFold;
+/**配送是否折叠*/
+@property (nonatomic,assign) BOOL isShippingFold;
+/**支付是否折叠*/
+@property (nonatomic,assign) BOOL isPayFold;
+
 
 
 @end
 static NSString *identifier = @"confirmCell";
+static NSString *identifierSectionCell = @"confirmCellSectionCell";
+static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
 @implementation OrderConfirmViewController
 #pragma mark -  懒加载
+/** 配送方式数据 */
+- (NSMutableArray *)shippingArray
+{
+    if (!_shippingArray) {
+        self.shippingArray = [[NSMutableArray alloc]init];
+        
+    }
+    return _shippingArray;
+}
+/** 支付方式数据源 */
+- (NSMutableArray *)payArray
+{
+    if (!_payArray) {
+        self.payArray = [[NSMutableArray alloc]init];
+    }
+    return _payArray;
+}
+/** 分区数据源 */
 - (NSMutableArray *)sectionModelArray
 {
     if (!_sectionModelArray) {
@@ -99,6 +134,8 @@ static NSString *identifier = @"confirmCell";
 
     self.remarks = @"";
     self.isFold = NO;
+    self.isPayFold = YES;
+    self.isShippingFold = YES;
     [self loadData];
     [self setUpNavRightBtn];
 }
@@ -165,6 +202,26 @@ static NSString *identifier = @"confirmCell";
         }else{
             // 有数据
             [self.emptyViews removeFromSuperview];
+            // 获取配送方式数据
+            // 清空数据源
+            [self.shippingArray removeAllObjects];
+            NSArray *shippArr = responseObject[@"shipping"];
+            for (NSDictionary *dic in shippArr) {
+                OrderConfirmPayModel *paymodel = [[OrderConfirmPayModel alloc]init];
+                [paymodel setValuesForKeysWithDictionary:dic];
+                [self.shippingArray addObject:paymodel];
+            }
+            
+            // 获取支付方式数据
+            // 清空数据源
+            [self.payArray removeAllObjects];
+            NSArray *payArr = responseObject[@"pay"];
+            for (NSDictionary *dic in payArr) {
+                OrderConfirmPayModel *paymodel = [[OrderConfirmPayModel alloc]init];
+                [paymodel setValuesForKeysWithDictionary:dic];
+                [self.payArray addObject:paymodel];
+            }
+            // 获取分区数据
             for (NSDictionary *dic in arr) {
                 OrderConfirmModel  *model = [[OrderConfirmModel alloc]init];
                 // 用来控制是否要展示
@@ -172,9 +229,24 @@ static NSString *identifier = @"confirmCell";
                 [model setValuesForKeysWithDictionary:dic];
                 [self.sectionModelArray addObject:model];
             }
+           
             if (self.tableView) {
+                OrderConfirmModel  *model1 = [[OrderConfirmModel alloc]init];
+                OrderConfirmModel  *model2 = [[OrderConfirmModel alloc]init];
+                 model1.isOpen = NO;
+                 model2.isOpen = NO;
+                [self.sectionModelArray addObject:model1];
+                [self.sectionModelArray addObject:model2];
+
                 [self.tableView reloadData];
             }else{
+                OrderConfirmModel  *model1 = [[OrderConfirmModel alloc]init];
+                OrderConfirmModel  *model2 = [[OrderConfirmModel alloc]init];
+                model1.isOpen = NO;
+                model2.isOpen = NO;
+                [self.sectionModelArray addObject:model1];
+                [self.sectionModelArray addObject:model2];
+
                 [self setUpChildrenViews];
                 [self setUpBottomView];
                 
@@ -217,7 +289,7 @@ static NSString *identifier = @"confirmCell";
 #pragma mark - 自定义视图
 - (void)setUpChildrenViews
 {
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0,64, KScreenW, kScreenH) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0,64, KScreenW, kScreenH-64-48) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     OrderConfirmTableHeadView *confirmTableView = [[OrderConfirmTableHeadView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 120 *kHeightScale)];
@@ -253,6 +325,8 @@ static NSString *identifier = @"confirmCell";
     self.tableView.tableFooterView = tableFooterView;
     // 注册cell
     [self.tableView registerClass:[OrderNewDetaiTableViewCell class] forCellReuseIdentifier:identifier];
+    [self.tableView registerClass:[OrderConfrimHeadSectionCell class] forCellReuseIdentifier:identifierSectionCell];
+    [self.tableView registerClass:[OrderConfirmShippingCell class] forCellReuseIdentifier:identifierSectionShippCell];
   
     [self.view addSubview:self.tableView];
 }
@@ -261,120 +335,120 @@ static NSString *identifier = @"confirmCell";
 {
     
   //  UserInfo *userInfo = [UserInfo currentAccount];
-    __weak typeof(self)weakSelf = self;
+
     
-    self.bagView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 550*kHeightScale)];
+    self.bagView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 100*kHeightScale)];
     
-    // 配送方式
-    UILabel *line1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 1)];
-    line1.backgroundColor = RGBA(241, 241, 241, 1);
-    [_bagView addSubview:line1];
-    
-    UILabel *lab1  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 15 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"配送方式" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
-    [_bagView addSubview:lab1];
-    self.shipnamelab = [[UILabel alloc]initWithFrame:CGRectMake(90*kWidthScale, 15*kHeightScale, 120*kWidthScale, 16*kHeightScale)];
-    self.shipnamelab.textColor = [UIColor grayColor];
-    self.shipnamelab.font = [UIFont systemFontOfSize:15 *kHeightScale];
-    self.shipnamelab.textAlignment = NSTextAlignmentLeft;
-    [_bagView addSubview:self.shipnamelab];
-    
-    
-    UIImageView *arrow1 = [[UIImageView alloc]init];
-    arrow1.frame = CGRectMake(KScreenW - 40 *kWidthScale, 10 *kHeightScale, 25 *kWidthScale, 16 *kHeightScale) ;
-    arrow1.image = [UIImage imageNamed:@"arrow@2x"];
-    [_bagView addSubview:arrow1];
-    
-    self.shipView = [[OrderNewDetailShipTypeView alloc]initWithFrame:CGRectMake(0,45 *kHeightScale, KScreenW, 90 *kHeightScale)];
-    __weak typeof(_shipView)shipSelf = _shipView;
-    _shipView.mianfeiBtnBlook = ^()
-    {
-        NSLog(@"送货上门");
-        
-        [shipSelf.mianfeiBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
-        [shipSelf.ziquBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
-         weakSelf.shipping_id = @"1";
-        // actid为1为送货上门
-//        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":weakSelf.good_id,@"act":@"shipping",@"actid":@"1"};
-//        [weakSelf modifiyRequestDataWithDic:params withTitle:@"送货上门"];
+//    // 配送方式
+//    UILabel *line1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 1)];
+//    line1.backgroundColor = RGBA(241, 241, 241, 1);
+//    [_bagView addSubview:line1];
+//    
+//    UILabel *lab1  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 15 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"配送方式" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
+//    [_bagView addSubview:lab1];
+//    self.shipnamelab = [[UILabel alloc]initWithFrame:CGRectMake(90*kWidthScale, 15*kHeightScale, 120*kWidthScale, 16*kHeightScale)];
+//    self.shipnamelab.textColor = [UIColor grayColor];
+//    self.shipnamelab.font = [UIFont systemFontOfSize:15 *kHeightScale];
+//    self.shipnamelab.textAlignment = NSTextAlignmentLeft;
+//    [_bagView addSubview:self.shipnamelab];
+//    
+//    
+//    UIImageView *arrow1 = [[UIImageView alloc]init];
+//    arrow1.frame = CGRectMake(KScreenW - 40 *kWidthScale, 10 *kHeightScale, 25 *kWidthScale, 16 *kHeightScale) ;
+//    arrow1.image = [UIImage imageNamed:@"arrow@2x"];
+//    [_bagView addSubview:arrow1];
+//    
+//    self.shipView = [[OrderNewDetailShipTypeView alloc]initWithFrame:CGRectMake(0,45 *kHeightScale, KScreenW, 90 *kHeightScale)];
+//    __weak typeof(_shipView)shipSelf = _shipView;
+//    _shipView.mianfeiBtnBlook = ^()
+//    {
+//        NSLog(@"送货上门");
 //        
-    };
-    _shipView.ziquBtnBlook = ^()
-    {
-        weakSelf.shipping_id = @"2";
-        [shipSelf.mianfeiBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
-        [shipSelf.ziquBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
-//        NSLog(@"上门自取");
-//        // actid为2为上门自取
-//        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":weakSelf.good_id,@"act":@"shipping",@"actid":@"2"};
-//        [weakSelf modifiyRequestDataWithDic:params withTitle:@"上门自取"];
+//        [shipSelf.mianfeiBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
+//        [shipSelf.ziquBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
+//         weakSelf.shipping_id = @"1";
+//        // actid为1为送货上门
+////        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":weakSelf.good_id,@"act":@"shipping",@"actid":@"1"};
+////        [weakSelf modifiyRequestDataWithDic:params withTitle:@"送货上门"];
+////        
+//    };
+//    _shipView.ziquBtnBlook = ^()
+//    {
+//        weakSelf.shipping_id = @"2";
+//        [shipSelf.mianfeiBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
+//        [shipSelf.ziquBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
+////        NSLog(@"上门自取");
+////        // actid为2为上门自取
+////        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":weakSelf.good_id,@"act":@"shipping",@"actid":@"2"};
+////        [weakSelf modifiyRequestDataWithDic:params withTitle:@"上门自取"];
+////        
+//    };
+//    
+//    
+//    [_bagView addSubview:_shipView];
+//    
+//    
+//    
+//    // 支付方式
+//    UILabel *line3 = [[UILabel alloc]initWithFrame:CGRectMake(0, 170 *kHeightScale, KScreenW, 1)];
+//    line3.backgroundColor = RGBA(241, 241, 241, 1);
+//    [_bagView addSubview:line3];
+//    
+//    UILabel *lab3  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 180 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"支付方式" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
+//    [_bagView addSubview:lab3];
+//    self.payNameLab = [[UILabel alloc]initWithFrame:CGRectMake(90*kWidthScale, 180*kHeightScale, 120*kWidthScale, 16*kHeightScale)];
+//    self.payNameLab.textColor = [UIColor grayColor];
+//    self.payNameLab.font = [UIFont systemFontOfSize:15 *kHeightScale];
+//    self.payNameLab.textAlignment = NSTextAlignmentLeft;
+//    [_bagView addSubview:self.payNameLab];
+//    
+//    
+//    UIImageView *arrow3 = [[UIImageView alloc]init];
+//    arrow3.frame = CGRectMake(KScreenW - 40 *kWidthScale, 180*kHeightScale, 25 *kWidthScale, 16*kHeightScale) ;
+//    arrow3.image = [UIImage imageNamed:@"arrow@2x"];
+//    [_bagView addSubview:arrow3];
+//    
+//    self.payView = [[OrderPayTypeView alloc]initWithFrame:CGRectMake(0, 210 *kHeightScale, KScreenW, 90 *kHeightScale)];
+//    [_bagView addSubview:_payView];
+// 
+//    __weak typeof(_payView)payViewSelf = _payView;
+//    _payView.weChatPayBtnBlook = ^(){
+//        NSLog(@"微信支付回调");
+//        [payViewSelf.weChatPayBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
+//        [payViewSelf.aliPayBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
+//        weakSelf.pay_id = @"1";
+//      
+//       
+//        // actid为1为微信支付
+////        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":weakSelf.good_id,@"act":@"pay",@"actid":@"1"};
+////        [weakSelf modifiyRequestDataWithDic:params withTitle:@"修改微信"];
+////        ;
+//    };
+//    _payView.aliPayBtnBlook = ^(){
 //        
-    };
+//        NSLog(@"支付宝支付回调");
+//        [payViewSelf.weChatPayBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
+//        [payViewSelf.aliPayBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
+//           weakSelf.pay_id = @"2";
+//        // actid 为2为支付宝支付
+////        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":weakSelf.good_id,@"act":@"pay",@"actid":@"2"};
+////        [weakSelf modifiyRequestDataWithDic:params withTitle:@"修改支付宝"];
+//    };
+//    
+//    
+//    
+//    // 发票信息
+//    UILabel *line4= [[UILabel alloc]initWithFrame:CGRectMake(0, 335 *kHeightScale, KScreenW, 1)];
+//    line4.backgroundColor =RGBA(241, 241, 241, 1);
+//    [_bagView addSubview:line4];
     
-    
-    [_bagView addSubview:_shipView];
-    
-    
-    
-    // 支付方式
-    UILabel *line3 = [[UILabel alloc]initWithFrame:CGRectMake(0, 170 *kHeightScale, KScreenW, 1)];
-    line3.backgroundColor = RGBA(241, 241, 241, 1);
-    [_bagView addSubview:line3];
-    
-    UILabel *lab3  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 180 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"支付方式" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
-    [_bagView addSubview:lab3];
-    self.payNameLab = [[UILabel alloc]initWithFrame:CGRectMake(90*kWidthScale, 180*kHeightScale, 120*kWidthScale, 16*kHeightScale)];
-    self.payNameLab.textColor = [UIColor grayColor];
-    self.payNameLab.font = [UIFont systemFontOfSize:15 *kHeightScale];
-    self.payNameLab.textAlignment = NSTextAlignmentLeft;
-    [_bagView addSubview:self.payNameLab];
-    
-    
-    UIImageView *arrow3 = [[UIImageView alloc]init];
-    arrow3.frame = CGRectMake(KScreenW - 40 *kWidthScale, 180*kHeightScale, 25 *kWidthScale, 16*kHeightScale) ;
-    arrow3.image = [UIImage imageNamed:@"arrow@2x"];
-    [_bagView addSubview:arrow3];
-    
-    self.payView = [[OrderPayTypeView alloc]initWithFrame:CGRectMake(0, 210 *kHeightScale, KScreenW, 90 *kHeightScale)];
-    [_bagView addSubview:_payView];
- 
-    __weak typeof(_payView)payViewSelf = _payView;
-    _payView.weChatPayBtnBlook = ^(){
-        NSLog(@"微信支付回调");
-        [payViewSelf.weChatPayBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
-        [payViewSelf.aliPayBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
-        weakSelf.pay_id = @"1";
-      
-       
-        // actid为1为微信支付
-//        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":weakSelf.good_id,@"act":@"pay",@"actid":@"1"};
-//        [weakSelf modifiyRequestDataWithDic:params withTitle:@"修改微信"];
-//        ;
-    };
-    _payView.aliPayBtnBlook = ^(){
-        
-        NSLog(@"支付宝支付回调");
-        [payViewSelf.weChatPayBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
-        [payViewSelf.aliPayBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
-           weakSelf.pay_id = @"2";
-        // actid 为2为支付宝支付
-//        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":weakSelf.good_id,@"act":@"pay",@"actid":@"2"};
-//        [weakSelf modifiyRequestDataWithDic:params withTitle:@"修改支付宝"];
-    };
-    
-    
-    
-    // 发票信息
-    UILabel *line4= [[UILabel alloc]initWithFrame:CGRectMake(0, 335 *kHeightScale, KScreenW, 1)];
-    line4.backgroundColor =RGBA(241, 241, 241, 1);
-    [_bagView addSubview:line4];
-    
-    UILabel *lab4  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 350 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"备注信息:" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
+    UILabel *lab4  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 10 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"备注信息:" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
     [_bagView addSubview:lab4];
     
-    UILabel *titleLab = [YNTUITools createLabel:CGRectMake(100 *kWidthScale, 350*kHeightScale, 240 *kWidthScale, 16 *kHeightScale) text:@"选填:对本次交易的说明(建议填写)" textAlignment:NSTextAlignmentLeft textColor:[UIColor grayColor] bgColor:nil font:14*kHeightScale];
+    UILabel *titleLab = [YNTUITools createLabel:CGRectMake(100 *kWidthScale, 10*kHeightScale, 240 *kWidthScale, 16 *kHeightScale) text:@"选填:对本次交易的说明(建议填写)" textAlignment:NSTextAlignmentLeft textColor:[UIColor grayColor] bgColor:nil font:14*kHeightScale];
     [_bagView addSubview:titleLab];
     
-    self.textView = [[UITextView alloc]initWithFrame:CGRectMake(15 *kWidthScale, 370 *kHeightScale, KScreenW - 30 *kWidthScale, 60 *kHeightScale)];
+    self.textView = [[UITextView alloc]initWithFrame:CGRectMake(15 *kWidthScale, 30 *kHeightScale, KScreenW - 30 *kWidthScale, 60 *kHeightScale)];
     _textView.backgroundColor = RGBA(249, 249, 249, 1);
     self.textView.delegate = self;
     [_bagView addSubview:_textView];
@@ -436,28 +510,52 @@ static NSString *identifier = @"confirmCell";
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    
-  
-    
-
-    OrderConfirmModel *sectionModel =self.sectionModelArray[section];
-    
-    
-    if (self.isFold) {
-        // 如果折叠
-        return 0;
-    }else{
+    if (section <(self.sectionModelArray.count -2)) {
+        OrderConfirmModel *sectionModel =self.sectionModelArray[section];
         
-        // 如果不折叠
-        if (sectionModel.isOpen) {
-            return  sectionModel.good_attr.count;
+        
+        if (self.isFold) {
+            // 如果折叠
+            return 0;
+        }else{
+            
+            // 如果不折叠
+            if (sectionModel.isOpen) {
+                return  sectionModel.good_attr.count;
+            }else{
+                return 0;
+            }
+            
+            
+            
+        }
+        
+
+    }else if(section == (self.sectionModelArray.count -2)){
+         OrderConfirmModel *shippingModel = self.sectionModelArray[self.sectionModelArray.count -2];
+        if (shippingModel.isOpen) {
+           return self.shippingArray.count;
         }else{
             return 0;
         }
+  
+    }else if(section == (self.sectionModelArray.count -1)){
+        OrderConfirmModel *payModel = self.sectionModelArray[self.sectionModelArray.count -1];
 
-        
-        
+        if (payModel.isOpen) {
+                 return self.payArray.count;
+        }else{
+            return 0;
+       
+        }
+      
     }
+    
+    
+        
+
+ 
+
     
     return 0;
 }
@@ -467,125 +565,289 @@ static NSString *identifier = @"confirmCell";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 85 *kHeightScale;
+
+    if (indexPath.section < (self.sectionModelArray.count -2)) {
+            return 85 *kHeightScale;
+    }else{
+        return 50 *kHeightScale;
+    }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    OrderNewDetaiTableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-    OrderConfirmModel *sectionModel = self.sectionModelArray[indexPath.section];
-    for (NSDictionary *dic in sectionModel.good_attr) {
-       ShopCarModel*model = [[ShopCarModel alloc]init];
-        [model setValuesForKeysWithDictionary:dic];
-        [sectionModel.modelArr addObject:model];
+    if (indexPath.section < (self.sectionModelArray.count - 2)) {
+        OrderNewDetaiTableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+        OrderConfirmModel *sectionModel = self.sectionModelArray[indexPath.section];
+        for (NSDictionary *dic in sectionModel.good_attr) {
+            ShopCarModel*model = [[ShopCarModel alloc]init];
+            [model setValuesForKeysWithDictionary:dic];
+            [sectionModel.modelArr addObject:model];
+            
+        }
+        
+        ShopCarModel *model = sectionModel.modelArr[indexPath.row];
+        cell.goodName.text = model.namestr;
+        cell.orderMoneyLab.text = model.attrprice;
+        cell.shopNumberLab.text= model.num;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        return cell;
+    }
+    if(indexPath.section == (self.sectionModelArray.count -2)){
+   
+
+        OrderConfirmShippingCell *cell = [tableView dequeueReusableCellWithIdentifier:identifierSectionShippCell forIndexPath:indexPath];
+        OrderConfirmPayModel *model = self.shippingArray[indexPath.row];
+        // 获取是哪个
+        if (model.isSelect) {
+            self.shipping_id = [NSString stringWithFormat:@"%@",model.payid];
+        }
+        [cell setValueWithModel:model];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+        return cell;
         
     }
-    
-    ShopCarModel *model = sectionModel.modelArr[indexPath.row];
-      cell.goodName.text = model.namestr;
-    cell.orderMoneyLab.text = model.attrprice;
-    cell.shopNumberLab.text= model.num;
-    
-    return cell;
+    if(indexPath.section == (self.sectionModelArray.count -1)){
+        OrderConfrimHeadSectionCell *cell = [tableView dequeueReusableCellWithIdentifier:identifierSectionCell forIndexPath:indexPath];
+        
+        
+        OrderConfirmPayModel *model = self.payArray[indexPath.row];
+        // 获取选择的是哪个
+        if (model.isSelect) {
+            self.pay_id = [NSString stringWithFormat:@"%@",model.payid];
+        }
+        [cell setValueWithModel:model];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
+    return 0;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    ShopSectionHeadView *shopHeadView =[[ShopSectionHeadView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 95 *kHeightScale)];
-     OrderConfirmModel *sectionModel = self.sectionModelArray[section];
-   
-   
-    [shopHeadView.goodImgView  sd_setImageWithURL:[NSURL URLWithString:sectionModel.good_img]];
-    shopHeadView.backgroundColor = [UIColor whiteColor];
-    shopHeadView.goodNameLab.text = sectionModel.good_name;
-    
-    
-    shopHeadView.addBtn.hidden = YES;
-    shopHeadView.cutBtn.hidden = YES;
-    shopHeadView.numberTextField.hidden = YES;
-    shopHeadView.addImgView.hidden = YES;
-    
-    if (sectionModel.good_attr.count > 0) {
-        // 有属性时隐藏加减框
-      
-    }else{
-        shopHeadView.roateBtn.hidden = YES;
-    
-    }
-    
-    
-    //  旋转按钮回调(折叠方式)
-    shopHeadView.roateSectionBtn = ^(BOOL isPen){
-        if (sectionModel.isOpen) {
-            // 控制折叠与展开
-            sectionModel.isOpen = NO;
-            [self.sectionModelArray replaceObjectAtIndex:section withObject:sectionModel];
-            [self.tableView reloadData];
+    if (section < self.sectionModelArray.count-2) {
+        ShopSectionHeadView *shopHeadView =[[ShopSectionHeadView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 95 *kHeightScale)];
+        OrderConfirmModel *sectionModel = self.sectionModelArray[section];
+        
+        
+        [shopHeadView.goodImgView  sd_setImageWithURL:[NSURL URLWithString:sectionModel.good_img]];
+        shopHeadView.backgroundColor = [UIColor whiteColor];
+        shopHeadView.goodNameLab.text = sectionModel.good_name;
+        
+        
+        shopHeadView.addBtn.hidden = YES;
+        shopHeadView.cutBtn.hidden = YES;
+        shopHeadView.numberTextField.hidden = YES;
+        shopHeadView.addImgView.hidden = YES;
+        
+        if (sectionModel.good_attr.count > 0) {
+            // 有属性时隐藏加减框
             
         }else{
-            // 控制折叠与展开
-            sectionModel.isOpen =YES;
-            [self.sectionModelArray replaceObjectAtIndex:section withObject:sectionModel];
-            [self.tableView reloadData];
+            shopHeadView.roateBtn.hidden = YES;
             
-            }
+        }
         
-    };
+        
+        //  旋转按钮回调(折叠方式)
+        shopHeadView.roateSectionBtn = ^(BOOL isPen){
+            if (sectionModel.isOpen) {
+                // 控制折叠与展开
+                sectionModel.isOpen = NO;
+                [self.sectionModelArray replaceObjectAtIndex:section withObject:sectionModel];
+                [self.tableView reloadData];
+                
+            }else{
+                // 控制折叠与展开
+                sectionModel.isOpen =YES;
+                [self.sectionModelArray replaceObjectAtIndex:section withObject:sectionModel];
+                [self.tableView reloadData];
+                
+            }
+            
+        };
+        
+        
+        //  根据isOpen来判断要显示的图标
+        if (sectionModel.isOpen) {
+            UIImage *roateImg = [UIImage imageNamed:@"arrow_after"];
+            roateImg = [roateImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            [shopHeadView.roateBtn setImage:roateImg forState:UIControlStateNormal];
+        }else{
+            UIImage *roateImg = [UIImage imageNamed:@"arrow_before"];
+            roateImg = [roateImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            [shopHeadView.roateBtn setImage:roateImg forState:UIControlStateNormal];
+            
+        }
+        
+        
+        
+        
+        return shopHeadView;
 
-    
-    //  根据isOpen来判断要显示的图标
-    if (sectionModel.isOpen) {
-        UIImage *roateImg = [UIImage imageNamed:@"arrow_after"];
-        roateImg = [roateImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        [shopHeadView.roateBtn setImage:roateImg forState:UIControlStateNormal];
     }else{
-        UIImage *roateImg = [UIImage imageNamed:@"arrow_before"];
-        roateImg = [roateImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        [shopHeadView.roateBtn setImage:roateImg forState:UIControlStateNormal];
+        OrderConfirmHeadSectionView *headView = [[OrderConfirmHeadSectionView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 40 *kHeightScale)];
+        headView.backgroundColor = [UIColor whiteColor];
+        __weak typeof(headView)headSelf = headView;
+        
+     
+        
+        
+        if (section == (self.sectionModelArray.count -2)) {
+            //  设置图片
+            OrderConfirmModel *shippingModel = self.sectionModelArray[self.sectionModelArray.count -2];
+            if (shippingModel.isOpen) {
+                [headSelf.roateBtn setImage:[UIImage imageNamed:@"arrow_after"] forState:UIControlStateNormal];
+            }else{
+                [headSelf.roateBtn setImage:[UIImage imageNamed:@"arrow_before"] forState:UIControlStateNormal];
+            }
+            headView.titleLab.text = @"配送方式";
+            headView.roateBtnBlock = ^(){
+                NSLog(@"开始旋转了");
+               
+         //       [self.sectionModelArray replaceObjectAtIndex:section withObject:sectionModel];
+  
+                if (shippingModel.isOpen) {
+                    [headSelf.roateBtn setImage:[UIImage imageNamed:@"arrow_before"] forState:UIControlStateNormal];
+                    shippingModel.isOpen = NO;
+                [self.sectionModelArray replaceObjectAtIndex:(self.sectionModelArray.count -2) withObject:shippingModel];
+                  
+                }else{
+                    [headSelf.roateBtn setImage:[UIImage imageNamed:@"arrow_after"] forState:UIControlStateNormal];
+                    shippingModel.isOpen = YES;
+                    [self.sectionModelArray replaceObjectAtIndex:(self.sectionModelArray.count -2) withObject:shippingModel];
+                }
+     
+                [self.tableView reloadData];
+            
+//                NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:self.sectionModelArray.count -2];
+//                [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+            };
+        }else{
+              OrderConfirmModel *payModel = self.sectionModelArray[self.sectionModelArray.count -1];
+            if (payModel.isOpen) {
+                [headSelf.roateBtn setImage:[UIImage imageNamed:@"arrow_after"] forState:UIControlStateNormal];
+            }else{
+                [headSelf.roateBtn setImage:[UIImage imageNamed:@"arrow_before"] forState:UIControlStateNormal];
+            }
+
+             headView.titleLab.text = @"支付方式";
+            headView.roateBtnBlock = ^(){
+                          NSLog(@"开始旋转了");
+                if (payModel.isOpen) {
+                    [headSelf.roateBtn setImage:[UIImage imageNamed:@"arrow_before"] forState:UIControlStateNormal];
+                          payModel.isOpen= NO;
+                    [self.sectionModelArray replaceObjectAtIndex:(self.sectionModelArray.count -1) withObject:payModel];
+                }else{
+                    [headSelf.roateBtn setImage:[UIImage imageNamed:@"arrow_after"] forState:UIControlStateNormal];
+                          payModel.isOpen = YES;
+                     [self.sectionModelArray replaceObjectAtIndex:(self.sectionModelArray.count -1) withObject:payModel];
+                }
+                
+                [self.tableView reloadData];
+            };
+        }
+        return headView;
         
     }
-    
-
-    
-    
-       return shopHeadView;
+    return [[UIView alloc]init];
 }
 
 - (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    
-    ShopSectionFooterView *shopFooterView = [[ShopSectionFooterView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 32 *kHeightScale)];
-    
-    OrderConfirmModel *sectionMode = self.sectionModelArray[section];
-    if (sectionMode.good_attr.count == 0) {    // 无属性时
-        shopFooterView.goodNumberLab.text = [NSString stringWithFormat:@"共%ld件",(long)sectionMode.good_num];
-        double price = [sectionMode.price doubleValue];
-        double num = [sectionMode.num doubleValue];
-        double totallmoney = price *num;
-        shopFooterView.goodPriceLab.text = [NSString stringWithFormat:@"¥%.2f",totallmoney];
-    }else{
-        // 有属性时
-        shopFooterView.goodNumberLab.text = [NSString stringWithFormat:@"共%@种%ld件",sectionMode.good_zhong,(long)sectionMode.good_num];
+    if (section <(self.sectionModelArray.count-2)) {
+        ShopSectionFooterView *shopFooterView = [[ShopSectionFooterView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 32 *kHeightScale)];
+        
+        OrderConfirmModel *sectionMode = self.sectionModelArray[section];
+        if (sectionMode.good_attr.count == 0) {    // 无属性时
+            shopFooterView.goodNumberLab.text = [NSString stringWithFormat:@"共%ld件",(long)sectionMode.good_num];
+            double price = [sectionMode.price doubleValue];
+            double num = [sectionMode.num doubleValue];
+            double totallmoney = price *num;
+            shopFooterView.goodPriceLab.text = [NSString stringWithFormat:@"¥%.2f",totallmoney];
+        }else{
+            // 有属性时
+            shopFooterView.goodNumberLab.text = [NSString stringWithFormat:@"共%@种%ld件",sectionMode.good_zhong,(long)sectionMode.good_num];
+            
+            shopFooterView.goodPriceLab.text = [NSString stringWithFormat:@"¥%.2f",sectionMode.good_price];
+        }
+        
+        
+        shopFooterView.backgroundColor = [UIColor whiteColor];
+        
+        return shopFooterView;
 
-        shopFooterView.goodPriceLab.text = [NSString stringWithFormat:@"¥%.2f",sectionMode.good_price];
+    }else{
+        return [UIView new];
     }
-    
-      
-    shopFooterView.backgroundColor = [UIColor whiteColor];
-  
-    return shopFooterView;
     
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+     if(indexPath.section == (self.sectionModelArray.count -2)){
+         OrderConfirmPayModel *shippingyModel = self.shippingArray[indexPath.row];
+         if (shippingyModel.isSelect) {
+             
+
+             for (int i = 0; i<self.shippingArray.count; i++) {
+                 OrderConfirmPayModel *shipingModels = self.shippingArray[i];
+                 shipingModels.isSelect = NO;
+                 [self.shippingArray replaceObjectAtIndex:i withObject:shipingModels];
+             }
+             shippingyModel.isSelect = NO;
+             [self.shippingArray replaceObjectAtIndex:indexPath.row withObject:shippingyModel];
+         }else{
+             for (int i = 0; i<self.shippingArray.count; i++) {
+                 OrderConfirmPayModel *shipingModels = self.shippingArray[i];
+                 shipingModels.isSelect = NO;
+                 [self.shippingArray replaceObjectAtIndex:i withObject:shipingModels];
+             }
+            shippingyModel.isSelect = YES;
+            [self.shippingArray replaceObjectAtIndex:indexPath.row withObject:shippingyModel];
+         }
+     }
+    if(indexPath.section == (self.sectionModelArray.count -1)){
+        OrderConfirmPayModel *payModel = self.payArray[indexPath.row];
+        // 单选
+        if (payModel.isSelect) {
+            for (int i = 0; i<self.payArray.count; i++) {
+                OrderConfirmPayModel *payModels = self.payArray[i];
+                payModels.isSelect = NO;
+                [self.payArray replaceObjectAtIndex:i withObject:payModels];
+            }
+            payModel.isSelect = NO;
+        
+            [self.payArray replaceObjectAtIndex:indexPath.row withObject:payModel];
+        }else{
+            for (int i = 0; i<self.payArray.count; i++) {
+                OrderConfirmPayModel *payModels = self.payArray[i];
+                payModels.isSelect = NO;
+                [self.payArray replaceObjectAtIndex:i withObject:payModels];
+            }
+               payModel.isSelect = YES;
+            [self.payArray replaceObjectAtIndex:indexPath.row withObject:payModel];
+        }
+    }
+    [self.tableView reloadData];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 105 *kHeightScale;
+    if (section <(self.sectionModelArray.count - 2)) {
+        return 105 *kHeightScale;
+    }else{
+        return 40 *kHeightScale;
+    }
+    
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    if (section <(self.sectionModelArray.count - 2)) {
     return 32 *kHeightScale;
+    }else{
+        return 1 *kHeightScale;
+    }
+
 }
 
 #pragma mark - 提交订单请求数据
@@ -604,7 +866,7 @@ static NSString *identifier = @"confirmCell";
         
         NSString *url = [NSString stringWithFormat:@"%@api/doneorder.php",baseUrl];
         UserInfo *userInfo = [UserInfo currentAccount];
-        NSDictionary *params = @{@"user_id":userInfo.user_id,@"directbuy":self.directbuy,@"address_id":self.address_id,@"shipping_id":self.shipping_id,@"remarks":self.textView.text,@"pay_id":self.pay_id};
+        NSDictionary *params = @{@"user_id":userInfo.user_id,@"directbuy":self.directbuy,@"address_id":self.address_id,@"shipping_id":self.shipping_id,@"remarks":@"",@"pay_id":self.pay_id};
         
         [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
             NSLog(@"提交订单请求数据成功%@",responseObject);
