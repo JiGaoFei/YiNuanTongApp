@@ -23,10 +23,6 @@
 		BB286E1C1E11F11B00E81B4E /* OptionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB286E1B1E11F11B00E81B4E /* OptionListViewController.m */; };
 		BB2BF9231E03CF8600A8AA3E /* MinLineCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2BF9221E03CF8600A8AA3E /* MinLineCell.m */; };
 		BB2BF9261E03D88000A8AA3E /* SingLeton.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2BF9251E03D88000A8AA3E /* SingLeton.m */; };
-		BB439E2F1E00F7F200949B1E /* areas.json in Resources */ = {isa = PBXBuildFile; fileRef = BB439E281E00F7F200949B1E /* areas.json */; };
-		BB439E301E00F7F200949B1E /* DQAreasModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BB439E2A1E00F7F200949B1E /* DQAreasModel.m */; };
-		BB439E311E00F7F200949B1E /* DQAreasView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB439E2C1E00F7F200949B1E /* DQAreasView.m */; };
-		BB439E321E00F7F200949B1E /* DQCanCerEnsureView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB439E2E1E00F7F200949B1E /* DQCanCerEnsureView.m */; };
 		BB4A51831E4B161B006F5FCF /* GFProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4A51821E4B161B006F5FCF /* GFProgressHUD.m */; };
 		BB4A51911E4B1911006F5FCF /* GFProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BB4A51901E4B1911006F5FCF /* GFProgressHUD.bundle */; };
 		BB4BA4DF1E0B5D25001A892C /* LogoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4BA4DE1E0B5D25001A892C /* LogoutCell.m */; };
@@ -235,6 +231,9 @@
 		F1D4CFB91E7D1FA600134E51 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1D4CFB81E7D1FA600134E51 /* libWeChatSDK.a */; };
 		F1DC0E0A1E5E8655008D8976 /* Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = F1DC0E091E5E8655008D8976 /* Extension.m */; };
 		F1E232B01EA5B804008CE78A /* CommenProblemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F1E232AF1EA5B804008CE78A /* CommenProblemModel.m */; };
+		F1ED59041EC2EB3600171CB0 /* Address.plist in Resources */ = {isa = PBXBuildFile; fileRef = F1ED59011EC2EB3600171CB0 /* Address.plist */; };
+		F1ED59051EC2EB3600171CB0 /* GFAddressPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F1ED59031EC2EB3600171CB0 /* GFAddressPicker.m */; };
+		F1ED59081EC2F99200171CB0 /* ModifiyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F1ED59071EC2F99200171CB0 /* ModifiyViewController.m */; };
 		F1F7FD3F1EBB6A9E00924574 /* HomePicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F1F7FD3E1EBB6A9E00924574 /* HomePicModel.m */; };
 		F1FDB2081E667D5000E743A3 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = F1FDB2071E667D5000E743A3 /* NSString+MD5.m */; };
 /* End PBXBuildFile section */
@@ -273,13 +272,6 @@
 		BB2BF9221E03CF8600A8AA3E /* MinLineCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MinLineCell.m; sourceTree = "<group>"; };
 		BB2BF9241E03D88000A8AA3E /* SingLeton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingLeton.h; sourceTree = "<group>"; };
 		BB2BF9251E03D88000A8AA3E /* SingLeton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingLeton.m; sourceTree = "<group>"; };
-		BB439E281E00F7F200949B1E /* areas.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = areas.json; sourceTree = "<group>"; };
-		BB439E291E00F7F200949B1E /* DQAreasModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DQAreasModel.h; sourceTree = "<group>"; };
-		BB439E2A1E00F7F200949B1E /* DQAreasModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DQAreasModel.m; sourceTree = "<group>"; };
-		BB439E2B1E00F7F200949B1E /* DQAreasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DQAreasView.h; sourceTree = "<group>"; };
-		BB439E2C1E00F7F200949B1E /* DQAreasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DQAreasView.m; sourceTree = "<group>"; };
-		BB439E2D1E00F7F200949B1E /* DQCanCerEnsureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DQCanCerEnsureView.h; sourceTree = "<group>"; };
-		BB439E2E1E00F7F200949B1E /* DQCanCerEnsureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DQCanCerEnsureView.m; sourceTree = "<group>"; };
 		BB4A51811E4B161B006F5FCF /* GFProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFProgressHUD.h; sourceTree = "<group>"; };
 		BB4A51821E4B161B006F5FCF /* GFProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFProgressHUD.m; sourceTree = "<group>"; };
 		BB4A51901E4B1911006F5FCF /* GFProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GFProgressHUD.bundle; sourceTree = "<group>"; };
@@ -751,6 +743,11 @@
 		F1DC0E091E5E8655008D8976 /* Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Extension.m; sourceTree = "<group>"; };
 		F1E232AE1EA5B804008CE78A /* CommenProblemModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommenProblemModel.h; sourceTree = "<group>"; };
 		F1E232AF1EA5B804008CE78A /* CommenProblemModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommenProblemModel.m; sourceTree = "<group>"; };
+		F1ED59011EC2EB3600171CB0 /* Address.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Address.plist; path = ../Address.plist; sourceTree = "<group>"; };
+		F1ED59021EC2EB3600171CB0 /* GFAddressPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GFAddressPicker.h; path = ../GFAddressPicker.h; sourceTree = "<group>"; };
+		F1ED59031EC2EB3600171CB0 /* GFAddressPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GFAddressPicker.m; path = ../GFAddressPicker.m; sourceTree = "<group>"; };
+		F1ED59061EC2F99200171CB0 /* ModifiyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifiyViewController.h; sourceTree = "<group>"; };
+		F1ED59071EC2F99200171CB0 /* ModifiyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifiyViewController.m; sourceTree = "<group>"; };
 		F1F7FD3D1EBB6A9E00924574 /* HomePicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePicModel.h; sourceTree = "<group>"; };
 		F1F7FD3E1EBB6A9E00924574 /* HomePicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePicModel.m; sourceTree = "<group>"; };
 		F1FDB2061E667D5000E743A3 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
@@ -798,24 +795,12 @@
 		BB439E261E00F4EC00949B1E /* 城市选择器 */ = {
 			isa = PBXGroup;
 			children = (
+				F1ED59011EC2EB3600171CB0 /* Address.plist */,
+				F1ED59021EC2EB3600171CB0 /* GFAddressPicker.h */,
+				F1ED59031EC2EB3600171CB0 /* GFAddressPicker.m */,
 				BBCE7EEB1E07ACB1005E760F /* 下拉菜单 */,
-				BB439E271E00F7F200949B1E /* addRess_areas */,
 			);
 			path = "城市选择器";
-			sourceTree = "<group>";
-		};
-		BB439E271E00F7F200949B1E /* addRess_areas */ = {
-			isa = PBXGroup;
-			children = (
-				BB439E281E00F7F200949B1E /* areas.json */,
-				BB439E291E00F7F200949B1E /* DQAreasModel.h */,
-				BB439E2A1E00F7F200949B1E /* DQAreasModel.m */,
-				BB439E2B1E00F7F200949B1E /* DQAreasView.h */,
-				BB439E2C1E00F7F200949B1E /* DQAreasView.m */,
-				BB439E2D1E00F7F200949B1E /* DQCanCerEnsureView.h */,
-				BB439E2E1E00F7F200949B1E /* DQCanCerEnsureView.m */,
-			);
-			path = addRess_areas;
 			sourceTree = "<group>";
 		};
 		BB4A51801E4B161B006F5FCF /* GFProgreesHud */ = {
@@ -1195,6 +1180,8 @@
 			children = (
 				BBC912541DFEB3CC00473CA7 /* YNTMineViewController.h */,
 				BBC912551DFEB3CC00473CA7 /* YNTMineViewController.m */,
+				F1ED59061EC2F99200171CB0 /* ModifiyViewController.h */,
+				F1ED59071EC2F99200171CB0 /* ModifiyViewController.m */,
 				BB4BA4E01E0B738C001A892C /* AccountViewController.h */,
 				BB4BA4E11E0B738C001A892C /* AccountViewController.m */,
 				BBFEF0B21E0D4E7B009FF11E /* CreditViewController.h */,
@@ -1885,6 +1872,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1ED59041EC2EB3600171CB0 /* Address.plist in Resources */,
 				BBDA5A421E1DF422003DD1B2 /* LaunchViewController.xib in Resources */,
 				F116F8B21E9C5F51007C489C /* arrow_after@3x.png in Resources */,
 				F116F8B41E9C5F51007C489C /* arrow_before@3x.png in Resources */,
@@ -1892,7 +1880,6 @@
 				BBC9120D1DFEA7BF00473CA7 /* Assets.xcassets in Resources */,
 				BB4A51911E4B1911006F5FCF /* GFProgressHUD.bundle in Resources */,
 				BBDA5A3D1E1DF415003DD1B2 /* GuideViewController.xib in Resources */,
-				BB439E2F1E00F7F200949B1E /* areas.json in Resources */,
 				F116F8B31E9C5F51007C489C /* arrow_before@2x.png in Resources */,
 				F116F8B11E9C5F51007C489C /* arrow_after@2x.png in Resources */,
 			);
@@ -1992,6 +1979,7 @@
 				BB1AA0AB1E4AEA7C00FDD71C /* GFDropDownMenu.m in Sources */,
 				F1CA931E1E9DFE4C00B3F596 /* OrderNewListModel.m in Sources */,
 				BBA46A991E2F4BC30085CA40 /* UITextField+IndexPath.m in Sources */,
+				F1ED59051EC2EB3600171CB0 /* GFAddressPicker.m in Sources */,
 				BB286E1C1E11F11B00E81B4E /* OptionListViewController.m in Sources */,
 				BB8FF83B1E10AFA4002ABBA8 /* AddressViewController.m in Sources */,
 				F116F8BD1E9C5F51007C489C /* WriteOrderTextfileldCell.m in Sources */,
@@ -2009,7 +1997,6 @@
 				F116F8E61E9C5F51007C489C /* CycleDetailViewController.m in Sources */,
 				F179DC511EA999AD00E916EA /* GoodDetailSizeNoCell.m in Sources */,
 				F1CA93241E9E174500B3F596 /* OrderNewDetailSectionModel.m in Sources */,
-				BB439E321E00F7F200949B1E /* DQCanCerEnsureView.m in Sources */,
 				BBE87D291E5144EB00523F40 /* Order.m in Sources */,
 				F116F8DA1E9C5F51007C489C /* HomeFistCell.m in Sources */,
 				F116F8B71E9C5F51007C489C /* ShopBottomView.m in Sources */,
@@ -2040,7 +2027,6 @@
 				BB628D211E163A0400DD3BF9 /* AccountPayCell.m in Sources */,
 				BBD03EE51E029AB900DE6722 /* MinHeadReusableView.m in Sources */,
 				BB13CE161E27173F00435233 /* SystemAnnouncementCell.m in Sources */,
-				BB439E301E00F7F200949B1E /* DQAreasModel.m in Sources */,
 				F1946FE61E5D20F000C550EB /* MinCompanyViewController.m in Sources */,
 				F116F8C41E9C5F51007C489C /* WriteOrderViewController.m in Sources */,
 				F116F8AD1E9C5F51007C489C /* ShopCarModel.m in Sources */,
@@ -2071,7 +2057,6 @@
 				F116F89B1E9C5F51007C489C /* YNTNewOrderViewController.m in Sources */,
 				BBC912331DFEAE9700473CA7 /* YNTNavigationViewController.m in Sources */,
 				F19982961E9CC3F600C150BC /* OrderConfirmModel.m in Sources */,
-				BB439E311E00F7F200949B1E /* DQAreasView.m in Sources */,
 				BBC912301DFEAE6A00473CA7 /* YNTTabBarViewController.m in Sources */,
 				BBDA5A381E1DE10C003DD1B2 /* UserDefaults.m in Sources */,
 				F19509E51EC1952E007E7758 /* OrderConfirmPayModel.m in Sources */,
@@ -2130,6 +2115,7 @@
 				BBCF3C631E1112D70046CD49 /* OptionCell.m in Sources */,
 				F116F8871E9C5F51007C489C /* OrderDetailModer.m in Sources */,
 				F116F8961E9C5F51007C489C /* OrderConfirmViewController.m in Sources */,
+				F1ED59081EC2F99200171CB0 /* ModifiyViewController.m in Sources */,
 				F140F2EB1EAAF94700658765 /* GoodDetailAttrtypeModel.m in Sources */,
 				BB85AD041DFEDF66009BEBF9 /* YNTNetworkManager.m in Sources */,
 				F116F8D41E9C5F51007C489C /* GFChooseView.m in Sources */,

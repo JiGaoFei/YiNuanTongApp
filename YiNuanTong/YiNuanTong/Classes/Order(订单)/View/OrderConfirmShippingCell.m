@@ -26,8 +26,9 @@
     self.titleLab = [[UILabel alloc]initWithFrame:CGRectMake(15 *kWidthScale, 10 *kHeightScale, 90, 30 *kWidthScale)];
     [self.contentView addSubview:self.titleLab];
     self.selecBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.selecBtn.frame = CGRectMake( KScreenW -50 *kWidthScale, 10 *kHeightScale, 18 *kWidthScale, 18 *kWidthScale);
-    [self.selecBtn setImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
+    self.selecBtn.userInteractionEnabled = NO;
+    self.selecBtn.frame = CGRectMake( KScreenW -30 *kWidthScale, 10 *kHeightScale, 20 *kWidthScale, 20 *kWidthScale);
+    [self.selecBtn setImage:[UIImage imageNamed:@"order_confirm_unchecked"] forState:UIControlStateNormal];
     [self.contentView addSubview:self.selecBtn];
     
 }
@@ -36,13 +37,24 @@
 {
     self.titleLab.text = model.name;
     if (model.isSelect) {
-          [self.selecBtn setImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
+          [self.selecBtn setImage:[UIImage imageNamed:@"order_confirm_checked"] forState:UIControlStateNormal];
     }else{
-          [self.selecBtn setImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
+          [self.selecBtn setImage:[UIImage imageNamed:@"order_confirm_unchecked"] forState:UIControlStateNormal];
     }
     
 }
-
+- (void)setDetailValueWithModel:(OrderConfirmPayModel *)model
+{
+    self.titleLab.text = model.name;
+    if (model.check) {
+        [self.selecBtn setImage:[UIImage imageNamed:@"order_confirm_checked"] forState:UIControlStateNormal];
+    }else{
+        [self.selecBtn setImage:[UIImage imageNamed:@"order_confirm_unchecked"] forState:UIControlStateNormal];
+    }
+    
+    
+  
+}
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code

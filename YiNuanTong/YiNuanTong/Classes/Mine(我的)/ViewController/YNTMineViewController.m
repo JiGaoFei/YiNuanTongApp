@@ -34,7 +34,7 @@
 #import "PhoneAccessViewController.h"
 #import "LoginViewController.h"
 #import "MineInvationViewController.h"
-
+#import "ModifiyViewController.h"
 @interface YNTMineViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 /**collectionView*/
 @property (nonatomic,strong) UICollectionView  * collectionView;
@@ -135,7 +135,7 @@ static NSString *minLogout = @"logoutCell";
     
     // 六个cell数据源
     self.sixCellTitleArr = @[@"公司信息",@"mine-收获地址",@"我的订单",@"信用申请",@"mine-确认收货",@"申请退换"].mutableCopy;
-    self.lineTitleArr = @[@"常见问题",@"订货流程",@"意见反馈",@"联系我们1",@"我的邀请"].mutableCopy;
+    self.lineTitleArr = @[@"常见问题",@"订货流程",@"意见反馈",@"联系我们1",@"mine_change_the_password",@"我的邀请"].mutableCopy;
 }
 
 /**
@@ -194,9 +194,9 @@ static NSString *minLogout = @"logoutCell";
         UserInfo *userInfo = [UserInfo currentAccount];
         NSString *group_id = [NSString stringWithFormat:@"%@",userInfo.groupid];
         if ([group_id isEqualToString:@"14"]) {
-            return 5;
+            return 6;
         }else{
-            return 4;
+            return 5;
         }
       
     }
@@ -505,13 +505,21 @@ static NSString *minLogout = @"logoutCell";
                 break;
             case 4:
             {
-                MineInvationViewController *mineInvationVC = [[MineInvationViewController alloc]init];
+                ModifiyViewController *modifiyVC = [[ModifiyViewController alloc]init];
                 
-              [self.navigationController pushViewController:mineInvationVC animated:YES];
+              [self.navigationController pushViewController:modifiyVC animated:YES];
                 NSLog(@"点击的是我的邀请码");
             }
                 break;
 
+            case 5:
+            {
+                MineInvationViewController *mineInvationVC = [[MineInvationViewController alloc]init];
+                
+                [self.navigationController pushViewController:mineInvationVC animated:YES];
+                NSLog(@"点击的是我的邀请码");
+            }
+                break;
 
                 
             default:

@@ -43,7 +43,7 @@
         // 说明是第一次启动,要添加引导页
         GuideViewController *guideVC = [[GuideViewController alloc]init];
         
-        guideVC.imageArray = @[@"启动页1",@"启动页2",@"启动页3"];
+        guideVC.imageArray = @[@"引导页1",@"引导页2",@"引导页3",@"引导页4"];
         //将引导页设置当前window的根控制器
         self.window.rootViewController = guideVC;
     }else{

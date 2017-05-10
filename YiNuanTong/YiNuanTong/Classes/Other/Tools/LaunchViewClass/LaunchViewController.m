@@ -11,6 +11,7 @@
 #import "UIImageView+WebCache.h"
 #import <AFNetworking/AFNetworking.h>
 #import "YNTUITools.h"
+#import "YNTNetworkManager.h"
 #define kUserDefaults [NSUserDefaults standardUserDefaults]
 static NSString *const adImageName = @"adImageName";
 static NSString *const adUrl = @"adUrl";
@@ -20,9 +21,17 @@ static NSString *const adUrl = @"adUrl";
 @property (nonatomic, strong) UIImageView *adView;
 @property (nonatomic,strong) NSTimer *timer;
 @property (strong, nonatomic) UIButton *jumpBtn;
+@property (nonatomic,strong) NSMutableDictionary *dataDic;
 @end
 
 @implementation LaunchViewController
+ - (NSMutableDictionary *)dataDic
+{
+    if (!_dataDic) {
+        self.dataDic = [[NSMutableDictionary alloc]init];
+    }
+    return _dataDic;
+}
 // 重写界面加载后再实现动画
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -35,13 +44,26 @@ static NSString *const adUrl = @"adUrl";
     [super viewDidLoad];
   
    //  [self setUpChildrenViews];
-    [self setupAdvert];
 
- 
+
+    [self loadData];
     
 
     
     // Do any additional setup after loading the view from its nib.
+}
+#pragma mark -加载数据
+- (void)loadData
+{
+    NSString *url = [NSString stringWithFormat:@"%@api/app.php",baseUrl];
+    NSDictionary *params = @{@"act":@"tuiguang"};
+    [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
+        self.dataDic = responseObject;
+            [self setupAdvert];
+    } enError:^(NSError *error) {
+        
+    }];
+    
 }
 /** 创建子视图 */
 - (void)setUpChildrenViews
@@ -54,7 +76,7 @@ static NSString *const adUrl = @"adUrl";
     _jumpBtn.backgroundColor = RGBA(0, 0, 0, 0.6);
     _jumpBtn.layer.cornerRadius = 5;
     _jumpBtn.layer.masksToBounds = YES;
-    [_jumpBtn setTitle:@"跳转(3)" forState:UIControlStateNormal];
+    [_jumpBtn setTitle:@"跳过(3)" forState:UIControlStateNormal];
     _jumpBtn.titleLabel.font = [UIFont systemFontOfSize:17 *kHeightScale];
     [_jumpBtn addTarget:self action:@selector(jumpBtnAction:) forControlEvents:UIControlEventTouchUpInside];
    
@@ -68,10 +90,12 @@ static NSString *const adUrl = @"adUrl";
     
    //  int i = arc4random()%9;
     
-    // NSURL *url = [NSURL URLWithString:picArr[i]];
- //   NSString *filePath = [self getFilePathWithImageName:[kUserDefaults valueForKey:adImageName]];
- //_adView.image = [UIImage imageWithContentsOfFile:filePath];
-    self.adView.image = [UIImage imageNamed:@"广告图"];
+     NSURL *url = [NSURL URLWithString:self.dataDic[@"data"][@"img"]];
+    NSString *filePath = [self getFilePathWithImageName:[kUserDefaults valueForKey:adImageName]];
+ _adView.image = [UIImage imageWithContentsOfFile:filePath];
+//  self.adView.image = [UIImage imageNamed:@"广告图"];
+  
+    [self.adView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"广告图"]];
   
 }
 - (void)jumpBtnAction:(UIButton *)sender
@@ -112,12 +136,20 @@ static NSString *const adUrl = @"adUrl";
 - (void)tap
 {
     // 跳转到界面 => safari
-    NSURL *url = [NSURL URLWithString:@"http://www.1nuantong.com"];
-    UIApplication *app = [UIApplication sharedApplication];
-    if ([app canOpenURL:url]) {
-        [app openURL:url];
+    NSString *str = [NSString stringWithFormat:@"%@",self.dataDic[@"data"][@"link"]];
+    if ([str isEqualToString:@""]) {
+        // 链接为空时
+        return;
+    }else{
+        // 链接不为空时
+        NSURL *url = [NSURL URLWithString:str];
+        UIApplication *app = [UIApplication sharedApplication];
+        if ([app canOpenURL:url]) {
+            [app openURL:url];
+        }
+        
     }
- 
+   
 }
 /**设置启动图片 */
 - (void)timeChange
@@ -135,7 +167,7 @@ static NSString *const adUrl = @"adUrl";
     i--;
     
     // 设置跳转按钮文字
-    [_jumpBtn setTitle:[NSString stringWithFormat:@"跳转 (%d)",i] forState:UIControlStateNormal];
+    [_jumpBtn setTitle:[NSString stringWithFormat:@"跳过 (%d)",i] forState:UIControlStateNormal];
 }
 
 #pragma mark - 处理广告页
@@ -147,6 +179,7 @@ static NSString *const adUrl = @"adUrl";
         // 1.判断沙盒中是否存在广告图片，如果存在，直接显示
         NSString *filePath = [self getFilePathWithImageName:[kUserDefaults valueForKey:adImageName]];
     BOOL isExist = [self isFileExistWithFilePath:filePath];
+    isExist = YES;
     if (isExist) { // 图片存在
         [self setUpChildrenViews];
     }else{
@@ -156,6 +189,7 @@ static NSString *const adUrl = @"adUrl";
         
         // 设置tabBarController为当前app的主window的rootViewController
         keyWindow.rootViewController = tabBarController;
+        
 
     }
     
@@ -180,9 +214,10 @@ static NSString *const adUrl = @"adUrl";
     
     // TODO 请求广告接口
     // 这里原本应该采用广告接口，现在用一些固定的网络图片url代替
-    
-    NSArray *imageArray = @[@"http://c.hiphotos.baidu.com/image/pic/item/9d82d158ccbf6c81927f8fe8be3eb13533fa4061.jpg",@"http://c.hiphotos.baidu.com/image/pic/item/b17eca8065380cd7538232eda344ad3459828116.jpg",@"http://d.hiphotos.baidu.com/image/pic/item/0824ab18972bd407b60bbaf779899e510eb309ef.jpg",@"http://c.hiphotos.baidu.com/image/pic/item/060828381f30e924f230662e4e086e061d95f71d.jpg",@"http://c.hiphotos.baidu.com/image/pic/item/58ee3d6d55fbb2fb31c9af124d4a20a44723dcd4.jpg",@"http://f.hiphotos.baidu.com/image/pic/item/14ce36d3d539b60087baa6b7eb50352ac65cb7be.jpg",@"http://e.hiphotos.baidu.com/image/pic/item/838ba61ea8d3fd1f1534ca30324e251f95ca5ffe.jpg"];
-    NSString *imageUrl = imageArray[arc4random() % imageArray.count];
+//    
+//    NSArray *imageArray = @[@"http://c.hiphotos.baidu.com/image/pic/item/9d82d158ccbf6c81927f8fe8be3eb13533fa4061.jpg",@"http://c.hiphotos.baidu.com/image/pic/item/b17eca8065380cd7538232eda344ad3459828116.jpg",@"http://d.hiphotos.baidu.com/image/pic/item/0824ab18972bd407b60bbaf779899e510eb309ef.jpg",@"http://c.hiphotos.baidu.com/image/pic/item/060828381f30e924f230662e4e086e061d95f71d.jpg",@"http://c.hiphotos.baidu.com/image/pic/item/58ee3d6d55fbb2fb31c9af124d4a20a44723dcd4.jpg",@"http://f.hiphotos.baidu.com/image/pic/item/14ce36d3d539b60087baa6b7eb50352ac65cb7be.jpg",@"http://e.hiphotos.baidu.com/image/pic/item/838ba61ea8d3fd1f1534ca30324e251f95ca5ffe.jpg"];
+//    NSString *imageUrl = imageArray[arc4random() % imageArray.count];
+    NSString *imageUrl = self.dataDic[@"data"][@"link"];
     
     // 获取图片名:43-130P5122Z60-50.jpg
     NSArray *stringArr = [imageUrl componentsSeparatedByString:@"/"];

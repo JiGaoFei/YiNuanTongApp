@@ -17,6 +17,8 @@
 @property (nonatomic,strong) NSString *logo;
 /**是否选中*/
 @property (nonatomic,assign) BOOL isSelect;
+/** 是否勾选 */
+@property (nonatomic,assign) BOOL check;
 
 
 @end

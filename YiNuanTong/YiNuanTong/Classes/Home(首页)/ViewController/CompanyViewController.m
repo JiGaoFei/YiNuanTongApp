@@ -9,14 +9,13 @@
 #import "CompanyViewController.h"
 #import "YNTUITools.h"
 #import "CompanyCell.h"
-#import "DQAreasView.h"
-#import "DQAreasModel.h"
+#import "GFAddressPicker.h"
 #import <AVFoundation/AVFoundation.h>
 #import "YNTNetworkManager.h"
 #import <AFNetworking/AFNetworking.h>
 #import "LoginViewController.h"
 #import "Examine.h"
-@interface CompanyViewController ()<UITableViewDelegate,UITableViewDataSource,DQAreasViewDelegate,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@interface CompanyViewController ()<UITableViewDelegate,UITableViewDataSource,GFAddressPickerDelegate,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 @property (nonatomic, strong) UIImagePickerController *picker;
 @property (nonatomic,strong) UIImageView *headImageView;
 @property (nonatomic,strong) UIImageView *oneImgView;
@@ -30,7 +29,7 @@
 /**占位数组*/
 @property (nonatomic,strong) NSMutableArray  * placeHoldTitle;
 /**所在地*/
-@property (nonatomic, strong) DQAreasView *areasView;
+@property (nonatomic, strong) GFAddressPicker *areasView;
 /**城市addressCell*/
 @property (nonatomic,strong) UITableViewCell  * addressCell;
 // 反馈信息文字框
@@ -157,9 +156,7 @@ static NSString *cellling =@"cell";
     UILabel *titleLab = [YNTUITools createLabel:CGRectMake(KScreenW /2 -70, 20, 140, 40) text:@"完善公司基本信息" textAlignment:NSTextAlignmentCenter textColor:[UIColor whiteColor] bgColor:nil font:17];
     [self.view addSubview:titleLab];
 
-    // 创建城市选择器
-    self.areasView = [DQAreasView new];
-    self.areasView.delegate = self;
+  
 
     
     // 创建tableView
@@ -318,7 +315,14 @@ cell.textFiled.placeholder = self.placeHoldTitle[indexPath.row];
     if (indexPath.row==1) {
         NSLog(@"我是下拉选择");
         [self.view endEditing:YES];
-        [self.areasView startAnimationFunction];
+        // 创建城市选择器
+        [self.areasView removeFromSuperview];
+        self.areasView = [GFAddressPicker new];
+        self.areasView  = [[GFAddressPicker alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+        [self.areasView  updateAddressAtProvince:@"河南省" city:@"郑州市" town:@"金水区"];
+        self.areasView .delegate = self;
+        self.areasView.font = [UIFont boldSystemFontOfSize:14];
+        [self.view addSubview:self.areasView];
     }
     
 }
@@ -352,18 +356,24 @@ cell.textFiled.placeholder = self.placeHoldTitle[indexPath.row];
     }
 }
 
-#pragma mark -城市选择器的代理方法
 
-- (void)clickAreasViewEnsureBtnActionAreasDate:(DQAreasModel *)model{
-    
-  self.addressCell.textLabel.text = [NSString stringWithFormat:@"%@ %@ %@",model.Province,model.city,model.county];
-    
-    self.selectAddress =  [NSString stringWithFormat:@"%@ %@ %@",model.Province,model.city,model.county];
+#pragma mark -城市选择器的代理方法
+- (void)GFAddressPickerWithProvince:(NSString *)province city:(NSString *)city town:(NSString *)area
+{
+    self.addressCell.textLabel.text = [NSString stringWithFormat:@"%@ %@ %@",province,city,area];
+    self.selectAddress =[NSString stringWithFormat:@"%@ %@ %@",province,city,area];
     // 赋值
-    self.province = model.Province;
-    self.city = model.city;
-    self.area = model.county;
+    self.province = province;
+    self.city = city;
+    self.area = area;
+    [self.areasView removeFromSuperview];
 }
+- (void)GFAddressPickerCancleAction
+{
+    [self.areasView removeFromSuperview];
+}
+
+
 #pragma mark - 监听输入框的改变
 - (void)textFieldChanged:(NSNotification *)info {
     

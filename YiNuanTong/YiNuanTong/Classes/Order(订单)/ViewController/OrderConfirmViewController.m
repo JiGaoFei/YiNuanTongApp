@@ -134,8 +134,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
 
     self.remarks = @"";
     self.isFold = NO;
-    self.isPayFold = YES;
-    self.isShippingFold = YES;
+
     [self loadData];
     [self setUpNavRightBtn];
 }
@@ -339,108 +338,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
     
     self.bagView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 100*kHeightScale)];
     
-//    // 配送方式
-//    UILabel *line1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 1)];
-//    line1.backgroundColor = RGBA(241, 241, 241, 1);
-//    [_bagView addSubview:line1];
-//    
-//    UILabel *lab1  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 15 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"配送方式" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
-//    [_bagView addSubview:lab1];
-//    self.shipnamelab = [[UILabel alloc]initWithFrame:CGRectMake(90*kWidthScale, 15*kHeightScale, 120*kWidthScale, 16*kHeightScale)];
-//    self.shipnamelab.textColor = [UIColor grayColor];
-//    self.shipnamelab.font = [UIFont systemFontOfSize:15 *kHeightScale];
-//    self.shipnamelab.textAlignment = NSTextAlignmentLeft;
-//    [_bagView addSubview:self.shipnamelab];
-//    
-//    
-//    UIImageView *arrow1 = [[UIImageView alloc]init];
-//    arrow1.frame = CGRectMake(KScreenW - 40 *kWidthScale, 10 *kHeightScale, 25 *kWidthScale, 16 *kHeightScale) ;
-//    arrow1.image = [UIImage imageNamed:@"arrow@2x"];
-//    [_bagView addSubview:arrow1];
-//    
-//    self.shipView = [[OrderNewDetailShipTypeView alloc]initWithFrame:CGRectMake(0,45 *kHeightScale, KScreenW, 90 *kHeightScale)];
-//    __weak typeof(_shipView)shipSelf = _shipView;
-//    _shipView.mianfeiBtnBlook = ^()
-//    {
-//        NSLog(@"送货上门");
-//        
-//        [shipSelf.mianfeiBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
-//        [shipSelf.ziquBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
-//         weakSelf.shipping_id = @"1";
-//        // actid为1为送货上门
-////        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":weakSelf.good_id,@"act":@"shipping",@"actid":@"1"};
-////        [weakSelf modifiyRequestDataWithDic:params withTitle:@"送货上门"];
-////        
-//    };
-//    _shipView.ziquBtnBlook = ^()
-//    {
-//        weakSelf.shipping_id = @"2";
-//        [shipSelf.mianfeiBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
-//        [shipSelf.ziquBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
-////        NSLog(@"上门自取");
-////        // actid为2为上门自取
-////        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":weakSelf.good_id,@"act":@"shipping",@"actid":@"2"};
-////        [weakSelf modifiyRequestDataWithDic:params withTitle:@"上门自取"];
-////        
-//    };
-//    
-//    
-//    [_bagView addSubview:_shipView];
-//    
-//    
-//    
-//    // 支付方式
-//    UILabel *line3 = [[UILabel alloc]initWithFrame:CGRectMake(0, 170 *kHeightScale, KScreenW, 1)];
-//    line3.backgroundColor = RGBA(241, 241, 241, 1);
-//    [_bagView addSubview:line3];
-//    
-//    UILabel *lab3  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 180 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"支付方式" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
-//    [_bagView addSubview:lab3];
-//    self.payNameLab = [[UILabel alloc]initWithFrame:CGRectMake(90*kWidthScale, 180*kHeightScale, 120*kWidthScale, 16*kHeightScale)];
-//    self.payNameLab.textColor = [UIColor grayColor];
-//    self.payNameLab.font = [UIFont systemFontOfSize:15 *kHeightScale];
-//    self.payNameLab.textAlignment = NSTextAlignmentLeft;
-//    [_bagView addSubview:self.payNameLab];
-//    
-//    
-//    UIImageView *arrow3 = [[UIImageView alloc]init];
-//    arrow3.frame = CGRectMake(KScreenW - 40 *kWidthScale, 180*kHeightScale, 25 *kWidthScale, 16*kHeightScale) ;
-//    arrow3.image = [UIImage imageNamed:@"arrow@2x"];
-//    [_bagView addSubview:arrow3];
-//    
-//    self.payView = [[OrderPayTypeView alloc]initWithFrame:CGRectMake(0, 210 *kHeightScale, KScreenW, 90 *kHeightScale)];
-//    [_bagView addSubview:_payView];
-// 
-//    __weak typeof(_payView)payViewSelf = _payView;
-//    _payView.weChatPayBtnBlook = ^(){
-//        NSLog(@"微信支付回调");
-//        [payViewSelf.weChatPayBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
-//        [payViewSelf.aliPayBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
-//        weakSelf.pay_id = @"1";
-//      
-//       
-//        // actid为1为微信支付
-////        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":weakSelf.good_id,@"act":@"pay",@"actid":@"1"};
-////        [weakSelf modifiyRequestDataWithDic:params withTitle:@"修改微信"];
-////        ;
-//    };
-//    _payView.aliPayBtnBlook = ^(){
-//        
-//        NSLog(@"支付宝支付回调");
-//        [payViewSelf.weChatPayBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
-//        [payViewSelf.aliPayBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
-//           weakSelf.pay_id = @"2";
-//        // actid 为2为支付宝支付
-////        NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":weakSelf.good_id,@"act":@"pay",@"actid":@"2"};
-////        [weakSelf modifiyRequestDataWithDic:params withTitle:@"修改支付宝"];
-//    };
-//    
-//    
-//    
-//    // 发票信息
-//    UILabel *line4= [[UILabel alloc]initWithFrame:CGRectMake(0, 335 *kHeightScale, KScreenW, 1)];
-//    line4.backgroundColor =RGBA(241, 241, 241, 1);
-//    [_bagView addSubview:line4];
+
     
     UILabel *lab4  = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 10 *kHeightScale, 80 *kWidthScale, 16 *kHeightScale) text:@"备注信息:" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15*kHeightScale];
     [_bagView addSubview:lab4];
@@ -470,7 +368,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
 }
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    self.tableView.contentOffset = CGPointMake(0, 700);
+    self.tableView.contentOffset = CGPointMake(0, 300);
     return YES;
 }
 // 创建底部视图
@@ -866,7 +764,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
         
         NSString *url = [NSString stringWithFormat:@"%@api/doneorder.php",baseUrl];
         UserInfo *userInfo = [UserInfo currentAccount];
-        NSDictionary *params = @{@"user_id":userInfo.user_id,@"directbuy":self.directbuy,@"address_id":self.address_id,@"shipping_id":self.shipping_id,@"remarks":@"",@"pay_id":self.pay_id};
+        NSDictionary *params = @{@"user_id":userInfo.user_id,@"directbuy":self.directbuy,@"address_id":self.address_id,@"shipping_id":self.shipping_id,@"remarks":self.textView.text,@"pay_id":self.pay_id};
         
         [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
             NSLog(@"提交订单请求数据成功%@",responseObject);

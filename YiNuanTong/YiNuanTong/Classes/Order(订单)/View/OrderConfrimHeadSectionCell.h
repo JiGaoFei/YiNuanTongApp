@@ -17,5 +17,6 @@
 @property (nonatomic,strong) UIButton *selecBtn;
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 - (void)setValueWithModel:(OrderConfirmPayModel *)model;
+- (void)setDetailValueWithModel:(OrderConfirmPayModel *)model;
 
 @end

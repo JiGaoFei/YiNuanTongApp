@@ -23,6 +23,10 @@
 {  // 标题视图
     self.titleLab = [[UILabel alloc]initWithFrame:CGRectMake(15 *kWidthScale ,12*kHeightScale, 80*kWidthScale, 15 *kWidthScale)];
     [self addSubview:self.titleLab];
+    // 副标题
+    self.subtitleLab= [[UILabel alloc]initWithFrame:CGRectMake(KScreenW - 115 *kWidthScale ,12*kHeightScale, 100*kWidthScale, 15 *kWidthScale)];
+    self.subtitleLab.font = [UIFont systemFontOfSize:13 *kHeightScale];
+    [self addSubview:self.subtitleLab];
     // 旋转按钮
     self.roateBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.roateBtn.frame = CGRectMake(KScreenW - 30 *kWidthScale, 12*kHeightScale, 22*kWidthScale, 22 *kWidthScale);

@@ -10,13 +10,12 @@
 #import "AddNewAddressCell.h"
 #import "AddNewCountyCell.h"
 #import "AddressSwitchCell.h"
-#import "DQAreasView.h"
-#import "DQAreasModel.h"
+#import "GFAddressPicker.h"
 #import "SingLeton.h"
 #import "YNTUITools.h"
 #import "YNTNetworkManager.h"
 #import "MineAddressModel.h"
-@interface AddressEditViewController ()<UITableViewDelegate,UITableViewDataSource,DQAreasViewDelegate>
+@interface AddressEditViewController ()<UITableViewDelegate,UITableViewDataSource,GFAddressPickerDelegate>
 /**tableView*/
 @property (nonatomic,strong) UITableView  * tableView;
 /**titleArray*/
@@ -24,7 +23,7 @@
 /**placeHolderArray*/
 @property (nonatomic,strong) NSMutableArray  * placeHolderArr;
 /**所在地*/
-@property (nonatomic, strong) DQAreasView *areasView;
+@property (nonatomic, strong) GFAddressPicker *areasView;
 @property (nonatomic,strong) AddNewCountyCell *addressCell;
 /**是否设置为默认*/
 @property (nonatomic,strong) NSString  * isDefault;
@@ -119,9 +118,7 @@ static NSString *addressSwitchCell = @"addressSwichCell";
     [self.tableView registerClass:[AddressSwitchCell class] forCellReuseIdentifier:addressSwitchCell];
     
     [self.view addSubview:self.tableView];
-    // 创建城市选择器
-    self.areasView = [DQAreasView new];
-    self.areasView.delegate = self;
+    
     
 }
 
@@ -318,19 +315,29 @@ static NSString *addressSwitchCell = @"addressSwichCell";
     if (indexPath.row ==2) {
         NSLog(@"点击的是省市区县");
         [self.view endEditing:YES];
-        [self.areasView startAnimationFunction];
+        // 创建城市选择器
+        [self.areasView removeFromSuperview];
+        self.areasView = [GFAddressPicker new];
+        self.areasView  = [[GFAddressPicker alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+        [self.areasView  updateAddressAtProvince:@"河南省" city:@"郑州市" town:@"金水区"];
+        self.areasView .delegate = self;
+        self.areasView.font = [UIFont boldSystemFontOfSize:14];
+        [self.view addSubview:self.areasView];
     }
     
 }
 #pragma mark -城市选择器的代理方法
-
-- (void)clickAreasViewEnsureBtnActionAreasDate:(DQAreasModel *)model{
-    
-    self.addressCell.detailNameLab.text = [NSString stringWithFormat:@"%@ %@ %@",model.Province,model.city,model.county];
-    self.provinceAndCity =[NSString stringWithFormat:@"%@ %@ %@",model.Province,model.city,model.county];
-    
-    
+- (void)GFAddressPickerWithProvince:(NSString *)province city:(NSString *)city town:(NSString *)area
+{
+    self.addressCell.detailNameLab.text = [NSString stringWithFormat:@"%@ %@ %@",province,city,area];
+    self.provinceAndCity =[NSString stringWithFormat:@"%@ %@ %@",province,city,area];
+    [self.areasView removeFromSuperview];
 }
+- (void)GFAddressPickerCancleAction
+{
+    [self.areasView removeFromSuperview];
+}
+
 
 
 

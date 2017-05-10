@@ -10,7 +10,9 @@
 
 @interface OrderConfirmHeadSectionView : UIView
 @property (nonatomic,strong) UILabel *titleLab;
+@property (nonatomic,strong) UILabel *subtitleLab;
 @property (nonatomic,strong) UIButton *roateBtn;
+
 /**旋转按钮的回调*/
 @property (nonatomic,copy) void(^roateBtnBlock)();
 

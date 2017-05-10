@@ -9,8 +9,6 @@
 #import "MinCompanyViewController.h"
 #import "YNTUITools.h"
 #import "CompanyCell.h"
-#import "DQAreasView.h"
-#import "DQAreasModel.h"
 #import <AVFoundation/AVFoundation.h>
 #import "YNTNetworkManager.h"
 #import <AFNetworking/AFNetworking.h>
@@ -18,7 +16,7 @@
 #import "UserInfo.h"
 #import "MineCompanyModel.h"
                                                                                                                                                                       
-@interface MinCompanyViewController ()<UITableViewDelegate,UITableViewDataSource,DQAreasViewDelegate,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@interface MinCompanyViewController ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 
 @property (nonatomic, strong) UIImagePickerController *picker;
@@ -32,8 +30,7 @@
 @property (nonatomic,strong) UITableView  * tableView;
 /**占位数组*/
 @property (nonatomic,strong) NSMutableArray  * placeHoldTitle;
-/**所在地*/
-@property (nonatomic, strong) DQAreasView *areasView;
+
 /**城市addressCell*/
 @property (nonatomic,strong) UITableViewCell  * addressCell;
 // 反馈信息文字框
@@ -155,11 +152,7 @@ static NSString *cellling =@"cell";
     // 创建审核进度lab
     UILabel *titleLab = [YNTUITools createLabel:CGRectMake(KScreenW /2 -70, 20, 140, 40) text:@"完善公司基本信息" textAlignment:NSTextAlignmentCenter textColor:[UIColor whiteColor] bgColor:nil font:17];
     [self.view addSubview:titleLab];
-    
-    // 创建城市选择器
-    self.areasView = [DQAreasView new];
-    self.areasView.delegate = self;
-    
+
     
     // 创建tableView
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, KScreenW, kScreenH) style:UITableViewStylePlain];
