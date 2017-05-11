@@ -8,7 +8,6 @@
 
 #import "GFChooseMoreTitleCell.h"
 #import "YNTUITools.h"
-#import "GFBageLable.h"
 #import "HomeShopListSizeModel.h"
 @implementation GFChooseMoreTitleCell
  - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -23,7 +22,7 @@
 //加载视图
 - (void)setUpChildrenViews
 {
-    self.nameLab= [[GFBageLable alloc]initWithFrame:CGRectMake(-15*kWidthScale, 30,80 *kHeightScale,20 *kWidthScale)];
+    self.nameLab= [[UILabel alloc]initWithFrame:CGRectMake(-15*kWidthScale, 30,80 *kHeightScale,20 *kWidthScale)];
     self.nameLab.layer.borderColor =[RGBA(220, 220, 220, 1) CGColor];
     self.nameLab.layer.cornerRadius = 5;
     self.nameLab.layer.masksToBounds = YES;
