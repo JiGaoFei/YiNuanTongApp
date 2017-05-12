@@ -35,6 +35,7 @@ static NSString *identifierCollectionCell = @"orderCollectionViewCell";
     if ([super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         // 创建视图
         [self setUpChildrenViews];
+    
     }
     return self;
 }
@@ -52,8 +53,7 @@ static NSString *identifierCollectionCell = @"orderCollectionViewCell";
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    // 注册
-    [self.collectionView registerClass:[OrderCollectionViewCell class] forCellWithReuseIdentifier:identifierCollectionCell];
+
     [self.contentView addSubview:_collectionView];
 }
 #pragma mark -代理方法
@@ -72,18 +72,34 @@ static NSString *identifierCollectionCell = @"orderCollectionViewCell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+NSString *str= [NSString stringWithFormat:@"cell%ld%ld",indexPath.section,indexPath.row];
     
-    OrderCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifierCollectionCell forIndexPath:indexPath];
+    // 注册
+    [self.collectionView registerClass:[OrderCollectionViewCell class] forCellWithReuseIdentifier:str];
+     OrderCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: str forIndexPath:indexPath];
+    
+    if (!cell) {
+        cell = [[OrderCollectionViewCell alloc]init];
+        
+    }
+//    OrderCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifierCollectionCell forIndexPath:indexPath];
     cell.cornerMarkLab.textAlignment = NSTextAlignmentCenter;
     
     // 设置颜色
       HomeShopListSizeModel *model = self.modelArray[indexPath.row];
-    if (model.isHave) {
+    if (indexPath.row == 0) {
         cell.nameLab.textColor = CGRBlue;
         cell.nameLab.layer.borderColor =[CGRBlue CGColor];
         cell.nameLab.layer.borderWidth = 1;
         cell.nameLab.layer.cornerRadius = 5;
         cell.nameLab.layer.masksToBounds = YES;
+    }else{
+        cell.nameLab.textColor =[UIColor grayColor];
+        cell.nameLab.layer.borderColor =[[UIColor grayColor]CGColor];
+        cell.nameLab.layer.borderWidth = 1;
+        cell.nameLab.layer.cornerRadius = 5;
+        cell.cornerMarkLab.backgroundColor = [UIColor grayColor];
+
     }
   
     cell.nameLab.text = model.name;
@@ -126,13 +142,20 @@ static NSString *identifierCollectionCell = @"orderCollectionViewCell";
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"点击的是什么%ld",(long)indexPath.row);
+    
     for (int i = 0; i<self.modelArray.count; i++) {
             HomeShopListSizeModel *model = self.modelArray[i];
         model.isHave = NO;
         [self.modelArray replaceObjectAtIndex:i withObject:model];
     }
-   
-    HomeShopListSizeModel *model = self.modelArray[indexPath.row];
+        HomeShopListSizeModel *model = self.modelArray[indexPath.row];
+    // 回调出去
+    if (self.clickedCollectionCellBlock) {
+        self.clickedCollectionCellBlock(indexPath.row,model.attrid);
+    }
+
+    
+
     [self.modelArray removeObject:model];
     model.isHave = YES;
     [self.modelArray insertObject:model atIndex:0];

@@ -17,6 +17,8 @@
 @property (nonatomic,strong) UILabel *listSizeLabel;
 //商品价格
 @property (nonatomic,strong) UILabel *listPriceLabel;
+//是否是新产品
+@property (nonatomic,strong) UILabel *newlab;
 // 购物车btn
 @property (nonatomic,strong) UIButton *listCarBtn;
 @property (nonatomic,copy) void(^carBtnClicked)(NSInteger index);

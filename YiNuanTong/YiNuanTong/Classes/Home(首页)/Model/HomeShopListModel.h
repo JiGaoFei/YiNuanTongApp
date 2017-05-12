@@ -18,6 +18,10 @@
 @property (nonatomic,copy) NSString *good_id;
 /**价格*/
 @property (nonatomic,copy) NSString *price;
+/**是否是新的 1是*/
+@property (nonatomic,assign) NSInteger  is_new;
+
+
 
 
 

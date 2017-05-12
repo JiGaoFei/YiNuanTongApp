@@ -207,6 +207,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
     // 加载数据
     [self loadSizeData];
     self.tabBarController.tabBar.hidden = YES;
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated

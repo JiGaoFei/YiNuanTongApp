@@ -26,9 +26,21 @@
 - (void) setUpChildrenViews
 {
     // 创建商品图片
-    self.listImageView = [YNTUITools createImageView:CGRectMake(6 *kWidthScale, 10 *kHeightScale, 120 *kWidthScale, 105 *kHeightScale) bgColor:nil imageName:@"女1"];
+    self.listImageView = [YNTUITools createImageView:CGRectMake(6 *kWidthScale, 10 *kHeightScale, 108 *kWidthScale, 108 *kHeightScale) bgColor:nil imageName:@"女1"];
+    self.listImageView.userInteractionEnabled = YES;
     [self addSubview:self.listImageView];
     
+   self.newlab=  [[UILabel alloc]initWithFrame:CGRectMake(100*kWidthScale, 5 *kHeightScale, 24 *kWidthScale, 24 *kWidthScale)];
+    self.newlab.text = @"新";
+    self.newlab.font = [UIFont systemFontOfSize:8];
+    self.newlab.textColor = [UIColor redColor];
+    self.newlab.backgroundColor = RGBA(255, 0, 0, 1);
+    self.newlab.layer.cornerRadius = 12 *kWidthScale;
+    self.newlab.layer.masksToBounds = YES;
+    self.newlab.textAlignment = NSTextAlignmentCenter;
+     [self.contentView addSubview:self.newlab];
+    [self.contentView bringSubviewToFront:self.newlab];
+   
     // 创建商品名
     self.listNameLabel = [YNTUITools createLabel:CGRectMake(135 *kWidthScale, 15 *kHeightScale, KScreenW - 145 *kWidthScale, 40 *kHeightScale) text:@"" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15 *kHeightScale];
     self.listNameLabel.numberOfLines = 0;

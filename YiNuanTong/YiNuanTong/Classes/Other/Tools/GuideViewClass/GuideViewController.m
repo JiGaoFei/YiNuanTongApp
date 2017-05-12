@@ -39,7 +39,7 @@
         if (i == self.imageArray.count - 1) {
             UIButton *enterButton = [UIButton buttonWithType:UIButtonTypeSystem];
       
-            enterButton.frame = CGRectMake((KScreenW - 220 *kWidthScale ) / 2, kScreenH - 130 *kHeightScale, 220 *kWidthScale, 50*kHeightScale);
+            enterButton.frame = CGRectMake((KScreenW - 220 *kWidthScale ) / 2, kScreenH - 200 *kHeightScale, 220 *kWidthScale, 150*kHeightScale);
             
             [imageView addSubview:enterButton];
             // 打开交互

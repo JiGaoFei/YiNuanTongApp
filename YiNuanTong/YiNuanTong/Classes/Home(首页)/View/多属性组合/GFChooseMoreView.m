@@ -225,13 +225,12 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     _titleOneLab.text = @"上进下出:";
  _titleOneLab.font = [UIFont fontWithName:@ "Helvetica-Bold"  size:(17.0)];
     [self addSubview:_titleOneLab];
-      self.titleOnetableView = [[UITableView alloc]initWithFrame:CGRectMake(100 *kWidthScale, 245*kHeightScale  ,KScreenW - 98 *kWidthScale, 45 *kHeightScale)];
-
-    self.titleOnetableView.backgroundColor = [UIColor greenColor];
+      self.titleOnetableView = [[UITableView alloc]initWithFrame:CGRectMake(100 *kWidthScale, 240*kHeightScale  ,KScreenW - 98 *kWidthScale, 50 *kHeightScale)];
       self.titleOnetableView.delegate = self;
    self.titleOnetableView.dataSource = self;
    self.titleOnetableView.separatorStyle = NO;
    self.titleOnetableView.showsVerticalScrollIndicator  = NO;
+    
     [self.titleOnetableView registerClass:[GFChooseMoreOrderCell class] forCellReuseIdentifier:identifierTitleOrder];
 
     [self addSubview: self.titleOnetableView];
@@ -338,7 +337,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if ([tableView isEqual:self.titleOnetableView]) {
-        return    self.sizeDataOneArr.count;
+        return   1;
     }
     if ([tableView isEqual:self.titleTwotableView]) {
         return self.sizeDataTwoArr.count;
@@ -524,7 +523,19 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
         }
         cell.selectionStyle = UITableViewCellAccessoryNone;
         
-        
+        cell.clickedCollectionCellBlock  =  ^(NSInteger row, NSString *good_id){
+            NSLog(@"点击的是第%ld个cell",(long)row);
+
+            
+            if ([self.delegate respondsToSelector:@selector(GFChooseMoreViewLine:andWithGoodIDs:)]) {
+                [self.delegate GFChooseMoreViewLine:0 andWithGoodIDs:good_id];
+            }
+            
+
+            
+            self.selectStatus = 0;
+        };
+
        //  HomeShopListSizeModel *model = self.sizeDataOneArr[indexPath.row];
         [cell setValueWithModelArray:self.sizeDataOneArr];
        // cell.nameLab.text = model.name;
@@ -623,20 +634,21 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([tableView isEqual:self.titleOnetableView]) {
-        HomeShopListSizeModel *model = self.sizeDataOneArr[indexPath.row];
-        [self.sizeDataOneArr removeObject:model];
-     
-        if ([self.delegate respondsToSelector:@selector(GFChooseMoreViewLine:andWithGoodIDs:)]) {
-            [self.delegate GFChooseMoreViewLine:0 andWithGoodIDs:model.attrid];
-        }
-        
-        
-        [self.sizeDataOneArr insertObject:model atIndex:0];
-        [self.titleOnetableView reloadData];
-        self.titleOnetableView.contentOffset = CGPointMake(0, 0);
-        
-    
-        self.selectStatus = 0;
+      
+//              HomeShopListSizeModel *model = self.sizeDataOneArr[indexPath.row];
+//        [self.sizeDataOneArr removeObject:model];
+//     
+//        if ([self.delegate respondsToSelector:@selector(GFChooseMoreViewLine:andWithGoodIDs:)]) {
+//            [self.delegate GFChooseMoreViewLine:0 andWithGoodIDs:model.attrid];
+//        }
+//        
+//        
+//        [self.sizeDataOneArr insertObject:model atIndex:0];
+//        [self.titleOnetableView reloadData];
+//        self.titleOnetableView.contentOffset = CGPointMake(0, 0);
+//        
+//    
+//        self.selectStatus = 0;
     }
     
     if ([tableView isEqual:self.titleTwotableView]) {
@@ -704,9 +716,9 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
         return 63 *kHeightScale;
     }
     if ([tableView isEqual:self.titleOnetableView]) {
-        HomeShopListSizeModel *model = self.sizeDataOneArr[indexPath.row];
-     CGFloat  H =    [self widthForLabel:model.name fontSize:15 *kHeightScale];
-        return H +30 *kHeightScale;
+//        HomeShopListSizeModel *model = self.sizeDataOneArr[indexPath.row];
+//     CGFloat  H =    [self widthForLabel:model.name fontSize:15 *kHeightScale];
+        return 50 *kHeightScale;
     }
     if ([tableView isEqual:self.titleTwotableView]) {
         HomeShopListSizeModel *model = self.sizeDataTwoArr[indexPath.row];

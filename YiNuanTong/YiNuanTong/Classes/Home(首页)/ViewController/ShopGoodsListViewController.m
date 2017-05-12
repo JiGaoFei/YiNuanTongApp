@@ -1039,6 +1039,13 @@ static NSString *listCell = @"listCell";
     HomeShopListModel *model = self.modelArr[indexPath.row];
    
     [cell setValueWithMode:model];
+    NSString *isNew = [NSString stringWithFormat:@"%ld",(long)model.is_new];
+    if ([isNew isEqualToString:@"1"]) {
+        cell.newlab.hidden = NO;
+    }else{
+        cell.newlab.hidden =YES;
+
+    }
   
     cell.carBtnClicked = ^(NSInteger index){
         if (index == 1720) {
