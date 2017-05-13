@@ -187,6 +187,22 @@ static NSString *addressCell = @"addressCell";
            
                 [self.addressModelArr removeAllObjects];
                 [self loadData];
+                
+                if (self.confirmBlockShipiing_id) {
+                    OrderShipModel *model1 = [[OrderShipModel alloc]init];
+                    model1.consignee =model.consignee;
+                    model1.userid = model.userid;
+                    model1.address_id=model.address_id;
+                    model1.province = model.province;
+                    model1.city = model.city;
+                    model1.area = model.area;
+                    model1.address = model.address;
+                    model1.mobile = model.mobile;
+                    model1.isdefault = model.isdefault;
+
+                    self.confirmBlockShipiing_id(model1);
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
             } enError:^(NSError *error) {
                 NSLog(@"设置默认数据失败%@",error);
                

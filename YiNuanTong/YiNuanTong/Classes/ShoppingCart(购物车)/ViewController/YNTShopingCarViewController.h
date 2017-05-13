@@ -16,5 +16,6 @@
 #import "ShopSectionModel.h"
 #import "UIImageView+WebCache.h"
 @interface YNTShopingCarViewController : YNTBaseViewController
-
+/**判断是否是从详情页中进的 1是*/
+@property (nonatomic,strong) NSString  * isFromdetail;
 @end

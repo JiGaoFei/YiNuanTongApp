@@ -11,6 +11,7 @@
 #import "OrderNewDetailSectionView.h"
 #import "OrderNewDetailFooterView.h"
 #import "OrderNewDetailTableHeadView.h"
+#import "OrderNewDetilNoShippingHeadView.h"
 #import "YNTUITools.h"
 #import "OrderPayTypeView.h"
 #import "OrderConfirmViewController.h"
@@ -26,6 +27,7 @@
 #import "OrderShipModel.h"
 #import "YNTShopingCarViewController.h"
 #import "OrderConfirmHeadSectionView.h"
+
 #import "OrderConfrimHeadSectionCell.h"
 #import "OrderConfirmShippingCell.h"
 #import "OrderConfirmPayModel.h"
@@ -114,6 +116,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
 {
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
+    
  
 
 
@@ -209,6 +212,9 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
             [self setUpBottomView];
             
         }
+        
+        [self setUpTableView];
+        [self setUpBottomView];
         self.shipnamelab.text = [NSString stringWithFormat:@"(%@)",self.dataDic[@"shippingname"]];
         self.payNameLab.text =[NSString stringWithFormat:@"(%@)",self.dataDic[@"payname"]];
             self.orderStatus = [NSString stringWithFormat:@"%@",self.dataDic[@"order_status"]];
@@ -263,7 +269,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
 // 创建tableView
 - (void)setUpTableView
 {
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, kScreenH - 48 *kHeightScale) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, KScreenW, kScreenH - 48 *kHeightScale) style:UITableViewStyleGrouped];
     self.tableView.backgroundColor =[UIColor whiteColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -271,56 +277,138 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
     [self.tableView registerClass:[OrderNewDetaiTableViewCell class] forCellReuseIdentifier:identifier];
     [self.tableView registerClass:[OrderConfrimHeadSectionCell class] forCellReuseIdentifier:identifierSectionCell];
     [self.tableView registerClass:[OrderConfirmShippingCell class] forCellReuseIdentifier:identifierSectionShippCell];
-    // 表头视图
-    OrderNewDetailTableHeadView *tableHeadView = [[OrderNewDetailTableHeadView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 160)];
-    NSDictionary *shipDic = self.dataDic[@"shippads"];
-    // 收货人赋值
-    tableHeadView.customerLab.text = [NSString stringWithFormat:@"收货人:%@                                    %@",shipDic[@"consignee"],shipDic[@"mobile"]];
-    // 为订单编号赋值
-    tableHeadView.orderSnLab.text = [NSString stringWithFormat:@"订单编号:%@",self.dataDic[@"sn"]];
-    // 收货地址
-    tableHeadView.addressLab.text = [NSString stringWithFormat:@"%@%@%@%@",shipDic[@"province"],shipDic[@"city"],shipDic[@"area"],shipDic[@"address"]];
     
-    __weak typeof(tableHeadView)weakSelf = tableHeadView;
-    
-    
-    
-    // 手势回调
-    tableHeadView.tapActionBlock = ^(){
-        // 待付款状态可以改
-        if ([self.orderPostStatus isEqualToString:@"1"]) {
-            
-             AddressViewController *addressVC = [[AddressViewController alloc]init];
-              addressVC.confirmBlockShipiing_id = ^(OrderShipModel *model){
-                // 回调赋值
-                weakSelf.customerLab.text = [NSString stringWithFormat:@"收货人:%@                                %@",model.consignee,model.mobile];
-                weakSelf.addressLab.text = [NSString stringWithFormat:@"收货地址:%@%@%@",model.province,model.city,model.area];
-                weakSelf.backgroundColor = [UIColor whiteColor];
-                CGRect rec = self.tableView.frame;
-                rec.origin.y = 0;
-                self.tableView.frame = rec;
-                
-            };
-            [self.navigationController pushViewController:addressVC animated:YES];
-
-        }
+    if ([self.orderPostStatus isEqualToString:@"3"] ||[self.orderPostStatus isEqualToString:@"4"]) {
+             //
         
-           };
-    
-    
-    
-    // 打电话回调
-    tableHeadView.callBtnBloock = ^(){
-        NSLog(@"开始拨打电话了");
-        UIWebView *webView = [[UIWebView alloc]init];
-        [self.view addSubview:webView];
-        NSString *str = [NSString stringWithFormat:@"tel:%@",self.customerTel];
+        // 表头视图
+        OrderNewDetailTableHeadView *tableHeadView = [[OrderNewDetailTableHeadView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 260)];
+        NSDictionary *shipDic = self.dataDic[@"shippads"];
+        // 收货人赋值
+        tableHeadView.customerLab.text = [NSString stringWithFormat:@"收货人:%@                                    %@",shipDic[@"consignee"],shipDic[@"mobile"]];
+        // 为订单编号赋值
+        tableHeadView.orderSnLab.text = [NSString stringWithFormat:@"订单编号:%@",self.dataDic[@"sn"]];
+        // 收货地址
+        tableHeadView.addressLab.text = [NSString stringWithFormat:@"%@%@%@%@",shipDic[@"province"],shipDic[@"city"],shipDic[@"area"],shipDic[@"address"]];
+        
+        tableHeadView.shippingLab .text = [NSString stringWithFormat:@"物流公司:%@",self.dataDic[@"logistics_name"]];
+        [tableHeadView.shippingPhone setTitle:[NSString stringWithFormat:@"%@",self.dataDic[@"logistics_mobile"]] forState:UIControlStateNormal];
+        tableHeadView.shipingcallBtnBloock = ^()
+        {
+            
+            UIWebView *webView = [[UIWebView alloc]init];
+            [self.view addSubview:webView];
+            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",self.dataDic[@"logistics_mobile"]]];
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            [webView loadRequest:request];
+        };
+        
+        tableHeadView.shippingSn.text = [NSString stringWithFormat:@"%@",self.dataDic[@"logistics_sn"]];
+        __weak typeof(tableHeadView)weakSelf = tableHeadView;
+        
+        
+        
+        // 手势回调
+        tableHeadView.tapActionBlock = ^(){
+            // 待付款状态可以改
+            if ([self.orderPostStatus isEqualToString:@"1"]) {
+                
+                AddressViewController *addressVC = [[AddressViewController alloc]init];
+                addressVC.confirmBlockShipiing_id = ^(OrderShipModel *model){
+                    [self refreshData];
+                    // 回调赋值
+                    weakSelf.customerLab.text = [NSString stringWithFormat:@"收货人:%@                                %@",model.consignee,model.mobile];
+                    weakSelf.addressLab.text = [NSString stringWithFormat:@"收货地址:%@%@%@",model.province,model.city,model.area];
+                    weakSelf.backgroundColor = [UIColor whiteColor];
+                    
+                    CGRect rec = self.tableView.frame;
+                    rec.origin.y = 0;
+                    self.tableView.frame = rec;
+                    
+                };
+                [self.navigationController pushViewController:addressVC animated:YES];
+                
+            }
+            
+        };
+        
+        
+        
+        // 打电话回调
+        tableHeadView.callBtnBloock = ^(){
+            NSLog(@"开始拨打电话了");
+            UIWebView *webView = [[UIWebView alloc]init];
+            [self.view addSubview:webView];
+            NSString *str = [NSString stringWithFormat:@"tel:%@",self.customerTel];
             NSURL *url = [NSURL URLWithString:str];
-        NSURLRequest *request = [NSURLRequest requestWithURL:url];
-        [webView loadRequest:request];
-
-    };
-    self.tableView.tableHeaderView = tableHeadView;
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            [webView loadRequest:request];
+            
+        };
+        self.tableView.tableHeaderView = tableHeadView;
+        
+    }else{
+        
+        
+        
+        
+        
+        // 表头视图
+        OrderNewDetilNoShippingHeadView*tableHeadView = [[OrderNewDetilNoShippingHeadView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 160)];
+        NSDictionary *shipDic = self.dataDic[@"shippads"];
+        // 收货人赋值
+        tableHeadView.customerLab.text = [NSString stringWithFormat:@"收货人:%@                                    %@",shipDic[@"consignee"],shipDic[@"mobile"]];
+        // 为订单编号赋值
+        tableHeadView.orderSnLab.text = [NSString stringWithFormat:@"订单编号:%@",self.dataDic[@"sn"]];
+        // 收货地址
+        tableHeadView.addressLab.text = [NSString stringWithFormat:@"%@%@%@%@",shipDic[@"province"],shipDic[@"city"],shipDic[@"area"],shipDic[@"address"]];
+        
+        __weak typeof(tableHeadView)weakSelf = tableHeadView;
+        
+        
+        
+        // 手势回调
+        tableHeadView.tapActionBlock = ^(){
+            // 待付款状态可以改
+            if ([self.orderPostStatus isEqualToString:@"1"]) {
+                
+                AddressViewController *addressVC = [[AddressViewController alloc]init];
+                addressVC.confirmBlockShipiing_id = ^(OrderShipModel *model){
+                    // 回调赋值
+                    weakSelf.customerLab.text = [NSString stringWithFormat:@"收货人:%@                                %@",model.consignee,model.mobile];
+                    weakSelf.addressLab.text = [NSString stringWithFormat:@"收货地址:%@%@%@",model.province,model.city,model.area];
+                    weakSelf.backgroundColor = [UIColor whiteColor];
+                    CGRect rec = self.tableView.frame;
+                    rec.origin.y = 0;
+                    self.tableView.frame = rec;
+                    
+                };
+                [self.navigationController pushViewController:addressVC animated:YES];
+                
+            }
+            
+        };
+        
+        
+        
+        // 打电话回调
+        tableHeadView.callBtnBloock = ^(){
+            NSLog(@"开始拨打电话了");
+            UIWebView *webView = [[UIWebView alloc]init];
+            [self.view addSubview:webView];
+            NSString *str = [NSString stringWithFormat:@"tel:%@",self.customerTel];
+            NSURL *url = [NSURL URLWithString:str];
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            [webView loadRequest:request];
+            
+        };
+        self.tableView.tableHeaderView = tableHeadView;
+        // 表尾视图
+        UIView *tableFooterView = [self setUpListFooterView];
+        self.tableView.tableFooterView = tableFooterView;
+        
+    }
+ 
     // 表尾视图
     UIView *tableFooterView = [self setUpListFooterView];
     self.tableView.tableFooterView = tableFooterView;

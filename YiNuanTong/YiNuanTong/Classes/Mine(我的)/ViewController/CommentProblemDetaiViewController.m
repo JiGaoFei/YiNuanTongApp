@@ -39,7 +39,7 @@
 - (void)loadData
 {
     NSString *url = [NSString stringWithFormat:@"%@api/problem.php",baseUrl];
-    NSDictionary *params = @{@"act":@"detail",@"id":@"22"};
+    NSDictionary *params = @{@"act":@"detail",@"id":self.problem_id};
     [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
         self.dataDic = responseObject;
         NSLog(@"请求问题详情数据成功: %@",responseObject);

@@ -215,7 +215,12 @@ static NSString *identifier = @"shopCell";
 }
 - (void)goButAction:(UIButton *)sender
 {
-    self.tabBarController.selectedIndex = 0;
+    if ([self.isFromdetail isEqualToString:@"1"]) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }else{
+            self.tabBarController.selectedIndex = 0;
+    }
+
 }
 // 创建底部按钮
 - (void)setUpBottomView

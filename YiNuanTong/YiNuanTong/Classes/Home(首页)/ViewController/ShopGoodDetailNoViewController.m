@@ -170,6 +170,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
     
     NSLog(@"点击的是右边items");
     YNTShopingCarViewController *shopingVC = [[YNTShopingCarViewController alloc]init];
+    
     [self.navigationController pushViewController:shopingVC animated:YES];
     
 }
@@ -695,6 +696,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
 - (void)goShopVCBtn:(UIButton *)sender
 {
     YNTShopingCarViewController *shopCarVC = [[YNTShopingCarViewController alloc]init];
+    shopCarVC.isFromdetail = @"1";
     [self.navigationController pushViewController:shopCarVC animated:YES];
 }
 // 立刻购买点击事件

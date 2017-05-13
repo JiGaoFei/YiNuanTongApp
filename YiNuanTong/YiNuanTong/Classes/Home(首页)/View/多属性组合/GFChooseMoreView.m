@@ -245,7 +245,6 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     [self addSubview:_titleTwoLab];
     self.titleTwotableView = [[UITableView alloc]initWithFrame:CGRectMake(330 *kWidthScale, 65*kHeightScale ,45 *kHeightScale, 500 *kHeightScale)];
 
-    //  self.titleOnetableView.backgroundColor = [UIColor blueColor];
     self.titleTwotableView .transform = CGAffineTransformMakeRotation(-M_PI / 2);
    self.titleTwotableView.delegate = self;
    self.titleTwotableView.dataSource = self;
@@ -322,7 +321,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     [bagView addSubview:_goodsNumberLab];
     
     // 创建价格
-    UILabel *totallPriceLab = [[UILabel alloc]initWithFrame:CGRectMake(KScreenW - 80*kWidthScale, 10 *kHeightScale, 80*kWidthScale, 20*kHeightScale)];
+    UILabel *totallPriceLab = [[UILabel alloc]initWithFrame:CGRectMake(KScreenW - 100*kWidthScale, 10 *kHeightScale, 100*kWidthScale, 20*kHeightScale)];
     
     totallPriceLab.textColor = [UIColor redColor];
     totallPriceLab.text = @"0";
@@ -375,38 +374,6 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
             NSLog(@"点击的是规格加号,数量为%@",str);
                // 重新为数量赋值
                   model.num = str;
-//            switch (self.selectStatus) {
-//                case 0:
-//                {
-//                    // 重新为数量赋值
-//                    model.num = str;
-//                }
-//                    break;
-//                    
-//                case 1:
-//                {
-//                    // 重新为数量赋值
-//                    model.num1 = str;
-//                }
-//                    break;
-//                case 2:
-//                {
-//                    // 重新为数量赋值
-//                    model.num2 = str;
-//                }
-//                    break;
-//                case 3:
-//                {
-//                    // 重新为数量赋值
-//                    model.num3 = str;
-//                }
-//                    break;
-//                    
-//                default:
-//                    break;
-//            }
-//          
-            
             // 更换数据源
             [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
              NSInteger number = [model.num integerValue];
@@ -432,38 +399,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
             NSLog(@"点击的是规格减号,数量为%@",str);
             // 重新为数量赋值
                 model.num = str;
-            
-//            switch (self.selectStatus) {
-//                case 0:
-//                {
-//                    // 重新为数量赋值
-//                    model.num = str;
-//                }
-//                    break;
-//                    
-//                case 1:
-//                {
-//                    // 重新为数量赋值
-//                    model.num1 = str;
-//                }
-//                    break;
-//                case 2:
-//                {
-//                    // 重新为数量赋值
-//                    model.num2 = str;
-//                }
-//                    break;
-//                case 3:
-//                {
-//                    // 重新为数量赋值
-//                    model.num3 = str;
-//                }
-//                    break;
-//                    
-//                default:
-//                    break;
-//            }
-
+ 
             // 更换数据源
             [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
             NSInteger number = [model.num integerValue];
@@ -538,16 +474,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
 
        //  HomeShopListSizeModel *model = self.sizeDataOneArr[indexPath.row];
         [cell setValueWithModelArray:self.sizeDataOneArr];
-       // cell.nameLab.text = model.name;
-//        if (indexPath.row == 0) {
-////         cell.nameLab.textColor = CGRBlue;
-////            cell.nameLab.layer.borderColor =[CGRBlue CGColor];
-////            cell.nameLab.layer.borderWidth = 1;
-////            cell.nameLab.layer.cornerRadius = 5;
-////            cell.nameLab.layer.masksToBounds = YES;
-//        }
-
-      //  [cell setValueWithModel:model];
+  
         return cell;
 
      
@@ -633,24 +560,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([tableView isEqual:self.titleOnetableView]) {
-      
-//              HomeShopListSizeModel *model = self.sizeDataOneArr[indexPath.row];
-//        [self.sizeDataOneArr removeObject:model];
-//     
-//        if ([self.delegate respondsToSelector:@selector(GFChooseMoreViewLine:andWithGoodIDs:)]) {
-//            [self.delegate GFChooseMoreViewLine:0 andWithGoodIDs:model.attrid];
-//        }
-//        
-//        
-//        [self.sizeDataOneArr insertObject:model atIndex:0];
-//        [self.titleOnetableView reloadData];
-//        self.titleOnetableView.contentOffset = CGPointMake(0, 0);
-//        
-//    
-//        self.selectStatus = 0;
-    }
-    
+
     if ([tableView isEqual:self.titleTwotableView]) {
        
         HomeShopListSizeModel *model = self.sizeDataTwoArr[indexPath.row];
@@ -716,8 +626,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
         return 63 *kHeightScale;
     }
     if ([tableView isEqual:self.titleOnetableView]) {
-//        HomeShopListSizeModel *model = self.sizeDataOneArr[indexPath.row];
-//     CGFloat  H =    [self widthForLabel:model.name fontSize:15 *kHeightScale];
+
         return 50 *kHeightScale;
     }
     if ([tableView isEqual:self.titleTwotableView]) {
@@ -797,13 +706,13 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     [self addSubview:lab];
    titleTableView = [[UITableView alloc]initWithFrame:CGRectMake(330 *kWidthScale, 20*kHeightScale + 45 *kHeightScale *index,45 *kHeightScale, 500 *kHeightScale)];
     titleTableView.backgroundColor = [UIColor greenColor];
-    //  self.titleOnetableView.backgroundColor = [UIColor blueColor];
+   
      titleTableView.transform = CGAffineTransformMakeRotation(-M_PI / 2);
      titleTableView.delegate = self;
      titleTableView.dataSource = self;
     titleTableView.separatorStyle = NO;
      titleTableView.showsVerticalScrollIndicator  = NO;
-//    [ titleTableView registerClass:[GFChooseMoreTitleCell class] forCellReuseIdentifier:identifierTitle];
+
     [self addSubview: titleTableView];
 
 }
@@ -817,11 +726,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     [self.sizeDataThreeArr removeAllObjects];
     [self.sizeDataFourArr removeAllObjects];
     
-//    self.sizeDataOneArr = params[@"a0"];
-//    self.sizeDataTwoArr=params[@"a1"];
-//    self.sizeDataThreeArr=params[@"a2"];
-//    self.sizeDataFourArr = params[@"a3"];
-//    self.attrtypeDataArr = params[@"a4"];
+
     for (HomeShopListSizeModel *model in params[@"a0"] ) {
         [self.sizeDataOneArr addObject:model];
         NSLog(@"传过来的值:%@",model.name);
@@ -879,7 +784,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     
 }
 
-// 动态为多级赋值
+
 // 动态为多级赋值
 - (void)setGFChooseMoreViewValueWithParams:(NSDictionary *)params andWithAttrtypeArr:(NSMutableArray *)modelArray andWithIndex:(NSInteger)index
 {

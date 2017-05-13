@@ -116,6 +116,8 @@ static NSString *commentCell = @"commentCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CommentProblemDetaiViewController *commentProblemDetailVC = [[CommentProblemDetaiViewController alloc]init];
+    CommenProblemModel *model = self.problemArr[indexPath.row];
+    commentProblemDetailVC.problem_id = model.problem_id;
     [self.navigationController pushViewController:commentProblemDetailVC animated:YES];
 }
 @end

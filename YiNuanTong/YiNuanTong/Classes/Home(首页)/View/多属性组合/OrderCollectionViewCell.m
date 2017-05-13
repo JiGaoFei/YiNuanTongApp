@@ -20,8 +20,8 @@
 - (void)setUpChildrenViews
 {
     
-    self.nameLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 20, 100, 20)];
-    self.nameLab.text = @"浅绿";
+    self.nameLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 20*kHeightScale, 100 *kWidthScale, 20 *kHeightScale)];
+    self.nameLab.text = @"";
     self.nameLab.textAlignment = NSTextAlignmentCenter;
     self.nameLab.layer.borderWidth = 1.0;
     self.nameLab.layer.borderColor = [[UIColor grayColor] CGColor];
@@ -29,9 +29,9 @@
     self.nameLab.layer.masksToBounds = YES;
   [self.contentView addSubview:self.nameLab];
     
-    self.cornerMarkLab = [[UILabel alloc]initWithFrame:CGRectMake(self.nameLab.frame.origin.x + self.nameLab.frame.size.width - 10, 10, 20, 20)];
+    self.cornerMarkLab = [[UILabel alloc]initWithFrame:CGRectMake(self.nameLab.frame.origin.x + self.nameLab.frame.size.width - 10*kWidthScale, 10 *kHeightScale, 20 *kWidthScale, 20*kWidthScale)];
     self.cornerMarkLab.layer.cornerRadius = 10;
-    self.cornerMarkLab.font = [UIFont systemFontOfSize:13];
+    self.cornerMarkLab.font = [UIFont systemFontOfSize:13*kHeightScale];
     self.cornerMarkLab.layer.masksToBounds = YES;
 
     self.cornerMarkLab.text = @"";

@@ -82,7 +82,7 @@ NSString *str= [NSString stringWithFormat:@"cell%ld%ld",indexPath.section,indexP
         cell = [[OrderCollectionViewCell alloc]init];
         
     }
-//    OrderCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifierCollectionCell forIndexPath:indexPath];
+
     cell.cornerMarkLab.textAlignment = NSTextAlignmentCenter;
     
     // 设置颜色
@@ -95,7 +95,7 @@ NSString *str= [NSString stringWithFormat:@"cell%ld%ld",indexPath.section,indexP
         cell.nameLab.layer.masksToBounds = YES;
     }else{
         cell.nameLab.textColor =[UIColor grayColor];
-        cell.nameLab.layer.borderColor =[[UIColor grayColor]CGColor];
+        cell.nameLab.layer.borderColor =[RGBA(220, 220, 220, 1) CGColor];
         cell.nameLab.layer.borderWidth = 1;
         cell.nameLab.layer.cornerRadius = 5;
         cell.cornerMarkLab.backgroundColor = [UIColor grayColor];

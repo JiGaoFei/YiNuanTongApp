@@ -9,5 +9,6 @@
 #import "YNTBaseViewController.h"
 
 @interface CommentProblemDetaiViewController : YNTBaseViewController
-
+/**problem_id*/
+@property (nonatomic,copy) NSString * problem_id;
 @end

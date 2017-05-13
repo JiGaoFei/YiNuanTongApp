@@ -30,16 +30,17 @@
     self.listImageView.userInteractionEnabled = YES;
     [self addSubview:self.listImageView];
     
-   self.newlab=  [[UILabel alloc]initWithFrame:CGRectMake(100*kWidthScale, 5 *kHeightScale, 24 *kWidthScale, 24 *kWidthScale)];
+   self.newlab=  [[UILabel alloc]initWithFrame:CGRectMake(100*kWidthScale, 5 *kHeightScale,24 *kWidthScale, 24 *kWidthScale)];
     self.newlab.text = @"新";
-    self.newlab.font = [UIFont systemFontOfSize:8];
-    self.newlab.textColor = [UIColor redColor];
+    //self.newlab.font = [UIFont systemFontOfSize:8];
+    self.newlab.textColor = [UIColor whiteColor];
     self.newlab.backgroundColor = RGBA(255, 0, 0, 1);
     self.newlab.layer.cornerRadius = 12 *kWidthScale;
     self.newlab.layer.masksToBounds = YES;
     self.newlab.textAlignment = NSTextAlignmentCenter;
-     [self.contentView addSubview:self.newlab];
-    [self.contentView bringSubviewToFront:self.newlab];
+
+    [self bringSubviewToFront:self.newlab];
+    [self addSubview:self.newlab];
    
     // 创建商品名
     self.listNameLabel = [YNTUITools createLabel:CGRectMake(135 *kWidthScale, 15 *kHeightScale, KScreenW - 145 *kWidthScale, 40 *kHeightScale) text:@"" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15 *kHeightScale];

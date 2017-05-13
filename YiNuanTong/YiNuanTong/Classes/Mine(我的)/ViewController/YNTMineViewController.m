@@ -55,6 +55,8 @@
 @property (nonatomic,strong) NSMutableArray  * accountTitleArr;
 /**账户content数据源*/
 @property (nonatomic,strong) NSMutableArray  * accountContentArr;
+/**personData*/
+@property (nonatomic,strong) NSMutableDictionary  * personDic;
 @end
 static NSString *accountCell = @"accountCell";
 static NSString *headViewidentifier = @"headView";
@@ -64,6 +66,13 @@ static NSString *sixCell = @"sixCell";
 static NSString *minLineCell = @"minLineCell";
 static NSString *minLogout = @"logoutCell";
 @implementation YNTMineViewController
+- (NSMutableDictionary *)personDic
+{
+    if (!_personDic) {
+        self.personDic = [[NSMutableDictionary alloc]init];
+    }
+    return _personDic;
+}
 /**
  *懒加载数组
  */
@@ -104,8 +113,7 @@ static NSString *minLogout = @"logoutCell";
     
     // 加载数据
     [self loadData];
-    // 加载子视图
-    [self setUpChildrenViews];
+   
     
 
   
@@ -129,13 +137,52 @@ static NSString *minLogout = @"logoutCell";
 - (void)loadData
 {
     UserInfo *userInfo = [UserInfo currentAccount];
-    //分区一数据源
-    self.accountTitleArr = @[@"账户余额",@"信用币"].mutableCopy;
-    self.accountContentArr = @[userInfo.amount,@"0.00"].mutableCopy;
+    
+    // 请求个人中心数据
+    NSString *url =[NSString stringWithFormat:@"%@api/app.php",baseUrl];
+    
+    NSDictionary *params = @{@"user_id":userInfo.user_id,@"act":@"info"};
+    
+    [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
+        self.personDic = responseObject;
+        NSString *ishaveNew = [NSString stringWithFormat:@"%@",responseObject[@"data"][@"has_new_order"]];
+        if ([ishaveNew isEqualToString:@"1"]) {
+            //  确认收货new
+            self.sixCellTitleArr = @[@"公司信息",@"mine-收获地址",@"我的订单",@"信用申请",@"确认收货new",@"申请退换"].mutableCopy;
+        }else{
+            self.sixCellTitleArr = @[@"公司信息",@"mine-收获地址",@"我的订单",@"信用申请",@"mine-确认收货",@"申请退换"].mutableCopy;
+        }
+        
+        //分区一数据源
+        self.accountTitleArr = @[@"账户余额",@"信用币"].mutableCopy;
+        self.accountContentArr = @[userInfo.amount,@"0.00"].mutableCopy;
+        
+        self.lineTitleArr = @[@"常见问题",@"订货流程",@"意见反馈",@"联系我们1",@"mine_change_the_password",@"我的邀请"].mutableCopy;
+     
+        [self setUpChildrenViews];
+        [self.collectionView reloadData];
+    } enError:^(NSError *error) {
+        
+    }];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
     
     // 六个cell数据源
-    self.sixCellTitleArr = @[@"公司信息",@"mine-收获地址",@"我的订单",@"信用申请",@"mine-确认收货",@"申请退换"].mutableCopy;
-    self.lineTitleArr = @[@"常见问题",@"订货流程",@"意见反馈",@"联系我们1",@"mine_change_the_password",@"我的邀请"].mutableCopy;
+//    self.sixCellTitleArr = @[@"公司信息",@"mine-收获地址",@"我的订单",@"信用申请",@"mine-确认收货",@"申请退换"].mutableCopy;
+ 
+   
+ //   self.lineTitleArr = @[@"常见问题",@"订货流程",@"意见反馈",@"联系我们1",@"mine_change_the_password",@"我的邀请"].mutableCopy;
+    
+    
+    
 }
 
 /**

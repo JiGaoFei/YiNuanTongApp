@@ -178,6 +178,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
     
     NSLog(@"点击的是右边items");
     YNTShopingCarViewController *shopingVC = [[YNTShopingCarViewController alloc]init];
+    shopingVC.isFromdetail = @"1";
     [self.navigationController pushViewController:shopingVC animated:YES];
     
 }
@@ -522,6 +523,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
 - (void)goShopVCBtn:(UIButton *)sender
 {
     YNTShopingCarViewController *shopCarVC = [[YNTShopingCarViewController alloc]init];
+    shopCarVC.isFromdetail = @"1";
     [self.navigationController pushViewController:shopCarVC animated:YES];
 }
 #pragma mark - 请求商品详情数据
