@@ -128,7 +128,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
     if (self.oftenSettingTableBlock) {
         self.oftenSettingTableBlock();
     }
-    [self.tableView removeFromSuperview];
+  //  [self.tableView removeFromSuperview];
 
 }
 - (void)viewDidLoad {
@@ -269,7 +269,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
 // 创建tableView
 - (void)setUpTableView
 {
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, KScreenW, kScreenH - 48 *kHeightScale) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, KScreenW, kScreenH - 118 *kHeightScale) style:UITableViewStyleGrouped];
     self.tableView.backgroundColor =[UIColor whiteColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -314,19 +314,20 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
             if ([self.orderPostStatus isEqualToString:@"1"]) {
                 
                 AddressViewController *addressVC = [[AddressViewController alloc]init];
+                    [self.navigationController pushViewController:addressVC animated:YES];
                 addressVC.confirmBlockShipiing_id = ^(OrderShipModel *model){
-                    [self refreshData];
+                 //   [self refreshData];
                     // 回调赋值
                     weakSelf.customerLab.text = [NSString stringWithFormat:@"收货人:%@                                %@",model.consignee,model.mobile];
                     weakSelf.addressLab.text = [NSString stringWithFormat:@"收货地址:%@%@%@",model.province,model.city,model.area];
                     weakSelf.backgroundColor = [UIColor whiteColor];
                     
                     CGRect rec = self.tableView.frame;
-                    rec.origin.y = 0;
+                    rec.origin.y = 64;
                     self.tableView.frame = rec;
                     
                 };
-                [self.navigationController pushViewController:addressVC animated:YES];
+              //  [self.navigationController pushViewController:addressVC animated:YES];
                 
             }
             
@@ -373,17 +374,18 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
             if ([self.orderPostStatus isEqualToString:@"1"]) {
                 
                 AddressViewController *addressVC = [[AddressViewController alloc]init];
+                    [self.navigationController pushViewController:addressVC animated:YES];
                 addressVC.confirmBlockShipiing_id = ^(OrderShipModel *model){
                     // 回调赋值
                     weakSelf.customerLab.text = [NSString stringWithFormat:@"收货人:%@                                %@",model.consignee,model.mobile];
                     weakSelf.addressLab.text = [NSString stringWithFormat:@"收货地址:%@%@%@",model.province,model.city,model.area];
                     weakSelf.backgroundColor = [UIColor whiteColor];
                     CGRect rec = self.tableView.frame;
-                    rec.origin.y = 0;
+                    rec.origin.y = 64;
                     self.tableView.frame = rec;
                     
                 };
-                [self.navigationController pushViewController:addressVC animated:YES];
+            
                 
             }
             

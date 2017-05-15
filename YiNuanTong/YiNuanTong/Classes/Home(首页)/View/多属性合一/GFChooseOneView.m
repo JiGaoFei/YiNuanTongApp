@@ -112,7 +112,7 @@ static NSString *identifier = @"GFChooseOneViewCell";
 {
     
     // 创建titleTableView
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 256*kHeightScale , KScreenW, 255*kHeightScale) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 256*kHeightScale , KScreenW, 320*kHeightScale) style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.tableFooterView = [[UIView alloc]init];

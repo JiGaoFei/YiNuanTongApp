@@ -406,6 +406,12 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
             if (number == 0) {
                 //数据源
                 [self.shopCarGoodsDic removeObjectForKey:model.good_attid];
+                // 计算价格
+                [self countSizeTableViewAllShopGoodNums:self.sizeDataOneArr];
+                
+                // 刷新该行数据源
+                [self.tableView reloadData];
+                
               
             }else{
                 // 添加数据源

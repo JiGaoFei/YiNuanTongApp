@@ -20,7 +20,7 @@
 // 加载子视图
 - (void)setUpChidrenViews
 {
-    self.imgView  = [[UIImageView  alloc]initWithFrame:CGRectMake(15*kWidthScale, 20*kHeightScale, 77*kWidthScale, 77*kHeightScale)];
+    self.imgView  = [[UIImageView  alloc]initWithFrame:CGRectMake(10*kWidthScale, 20*kHeightScale, 77*kWidthScale, 77*kHeightScale)];
     
     [self.contentView addSubview:self.imgView];
 }
