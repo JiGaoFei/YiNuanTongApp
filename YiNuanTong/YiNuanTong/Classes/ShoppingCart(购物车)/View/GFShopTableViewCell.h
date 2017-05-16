@@ -21,6 +21,8 @@
 @property (nonatomic,strong)  UIButton *addBtn;
 /**减号按钮*/
 @property (nonatomic,strong)  UIButton *cutBtn;
+/**删除按钮*/
+@property (nonatomic,strong) UIButton  * deleteBtn;
 /**加号按钮的回调*/
 @property (nonatomic,copy) void (^addBtnBloock)(NSString *str);
 /**减号按钮的回调*/
@@ -28,6 +30,8 @@
 /**完成按钮的回调事件*/
 @property (nonatomic,copy) void (^confirmBtnBlock)(NSString *str);
 /**把输入后的值传递出去*/
+/**删除按钮的回调事件*/
+@property (nonatomic,copy) void (^deleteBtnBlock)();
 @property (nonatomic,copy) void (^numberTextFiledInputText)(NSString* str);
 /**勾选按钮回调事件*/
 @property (nonatomic,copy) void(^selectBtnBlock)(BOOL isSelect);

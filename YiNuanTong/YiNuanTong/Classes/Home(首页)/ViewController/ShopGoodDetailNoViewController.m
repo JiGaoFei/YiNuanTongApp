@@ -766,16 +766,33 @@ static NSString *goodPramsCell = @"goodParamsCell";
         return cell;
         
     }
+ 
     if (indexPath.row == 1) {
         GoodDetailSizeNoCell *cell = [tableView dequeueReusableCellWithIdentifier:goodSizeCell forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+        cell.totallMoneyLab.text = [NSString stringWithFormat:@"¥  %@",self.dataDic[@"goods"][@"price"] ];
+        __weak typeof(cell) CellSelf = cell;
         // 加号按钮回调
         cell.addBtnBloock = ^(NSString *str){
             self.shoopCarNum = str;
+               NSInteger num = [str integerValue];
+            double price =[self.dataDic[@"goods"][@"price"] doubleValue];
+           CellSelf.totallMoneyLab.text = [NSString stringWithFormat:@"¥ %.2f",num*price];
         };
         // 减号按钮回调
         cell.cutBtnBloock = ^(NSString *str){
             self.shoopCarNum = str;
+            NSInteger num = [str integerValue];
+            double price =[self.dataDic[@"goods"][@"price"] doubleValue];
+            CellSelf.totallMoneyLab.text = [NSString stringWithFormat:@"¥ %.2f",num*price];
+        };
+        // 确定按钮的回调
+        cell.confirmBtnBlock = ^(NSString *str){
+            self.shoopCarNum = str;
+            NSInteger num = [str integerValue];
+            double price =[self.dataDic[@"goods"][@"price"] doubleValue];
+            CellSelf.totallMoneyLab.text = [NSString stringWithFormat:@"¥ %.2f",num*price];
         };
         
         return cell;

@@ -38,19 +38,19 @@
 {
     self.selectBtn = [UIButton buttonWithType:UIButtonTypeSystem];
     self.selectBtn.frame = CGRectMake(15*kWidthScale, 33 *kHeightScale, 18*kWidthScale, 18 *kWidthScale);
-   // [self.selectBtn setBackgroundImage:[UIImage imageNamed:@"unchecked@2x"] forState:UIControlStateNormal];
+
     
     [self.selectBtn addTarget:self action:@selector(selectBtnAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:self.selectBtn];
     
-    self.shopNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(43 *kWidthScale, 10 *kHeightScale, 180 *kWidthScale , 60 *kHeightScale)];
+    self.shopNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(43 *kWidthScale, 10 *kHeightScale, 270 *kWidthScale , 60 *kHeightScale)];
     self.shopNameLabel.font = [UIFont systemFontOfSize:11*kHeightScale];
     self.shopNameLabel.numberOfLines = 0;
     self.shopNameLabel.text = @"颜色:亚光粉红;进出口方式:上进下出;口径:4分;中心距:60;术数:30";
     self.shopNameLabel.numberOfLines = 0;
     [self.contentView addSubview:self.shopNameLabel];
     
-    self.shopPriceLabel =[[UILabel alloc]initWithFrame:CGRectMake(43 *kWidthScale, 60 *kHeightScale, 200 *kWidthScale , 15 *kHeightScale)];
+    self.shopPriceLabel =[[UILabel alloc]initWithFrame:CGRectMake(43 *kWidthScale, 70 *kHeightScale, 200 *kWidthScale , 15 *kHeightScale)];
     self.shopPriceLabel.font = [UIFont systemFontOfSize:12*kHeightScale];
     self.shopPriceLabel.text = @"99.99元/个";
     self.shopPriceLabel.textColor = [UIColor colorWithRed:247.0/255 green:87.0/255 blue:50.0/255 alpha:1.0];
@@ -61,28 +61,37 @@
     
     
     // 创建加减背景
-    UIImageView *addImgView = [YNTUITools createImageView:CGRectMake(KScreenW - 137*kWidthScale, 30 *kHeightScale, 112*kWidthScale, 24*kHeightScale) bgColor:nil imageName:@"number_frame"];
+    UIImageView *addImgView = [YNTUITools createImageView:CGRectMake(KScreenW - 177*kWidthScale, 60 *kHeightScale, 112*kWidthScale, 24*kHeightScale) bgColor:nil imageName:@"number_frame"];
     addImgView.userInteractionEnabled = YES;
     [self.contentView addSubview:addImgView];
     
     
     //数量加按钮
     UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    addBtn.frame = CGRectMake(KScreenW - 47*kWidthScale, 35 *kHeightScale, 22 *kWidthScale,22*kWidthScale);
+    addBtn.frame = CGRectMake(KScreenW - 87*kWidthScale,65 *kHeightScale, 22 *kWidthScale,22*kWidthScale);
     
     [addBtn addTarget:self action:@selector(addBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:addBtn];
     // 数量显示
-    self.numberTextField  = [YNTUITools creatTextField:CGRectMake(KScreenW-118*kWidthScale, 32*kHeightScale, 66*kWidthScale, 22*kHeightScale) bgColor:nil borderStyle:UITextBorderStyleNone placeHolder:nil keyboardType:UIKeyboardTypeNumberPad font:14*kHeightScale secureTextEntry:NO clearButtonMode:UITextFieldViewModeWhileEditing];
+    self.numberTextField  = [YNTUITools creatTextField:CGRectMake(KScreenW-158*kWidthScale, 62*kHeightScale, 66*kWidthScale, 22*kHeightScale) bgColor:nil borderStyle:UITextBorderStyleNone placeHolder:nil keyboardType:UIKeyboardTypeNumberPad font:14*kHeightScale secureTextEntry:NO clearButtonMode:UITextFieldViewModeWhileEditing];
     _numberTextField.textAlignment =NSTextAlignmentCenter;
     _numberTextField.text = @"0";
     [self.contentView addSubview:_numberTextField];
 
     //数量减按钮
     UIButton *cutBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cutBtn.frame =  CGRectMake(KScreenW - 136*kWidthScale, 35*kHeightScale,22*kWidthScale,22*kHeightScale);
+    cutBtn.frame =  CGRectMake(KScreenW - 176*kWidthScale, 65*kHeightScale,22*kWidthScale,22*kHeightScale);
     [cutBtn addTarget:self action:@selector(cutBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView  addSubview:cutBtn];
+    
+    // 删除按钮
+    self.deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.deleteBtn.frame = CGRectMake(KScreenW - 40*kWidthScale, 60*kHeightScale, 24*kWidthScale, 24*kWidthScale);
+    
+    [self.deleteBtn setImage:[UIImage imageNamed:@"shipping_order_delete"] forState:UIControlStateNormal];
+    [self.deleteBtn addTarget:self action:@selector(deleteBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.contentView addSubview:self.deleteBtn];
     
     // 监听变化
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFiledChange:) name:UITextFieldTextDidChangeNotification object:self.numberTextField];
@@ -96,7 +105,14 @@
     _numberTextField.inputAccessoryView = bar;
     [self.contentView addSubview:self.numberTextField];
 
-    
+}
+
+#pragma mark -  删除按钮点击的事件
+- (void)deleteBtnAction:(UIButton *)sender
+{
+    if (self.deleteBtnBlock) {
+        self.deleteBtnBlock();
+    }
 }
 #pragma mark - 文字输入框实时输入
 - (void)textFiledChange:(NSNotification *)userInf

@@ -100,7 +100,7 @@ static NSString *addressSwitchCell = @"addressSwichCell";
 - (void)setUpChildrenViews
 {
     // 创建tableview
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, kScreenH-350) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, kScreenH-150 *kHeightScale) style:UITableViewStylePlain];
 
     // 取消tableView的滚动
     self.tableView.scrollEnabled = NO;
@@ -192,7 +192,14 @@ static NSString *addressSwitchCell = @"addressSwichCell";
     UserInfo *userInfo = [UserInfo currentAccount];
     NSLog(@"我是保存按钮的点击事件");
     NSString *url = [NSString stringWithFormat:@"%@api/addressclass.php",baseUrl];
+    // 信息不全时直接返回
+    if (self.contactName.length == 0 || self.provinceAndCity.length == 0||self.detaiAdress.length == 0 || self.mobile.length == 0) {
+        [GFProgressHUD showInfoMsg:@"请填写完整的信息"];
+        return;
+    }
     NSDictionary *param = @{@"user_id":userInfo.user_id,@"act":@"edit",@"consignee":self.contactName,@"shengshixian":self.provinceAndCity,@"address":self.detaiAdress,@"isdefault":self.isDefault,@"mobile":self.mobile};
+    
+
     [YNTNetworkManager requestPOSTwithURLStr:url paramDic:param finish:^(id responseObject) {
       
         NSLog(@"新增地址请求数据成功%@",responseObject);
@@ -300,7 +307,7 @@ static NSString *addressSwitchCell = @"addressSwichCell";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50;
+    return 50 *kHeightScale;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

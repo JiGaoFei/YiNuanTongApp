@@ -128,9 +128,7 @@ static NSString *identifier = @"shopCell";
             [self setUpEmptyViews];
         }
         
-//        if (self.sectionModelArr.count == 0) {
-//            [self.shopBottomView removeFromSuperview];
-//        }
+
         
     } enError:^(NSError *error) {
         NSLog(@"请求购物车列表数据失败%@",error);
@@ -243,12 +241,7 @@ static NSString *identifier = @"shopCell";
         
     }
 
-//    if (self.isAllSelect) {
-//  
-//        [self.shopBottomView.allSelectBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
-//    }else{
-//        [self.shopBottomView.allSelectBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
-//    }
+
     
         UserInfo *userInfo = [UserInfo currentAccount];
     __weak typeof(self)weakSelf = self;
@@ -275,31 +268,6 @@ static NSString *identifier = @"shopCell";
         
         }
 
-//        NSLog(@"取消全选");
-//        switch (index) {
-//            case 0:
-//            {
-//                
-//         
-//                            NSDictionary *params = @{@"user_id":userInfo.user_id,@"select":@"0",@"act":@"select"};
-//                
-//                            [weakSelf selectRequestData:params andtitle:@"取消全选" AndIsRefresh:YES ];
-//            }
-//                break;
-//            case 1:
-//            {
-//    
-//            // 取消选中
-//            NSDictionary *params = @{@"user_id":userInfo.user_id,@"select":@"1",@"act":@"select"};
-//                            [weakSelf selectRequestData:params andtitle:@"全选" AndIsRefresh:YES];
-//
-//            }
-//                break;
-//                
-//            default:
-//                break;
-//        }
-//        
     };
     
     [self.view addSubview:_shopBottomView];
@@ -341,6 +309,12 @@ static NSString *identifier = @"shopCell";
     
     UserInfo *userInfo = [UserInfo currentAccount];
     shopHeadView.numberTextField.text = model.num;
+    
+    // 删除的点击事件
+    shopHeadView.deleteBtnBlock = ^(){
+        NSDictionary *params = @{@"user_id":userInfo.user_id,@"act":@"delete",@"cat_id":model.cat_id};
+        [self deleteRequestData:params];
+    };
     // 加号点击事件
     shopHeadView.addBtnBloock = ^(NSString *str){
         
@@ -530,38 +504,7 @@ static NSString *identifier = @"shopCell";
     }
     
     
-    shopFooterView.backgroundColor = [UIColor whiteColor];
-//    if (sectionModel.good_attr.count ==0) {
-// 
-//        //计算选中的总价
-//        double danjia = [sectionModel.price doubleValue];
-//        sectionPrice += ([sectionModel.num doubleValue]) *danjia;
-//    }else{
-//    
-//        // 清空
-//        [sectionModel.modelArr removeAllObjects];
-//        // 获取cell中的model
-//        for (NSDictionary *dic in sectionModel.good_attr) {
-//            ShopCarModel *model = [[ShopCarModel alloc]init];
-//            [model setValuesForKeysWithDictionary:dic];
-//            
-//            // 计算分区中选中的总价
-//            if (model.attr_select  == YES) {
-//                //计算选中的总价
-//                double danjia = [model.attrprice doubleValue];
-//                sectionPrice += ([model.num doubleValue]) *danjia;
-//            }
-//            //   NSLog(@"%ld分区:%d",section ,model.attr_select);
-//            [sectionModel.modelArr addObject:model];
-//        }
-//
-//    }
-//    
-    
-    //NSLog(@"%ld分区的总价:%ld",section,sectionPrice);
-    
-//    shopFooterView.goodNumberLab.text = [NSString stringWithFormat:@"共:%ld件",(long)sectionModel.good_num];
-//    shopFooterView.goodPriceLab.text =[NSString stringWithFormat:@"￥%.2f",sectionPrice];
+
     return shopFooterView;
     
 }
@@ -576,7 +519,7 @@ static NSString *identifier = @"shopCell";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 75 *kHeightScale;
+    return 95 *kHeightScale;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -599,6 +542,17 @@ static NSString *identifier = @"shopCell";
     cell.numberTextField.text = model.num;
   
     UserInfo *userInfo = [UserInfo currentAccount];
+    
+    // 删除按钮的点击事件
+    cell.deleteBtnBlock = ^(){
+        NSLog(@"点击事件");
+        
+        NSDictionary *params = @{@"user_id":userInfo.user_id,@"act":@"delete",@"cat_attrid":model.cat_attrid};
+        [self deleteRequestData:params];
+    };
+    
+    
+    
     // 点击加号
     cell.addBtnBloock = ^(NSString *str){
         NSLog(@"加号数量为:%@",str);
@@ -645,13 +599,7 @@ static NSString *identifier = @"shopCell";
             NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":resultStr,@"cat_attrid":model.cat_attrid};
             [self modifyGoodNumbRequestData:param andtitle:@"完成"];
         }
-//        if (resultNumber == 0) {
-//            resultNumber =1;
-//        }
-//        if ([str isEqualToString:@"0"]) {
-//            resultNumber = 1;
-//        }
-      
+
 
     };
     
@@ -672,9 +620,7 @@ static NSString *identifier = @"shopCell";
     cell.selectBtnBlock = ^(BOOL isSelect){
         
                   if (model.attr_select) { // 如果之前选中,点击后取消选中
-                    //  model.attr_select = NO;
-//                      [sectionModel.modelArr replaceObjectAtIndex:indexPath.row withObject:model];
-//                       [self.sectionModelArr replaceObjectAtIndex:indexPath.section withObject:sectionModel];
+
                            [cellSelf.selectBtn setBackgroundImage:[UIImage imageNamed:@"order_unchecked"] forState:UIControlStateNormal];
            
                       
@@ -685,9 +631,7 @@ static NSString *identifier = @"shopCell";
                         NSLog(@"取消选中%d", model.attr_select);
                       
                   }else{//如果之前为非选中,点击后为选中
-                     // model.attr_select = YES;
-//                      [sectionModel.modelArr replaceObjectAtIndex:indexPath.row withObject:model];
-//                      [self.sectionModelArr replaceObjectAtIndex:indexPath.section withObject:sectionModel];
+     
                      [cellSelf.selectBtn setBackgroundImage:[UIImage imageNamed:@"order_checked"] forState:UIControlStateNormal];
              
 
@@ -723,6 +667,21 @@ static NSString *identifier = @"shopCell";
          NSLog(@"%@数据请求失败%@",title,error);
     }];
     
+}
+#pragma mark - 删除请求数据
+- (void)deleteRequestData:(NSDictionary *)params
+{
+    NSString *url = [NSString stringWithFormat:@"%@/api/catinfo.php",baseUrl];
+    [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
+        NSLog(@"删除数据请求成功********%@",responseObject);
+        
+        [self loadData];
+ 
+        
+    } enError:^(NSError *error) {
+        NSLog(@"删除数据请求失败%@",error);
+    }];
+
 }
 #pragma mark - 修改数量请求数据
 - (void)modifyGoodNumbRequestData:(NSDictionary *)params andtitle:(NSString *)title

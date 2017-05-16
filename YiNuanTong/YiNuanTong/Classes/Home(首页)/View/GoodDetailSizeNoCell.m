@@ -48,6 +48,12 @@
     [cutBtn addTarget:self action:@selector(cutBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView  addSubview:cutBtn];
     
+    
+    // 总金额
+    self.totallMoneyLab =[[UILabel alloc]initWithFrame:CGRectMake(250*kWidthScale, 10*kHeightScale,KScreenW - 250 *kWidthScale,20*kHeightScale)];
+    self.totallMoneyLab.textColor = [UIColor redColor];
+    [self addSubview:_totallMoneyLab];
+    
     // 监听变化
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFiledChange:) name:UITextFieldTextDidChangeNotification object:self.numberTextField];
     
@@ -84,7 +90,7 @@
 - (void)confrimBtnAction:(UIButton *)sender
 {
     if (self.confirmBtnBlock) {
-        self.confirmBtnBlock();
+        self.confirmBtnBlock(self.numberTextField.text);
     }
     //  NSLog(@"点击的是键盘上的完成按钮");
     [UIView animateWithDuration:0.3 animations:^{

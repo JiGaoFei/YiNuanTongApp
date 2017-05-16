@@ -79,6 +79,12 @@
     CycleDetailViewController *cycleViewController = [[CycleDetailViewController alloc]init];
     cycleViewController.link = self.urlArray[index];
    UIViewController *vc = [self firstViewController];
-    [vc.navigationController pushViewController:cycleViewController animated:YES];
+    if ([self.urlArray[index] isEqualToString:@""]) {
+        // 链接为空时不跳转
+        return;
+    }else{
+           [vc.navigationController pushViewController:cycleViewController animated:YES];
+    }
+
 }
 @end

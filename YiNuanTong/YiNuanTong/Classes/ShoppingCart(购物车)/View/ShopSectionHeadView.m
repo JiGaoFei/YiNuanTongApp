@@ -56,7 +56,7 @@
     
 
     self.roateBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _roateBtn.frame =CGRectMake(KScreenW - 30 *kWidthScale, 48 *kHeightScale, 22 *kWidthScale, 22 *kHeightScale);
+    _roateBtn.frame =CGRectMake(KScreenW - 30 *kWidthScale, 38 *kHeightScale, 22 *kWidthScale, 22 *kHeightScale);
     [self.roateBtn addTarget:self action:@selector(roateBtnAction:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImage *roateImg = [UIImage imageNamed:@"arrow_bofore"];
@@ -65,32 +65,39 @@
     [self addSubview:self.roateBtn];
     
     
+    // 删除按钮
+        self.deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.deleteBtn .frame =CGRectMake(KScreenW - 50 *kWidthScale, 68 *kHeightScale, 24 *kWidthScale, 24 *kHeightScale);
+    [self.deleteBtn  addTarget:self action:@selector(deleteBtnAction:) forControlEvents:UIControlEventTouchUpInside];
     
+    [self.deleteBtn setImage:[UIImage imageNamed:@"shipping_order_delete"] forState:UIControlStateNormal];
+   
+    [self addSubview:self.deleteBtn ];
     
     
     
     
     // 创建加减背景
-    self.addImgView = [YNTUITools createImageView:CGRectMake(KScreenW - 142*kWidthScale, 70 *kHeightScale, 112*kWidthScale, 24*kHeightScale) bgColor:nil imageName:@"number_frame"];
+    self.addImgView = [YNTUITools createImageView:CGRectMake(KScreenW - 182*kWidthScale, 70 *kHeightScale, 112*kWidthScale, 24*kHeightScale) bgColor:nil imageName:@"number_frame"];
     _addImgView.userInteractionEnabled = YES;
     [self addSubview:_addImgView];
     
     
     //数量加按钮
     self.addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _addBtn.frame = CGRectMake(KScreenW - 52*kWidthScale, 75 *kHeightScale, 22 *kWidthScale,22*kWidthScale);
+    _addBtn.frame = CGRectMake(KScreenW - 92*kWidthScale, 75 *kHeightScale, 22 *kWidthScale,22*kWidthScale);
     
     [_addBtn addTarget:self action:@selector(addBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_addBtn];
     // 数量显示
-    self.numberTextField  = [YNTUITools creatTextField:CGRectMake(KScreenW-123*kWidthScale, 72*kHeightScale, 66*kWidthScale, 22*kHeightScale) bgColor:nil borderStyle:UITextBorderStyleNone placeHolder:nil keyboardType:UIKeyboardTypeNumberPad font:14*kHeightScale secureTextEntry:NO clearButtonMode:UITextFieldViewModeWhileEditing];
+    self.numberTextField  = [YNTUITools creatTextField:CGRectMake(KScreenW-163*kWidthScale, 72*kHeightScale, 66*kWidthScale, 22*kHeightScale) bgColor:nil borderStyle:UITextBorderStyleNone placeHolder:nil keyboardType:UIKeyboardTypeNumberPad font:14*kHeightScale secureTextEntry:NO clearButtonMode:UITextFieldViewModeWhileEditing];
     _numberTextField.textAlignment =NSTextAlignmentCenter;
     _numberTextField.text = @"0";
     [self addSubview:_numberTextField];
     
     //数量减按钮
     UIButton *cutBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cutBtn.frame =  CGRectMake(KScreenW - 141*kWidthScale, 75*kHeightScale,22*kWidthScale,22*kHeightScale);
+    cutBtn.frame =  CGRectMake(KScreenW - 181*kWidthScale, 75*kHeightScale,22*kWidthScale,22*kHeightScale);
     [cutBtn addTarget:self action:@selector(cutBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self  addSubview:cutBtn];
     
@@ -110,6 +117,13 @@
     
 }
 
+#pragma mark  - 删除按钮点击事件
+- (void)deleteBtnAction:(UIButton *)sender
+{
+    if (self.deleteBtnBlock) {
+        self.deleteBtnBlock();
+    }
+}
 #pragma mark - 文字输入框实时输入
 - (void)textFiledChange:(NSNotification *)userInf
 {

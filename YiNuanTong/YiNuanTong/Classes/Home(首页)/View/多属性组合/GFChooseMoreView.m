@@ -366,10 +366,17 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
         HomeShopListSizeModel *model = self.modelArray[indexPath.row];
        GoodDetailAttrtypeModel *attrtypeModel = self.attrtypeDataArr[4];
         
-       [cell setValueWithModel:model andWithAttryModel:attrtypeModel];
+        
+        [cell setValueWithModel:model andWithAttryModel:attrtypeModel];
+   
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        
+       // 如果数据源里有直接拿出来赋值
+        if ([self.shopCarGoodsDic[model.good_attid] integerValue] >0) {
+              cell.numberTextField.text =self.shopCarGoodsDic[model.good_attid];
+            model.num = self.shopCarGoodsDic[model.good_attid];
+            // 更换数据源
+            [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
+        }
         cell.addBtnBloock =  ^(NSString *str){
             NSLog(@"点击的是规格加号,数量为%@",str);
                // 重新为数量赋值
