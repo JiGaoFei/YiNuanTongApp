@@ -225,7 +225,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     _titleOneLab.text = @"上进下出:";
  _titleOneLab.font = [UIFont fontWithName:@ "Helvetica-Bold"  size:(17.0)];
     [self addSubview:_titleOneLab];
-      self.titleOnetableView = [[UITableView alloc]initWithFrame:CGRectMake(100 *kWidthScale, 240*kHeightScale  ,KScreenW - 98 *kWidthScale, 50 *kHeightScale)];
+      self.titleOnetableView = [[UITableView alloc]initWithFrame:CGRectMake(95 *kWidthScale, 240*kHeightScale  ,KScreenW - 110 *kWidthScale, 50 *kHeightScale)];
       self.titleOnetableView.delegate = self;
    self.titleOnetableView.dataSource = self;
    self.titleOnetableView.separatorStyle = NO;
@@ -244,8 +244,11 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     _titleTwoLab.font = [UIFont fontWithName:@ "Helvetica-Bold"  size:(17.0)];
     [self addSubview:_titleTwoLab];
     self.titleTwotableView = [[UITableView alloc]initWithFrame:CGRectMake(330 *kWidthScale, 65*kHeightScale ,45 *kHeightScale, 500 *kHeightScale)];
-
+  
     self.titleTwotableView .transform = CGAffineTransformMakeRotation(-M_PI / 2);
+    CGRect  rect = self.titleTwotableView.frame;
+    rect.size.width -= rect.size.width/2;
+    self.titleTwotableView.frame = rect;
    self.titleTwotableView.delegate = self;
    self.titleTwotableView.dataSource = self;
     self.titleTwotableView.separatorStyle = NO;
@@ -262,6 +265,10 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
  
     //  self.titleOnetableView.backgroundColor = [UIColor blueColor];
     self.titleThreetableView.transform = CGAffineTransformMakeRotation(-M_PI / 2);
+    
+    CGRect  rect1 = self.titleThreetableView.frame;
+    rect.size.width -= rect1.size.width/2;
+    self.titleThreetableView.frame = rect1;
     self.titleThreetableView.delegate = self;
     self.titleThreetableView.dataSource = self;
     self.titleThreetableView.separatorStyle = NO;
@@ -276,8 +283,11 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     [self addSubview:_titleFourLab];
     self.titleFouretableView = [[UITableView alloc]initWithFrame:CGRectMake(330 *kWidthScale, 155*kHeightScale ,45 *kHeightScale, 500 *kHeightScale)];
    
-    //  self.titleOnetableView.backgroundColor = [UIColor blueColor];
+ 
      self.titleFouretableView.transform = CGAffineTransformMakeRotation(-M_PI / 2);
+    CGRect  rect2 = self.titleFouretableView.frame;
+    rect2.size.width = rect2.size.width/2;
+    self.titleFouretableView.frame = rect2;
      self.titleFouretableView.delegate = self;
      self.titleFouretableView.dataSource = self;
 
@@ -587,7 +597,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
 
         [self.sizeDataTwoArr insertObject:model atIndex:0];
         [self.titleTwotableView reloadData];
-        self.titleTwotableView.contentOffset = CGPointMake(0, 0);
+      //  self.titleTwotableView.contentOffset = CGPointMake(0, 0);
         
              self.selectStatus = 1;
     }
@@ -606,7 +616,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
 
         [self.sizeDataThreeArr insertObject:model atIndex:0];
         [self.titleThreetableView reloadData];
-        self.titleThreetableView.contentOffset = CGPointMake(0,0);
+        
              self.selectStatus = 2;
     }
     
@@ -625,7 +635,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
         
         [self.sizeDataFourArr insertObject:model atIndex:0];
         [self.titleFouretableView reloadData];
-        self.titleFouretableView.contentOffset = CGPointMake(0,0);
+ 
              self.selectStatus = 3;
         
     }
@@ -674,7 +684,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
   
 
    
-    NSLog(@"%f",self.titleOnetableView.frame.size.width);
+ //   NSLog(@"%f",self.titleOnetableView.frame.size.width);
 
 }
 #pragma mark - 确定按钮点击事件

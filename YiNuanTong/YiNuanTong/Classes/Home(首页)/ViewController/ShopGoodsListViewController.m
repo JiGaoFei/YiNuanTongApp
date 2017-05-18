@@ -297,21 +297,24 @@ static NSString *listCell = @"listCell";
             [GFProgressHUD showFailure:@"没有找到你要的商品!"];
             return ;
         }
-        if (dataArray.count == 0) {
-            [GFProgressHUD showFailure:@"没有更多数据了"];
-            return;
-        }
+//        if (dataArray.count == 0) {
+//            [GFProgressHUD showFailure:@"没有更多数据了"];
+//            return;
+//        }
         
         
-        [self.modelArr removeAllObjects];
+        //[self.modelArr removeAllObjects];
         for (NSDictionary *dic in dataArray) {
-       
             HomeShopListModel *model = [[HomeShopListModel alloc]init];
-            [model setValuesForKeysWithDictionary:dic];
-             NSLog(@"名字%@",model.name);
-        
-         [self.modelArr addObject:model];
-            
+            if (![self.modelArr containsObject:model]) {
+                [model setValuesForKeysWithDictionary:dic];
+                NSLog(@"名字%@",model.name);
+                
+                [self.modelArr addObject:model];
+                
+            }
+       
+           
         }
  
         
@@ -343,7 +346,8 @@ static NSString *listCell = @"listCell";
             
 
         }else{
-              [self.tableView setContentOffset:CGPointMake(0,100) animated:NO];
+            
+            //  [self.tableView setContentOffset:CGPointMake(0,100) animated:NO];
         }
         [self.collectionView reloadData];
         [self.tableView reloadData];
@@ -412,7 +416,7 @@ static NSString *listCell = @"listCell";
 - (void)setUpChildrenViews
 {
     // 创建tableView
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 102, KScreenW, kScreenH -60) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 102, KScreenW, kScreenH -102) style:UITableViewStylePlain];
    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;

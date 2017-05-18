@@ -697,6 +697,8 @@ static NSString *minLogout = @"logoutCell";
         
         
         NSData *fileData = UIImageJPEGRepresentation(image, 1.0);
+        
+       
         NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
         formatter.dateFormat=@"yyyyMMddHHmmss";
         NSString *str=[formatter stringFromDate:[NSDate date]];
@@ -705,7 +707,7 @@ static NSString *minLogout = @"logoutCell";
         [formData appendPartWithFileData:fileData name:@"upfile" fileName:fileName mimeType:@"image/jpeg"];
     } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
          NSLog(@"上传成功 %@", responseObject);
-        
+      
         NSString *msg = responseObject[@"msg"];
         
         if ([msg isEqualToString:@"success"]) {
@@ -714,8 +716,7 @@ static NSString *minLogout = @"logoutCell";
             [userInfo updateHeadImage:responseObject[@"url"]];
         }
         
-        
-        
+      
         
         
         
@@ -742,7 +743,5 @@ static NSString *minLogout = @"logoutCell";
     }
     return YES;
 }
-
-
 
 @end

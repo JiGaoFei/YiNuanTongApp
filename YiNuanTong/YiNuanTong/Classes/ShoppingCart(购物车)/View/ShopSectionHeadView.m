@@ -56,7 +56,7 @@
     
 
     self.roateBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    _roateBtn.frame =CGRectMake(KScreenW - 30 *kWidthScale, 38 *kHeightScale, 22 *kWidthScale, 22 *kHeightScale);
+    _roateBtn.frame =CGRectMake(KScreenW - 50 *kWidthScale, 38 *kHeightScale, 22 *kWidthScale, 22 *kHeightScale);
     [self.roateBtn addTarget:self action:@selector(roateBtnAction:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImage *roateImg = [UIImage imageNamed:@"arrow_bofore"];

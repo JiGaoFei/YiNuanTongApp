@@ -39,16 +39,16 @@ static NSString *identifierCollectionCell = @"orderCollectionViewCell";
     }
     return self;
 }
+
 - (void)setUpChildrenViews
 {
     self.flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    [_flowLayout setItemSize:CGSizeMake(90, 60)];
+    [_flowLayout setItemSize:CGSizeMake(90 *kWidthScale, 60*kHeightScale)];
     [_flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-    // flowLayout.sectionInset = UIEdgeInsetsMake(5, 5,0, 5);
     
-    _flowLayout.minimumLineSpacing = 20;
     
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0,0, [UIScreen mainScreen].bounds.size.width,40) collectionViewLayout:_flowLayout] ;
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0,0, [UIScreen mainScreen].bounds.size.width - 100*kWidthScale,40*kHeightScale) collectionViewLayout:_flowLayout] ;
+ 
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.delegate = self;
@@ -57,6 +57,10 @@ static NSString *identifierCollectionCell = @"orderCollectionViewCell";
     [self.contentView addSubview:_collectionView];
 }
 #pragma mark -代理方法
+-(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    return 10*kWidthScale;
+}
+
 //CollectionView的分区数
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {

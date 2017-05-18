@@ -241,8 +241,8 @@ static NSString *homeThreeCell = @"homeThreeCell";
     self.tabBarController.tabBar.hidden = NO;
     
 
-        self.firstImageArr = @[@"收藏商品",@"常购商品",@"再次购买",@"联系我们"].mutableCopy;
-        [self.secondImageArr removeAllObjects];
+    self.firstImageArr = @[@"收藏商品",@"常购商品",@"再次购买",@"联系我们"].mutableCopy;
+       [self.secondImageArr removeAllObjects];
     NSString *url1 = [NSString stringWithFormat:@"%@api/categoryclass.php",baseUrl];
     
  [YNTNetworkManager requestPOSTwithURLStr:url1 paramDic:nil finish:^(id responseObject) {
@@ -250,7 +250,7 @@ static NSString *homeThreeCell = @"homeThreeCell";
      for (NSDictionary *dic in dataArray) {
          HomePicModel *model = [[HomePicModel alloc]init];
          [model setValuesForKeysWithDictionary:dic];
-         [self.secondImageArr addObject:model];
+        [self.secondImageArr addObject:model];
      }
      if (self.collectionView) {
         [self.collectionView reloadData];
@@ -263,7 +263,7 @@ static NSString *homeThreeCell = @"homeThreeCell";
  }];
     
     
-      //  self.secondImageArr = @[@"PP-R",@"阀门",@"水暖配件",@"电料",@"地暖材料",@"散热器",@"壁挂炉",@"空气能",@"风机盘管",@"锅炉"].mutableCopy;
+        //self.secondImageArr = @[@"PP-R",@"阀门",@"水暖配件",@"电料",@"地暖材料",@"散热器",@"壁挂炉",@"空气能",@"风机盘管",@"锅炉",@"锅炉"].mutableCopy;
         self.threeImageArr = @[@"1暖通商城",@"import_cb"].mutableCopy;
       //  self.identifierArray = @[@"15",@"20",@"25",@"26",@"16",@"27",@"28",@"29",@"30",@"31"].mutableCopy;
     
@@ -327,6 +327,7 @@ static NSString *homeThreeCell = @"homeThreeCell";
     if (section == 1) {
         self.flowLayout.itemSize = CGSizeMake(60*kWidthScale,75*kHeightScale);
         return self.secondImageArr.count;
+        
     }
     if (section == 2) {
         self.flowLayout.itemSize = CGSizeMake(77*kWidthScale, 90*kHeightScale);
@@ -352,10 +353,11 @@ static NSString *homeThreeCell = @"homeThreeCell";
     }
     if (indexPath.section == 1) {
         HomeSecondCell *cell = [collectionView  dequeueReusableCellWithReuseIdentifier:homeSecondCell forIndexPath:indexPath];
-        HomePicModel *model = self.secondImageArr[indexPath.row];
-        NSURL *url =[NSURL URLWithString:[NSString stringWithFormat:@"%@",model.image]];
-        [cell.imgView sd_setImageWithURL:url];
-      //  cell.imgView.image = [UIImage imageNamed:self.secondImageArr[indexPath.row]];
+ 
+            HomePicModel *model = self.secondImageArr[indexPath.row];
+            NSURL *url =[NSURL URLWithString:[NSString stringWithFormat:@"%@",model.image]];
+            [cell.imgView sd_setImageWithURL:url];
+    
         return cell;
         
     }
@@ -448,8 +450,8 @@ static NSString *homeThreeCell = @"homeThreeCell";
     }
     if (indexPath.section == 1) {
         ShopGoodsListViewController *shopGoodListVC = [[ShopGoodsListViewController alloc]init];
-        HomePicModel *model = self.secondImageArr[indexPath.row];
-        shopGoodListVC.cat_id = model.cat_id;
+       HomePicModel *model = self.secondImageArr[indexPath.row];
+       shopGoodListVC.cat_id = model.cat_id;
         [self.navigationController pushViewController:shopGoodListVC animated:YES];
     }
     if (indexPath.section == 2) {

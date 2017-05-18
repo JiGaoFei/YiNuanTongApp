@@ -86,7 +86,7 @@
     
     // 删除按钮
     self.deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.deleteBtn.frame = CGRectMake(KScreenW - 40*kWidthScale, 60*kHeightScale, 24*kWidthScale, 24*kWidthScale);
+    self.deleteBtn.frame = CGRectMake(KScreenW - 50*kWidthScale, 60*kHeightScale, 24*kWidthScale, 24*kWidthScale);
     
     [self.deleteBtn setImage:[UIImage imageNamed:@"shipping_order_delete"] forState:UIControlStateNormal];
     [self.deleteBtn addTarget:self action:@selector(deleteBtnAction:) forControlEvents:UIControlEventTouchUpInside];
