@@ -180,54 +180,66 @@ static NSString *goodPramsCell = @"goodParamsCell";
  */
 - (void)loadData
 {
-        NSDictionary *goodDic = self.dataDic[@"goods"];
-        self.detailDataDic =self.dataDic[@"goods"];
+     UserInfo *userInfo = [UserInfo currentAccount];
+       NSDictionary *param = @{@"good_id":self.good_id,@"user_id":userInfo.user_id};
+    // 请求详情数据
+    NSString *url = [NSString stringWithFormat:@"%@api/gooddetailclass.php",baseUrl];
+    
+[YNTNetworkManager requestPOSTwithURLStr:url paramDic:param finish:^(id responseObject) {
+    self.dataDic = responseObject;
+    NSDictionary *goodDic = self.dataDic[@"goods"];
+    self.detailDataDic =self.dataDic[@"goods"];
+    
+    self.cengji = goodDic[@"cengji"];
+    NSLog(@"%@",self.cengji);
+    self.is_attr = goodDic[@"is_attr"];
+    self.model = [[HomeShopListDetailModel alloc]init];
+    [_model setValuesForKeysWithDictionary:goodDic];
+    
+    
+    // 取轮播图
+    
+    // 清空数据源
+    [self.picsArray removeAllObjects];
+    for (NSDictionary *dic in _model.xiangce) {
+        [self.picsArray addObject:dic[@"normal_img"]];
+    }
+    
+    [self setUpChildrenViews];
+    
+    // 获取规格参数
+    // 清空数据源
+    [self.detailSizeParamArray removeAllObjects];
+    NSArray *arr =self.detailDataDic[@"tianxie"];
+    for (NSDictionary *dic in arr) {
+        HomeGoodsDetailSizeModel *model = [[HomeGoodsDetailSizeModel alloc]init];
+        [model setValuesForKeysWithDictionary:dic];
+        [self.detailSizeParamArray addObject:model];
+    }
+    
+    // 获取推荐商品数据
+    // 清空数据源
+    [self.recommandModelArray removeAllObjects];
+    NSMutableArray *recArr = self.dataDic[@"recgoods"];
+    for (NSDictionary *dic in recArr) {
         
-        self.cengji = goodDic[@"cengji"];
-        NSLog(@"%@",self.cengji);
-        self.is_attr = goodDic[@"is_attr"];
-        self.model = [[HomeShopListDetailModel alloc]init];
-        [_model setValuesForKeysWithDictionary:goodDic];
-        
-        
-        // 取轮播图
-        
-        // 清空数据源
-        [self.picsArray removeAllObjects];
-        for (NSDictionary *dic in _model.xiangce) {
-            [self.picsArray addObject:dic[@"normal_img"]];
-        }
-        
+        HomeGoodDetailRecommandModel *recModle = [[HomeGoodDetailRecommandModel alloc]init];
+        [recModle setValuesForKeysWithDictionary:dic];
+        [self.recommandModelArray addObject:recModle];
+    }
+    
+    
+    if (self.tableView) {
+        [self.tableView reloadData];
+    }else{
         [self setUpChildrenViews];
-        
-        // 获取规格参数
-        // 清空数据源
-        [self.detailSizeParamArray removeAllObjects];
-        NSArray *arr =self.detailDataDic[@"tianxie"];
-        for (NSDictionary *dic in arr) {
-            HomeGoodsDetailSizeModel *model = [[HomeGoodsDetailSizeModel alloc]init];
-            [model setValuesForKeysWithDictionary:dic];
-            [self.detailSizeParamArray addObject:model];
-        }
-        
-        // 获取推荐商品数据
-        // 清空数据源
-        [self.recommandModelArray removeAllObjects];
-        NSMutableArray *recArr = self.dataDic[@"recgoods"];
-        for (NSDictionary *dic in recArr) {
-            
-            HomeGoodDetailRecommandModel *recModle = [[HomeGoodDetailRecommandModel alloc]init];
-            [recModle setValuesForKeysWithDictionary:dic];
-            [self.recommandModelArray addObject:recModle];
-        }
-        
-        
-        if (self.tableView) {
-            [self.tableView reloadData];
-        }else{
-            [self setUpChildrenViews];
-        }
-        
+    }
+
+    
+} enError:^(NSError *error) {
+    
+}];
+    
     
 }
 #pragma mark - 请求规格数据
@@ -244,193 +256,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
         self.jiagequjian = responseObject[@"jiafanwei"];
         self.cengji = responseObject[@"cengji"];
 
-        
-        
-        //
-        //        switch (cengjiNumber) {
-        //            case 1:
-        //            {
-        //                // 第1级
-        //                NSMutableArray *arr0 = dataDic[@"a0"];
-        //                // 添加第5个数据源
-        //                for (NSDictionary *dic in arr0) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataFiveArr addObject:model];
-        //                }
-        //
-        //            }
-        //                break;
-        //            case 2:
-        //            {
-        //                // 第1级
-        //                NSMutableArray *arr0 = dataDic[@"a0"];
-        //                NSMutableArray *arr4 = dataDic[@"a1"];
-        //
-        //                // 添加第1个数据源
-        //                for (NSDictionary *dic in arr0) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataOneArr addObject:model];
-        //                }
-        //
-        //
-        //                // 添加第5个数据源
-        //                for (NSDictionary *dic in arr4) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataFiveArr addObject:model];
-        //                }
-        //
-        //
-        //                [self.chooseDataArr addObject:self.sizeDataOneArr];
-        //
-        //            }
-        //                break;
-        //
-        //            case 3:
-        //            {
-        //                // 第1级
-        //                NSMutableArray *arr0 = dataDic[@"a0"];
-        //                NSMutableArray *arr1 = dataDic[@"a1"];
-        //                NSMutableArray *arr4 = dataDic[@"a2"];
-        //
-        //                // 添加第1个数据源
-        //                for (NSDictionary *dic in arr0) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataOneArr addObject:model];
-        //                }
-        //                // 添加第2个数据源
-        //                for (NSDictionary *dic in arr1) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataTwoArr addObject:model];
-        //                }
-        //
-        //                // 添加第5个数据源
-        //                for (NSDictionary *dic in arr4) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataFiveArr addObject:model];
-        //                }
-        //
-        //
-        //
-        //                [self.chooseDataArr addObject:self.sizeDataOneArr];
-        //                [self.chooseDataArr addObject:self.sizeDataTwoArr];
-        //            }
-        //                break;
-        //
-        //            case 4:
-        //            {
-        //                // 第1级
-        //                NSMutableArray *arr0 = dataDic[@"a0"];
-        //                NSMutableArray *arr1 = dataDic[@"a1"];
-        //                NSMutableArray *arr2 = dataDic[@"a2"];
-        //                NSMutableArray *arr4 = dataDic[@"a3"];
-        //
-        //                // 添加第1个数据源
-        //                for (NSDictionary *dic in arr0) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataOneArr addObject:model];
-        //                }
-        //                // 添加第2个数据源
-        //                for (NSDictionary *dic in arr1) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataTwoArr addObject:model];
-        //                }
-        //
-        //                // 添加第3个数据源
-        //                for (NSDictionary *dic in arr2) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataThreeArr addObject:model];
-        //                }
-        //
-        //
-        //                // 添加第5个数据源
-        //                for (NSDictionary *dic in arr4) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataFiveArr addObject:model];
-        //                }
-        //
-        //
-        //                [self.chooseDataArr addObject:self.sizeDataOneArr];
-        //                [self.chooseDataArr addObject:self.sizeDataTwoArr];
-        //                [self.chooseDataArr addObject:self.sizeDataThreeArr];
-        //
-        //
-        //            }
-        //                break;
-        //
-        //            case 5:
-        //            {
-        //                // 第1级
-        //                NSMutableArray *arr0 = dataDic[@"a0"];
-        //                NSMutableArray *arr1 = dataDic[@"a1"];
-        //                NSMutableArray *arr2 = dataDic[@"a2"];
-        //                NSMutableArray *arr3 = dataDic[@"a3"];
-        //                NSMutableArray *arr4 = dataDic[@"a4"];
-        //
-        //                // 添加第1个数据源
-        //                for (NSDictionary *dic in arr0) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataOneArr addObject:model];
-        //                }
-        //                // 添加第2个数据源
-        //                for (NSDictionary *dic in arr1) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataTwoArr addObject:model];
-        //                }
-        //
-        //                // 添加第3个数据源
-        //                for (NSDictionary *dic in arr2) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataThreeArr addObject:model];
-        //                }
-        //
-        //                // 添加第4个数据源
-        //                for (NSDictionary *dic in arr3) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataFourArr addObject:model];
-        //                }
-        //
-        //                // 添加第5个数据源
-        //                for (NSDictionary *dic in arr4) {
-        //                    HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-        //                    [model setValuesForKeysWithDictionary:dic];
-        //                    [self.sizeDataFiveArr addObject:model];
-        //                }
-        //
-        //
-        //
-        //
-        //                [self.chooseDataArr addObject:self.sizeDataOneArr];
-        //                [self.chooseDataArr addObject:self.sizeDataTwoArr];
-        //
-        //                [self.chooseDataArr addObject:self.sizeDataThreeArr];
-        //
-        //                [self.chooseDataArr addObject:self.sizeDataFourArr];
-        //
-        //
-        //
-        //            }
-        //                break;
-        //
-        //
-        //            default:
-        //                break;
-        //        }
-        //
-        
         
         
     } enError:^(NSError *error) {
@@ -702,44 +527,112 @@ static NSString *goodPramsCell = @"goodParamsCell";
 // 立刻购买点击事件
 - (void)imdedateAction:(UIButton *)sender
 {
-            NSLog(@"1");
+    
+    
+
+    // 获取限购参数
+    NSString *activitynum = [NSString stringWithFormat:@"%@",self.dataDic[@"goods"][@"activitynum"]];
+    // 没有数量限制
+    if ([activitynum isEqualToString:@"-1"]) {
         UserInfo *userInfo = [UserInfo currentAccount];
         NSInteger num = [self.shoopCarNum integerValue];
-    if (num >0) { // 数量大于0时才可执行
-        NSDictionary *params = @{@"good_id":self.good_id,@"user_id":userInfo.user_id,@"is_attr":@"0",@"num":self.shoopCarNum,@"directbuy":@"1"};
-        [self requestDataWithPrams:params andWithTitle:@"立即购买"];
+        if (num >0) { // 数量大于0时才可执行
+            NSDictionary *params = @{@"good_id":self.good_id,@"user_id":userInfo.user_id,@"is_attr":@"0",@"num":self.shoopCarNum,@"directbuy":@"1"};
+            [self requestDataWithPrams:params andWithTitle:@"立即购买"];
+           
+            
+        }else{
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"温馨提示:" message:@"请选择您要加入的商品!" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+            [alertVC addAction:action];
+            [self presentViewController:alertVC animated:YES completion:nil];
+            
+            return;
+        }
 
-    }else{
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"温馨提示:" message:@"请选择您要加入的商品!" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-        [alertVC addAction:action];
-        [self presentViewController:alertVC animated:YES completion:nil];
-        
-        return;
     }
-   //    dispatch_async(mainQueue, ^{
-//        NSLog(@"3");
-//    });
-//    dispatch_async(mainQueue, ^{
-//        NSLog(@"4");
-//    });
+    
+    
+
+    // 有数量限制
+    if ([activitynum isEqualToString:@"0"]) {
+        [GFProgressHUD showInfoMsg:@"此商品只能购买一次"];
+    }
+     if ([activitynum integerValue]>0 && ([self.shoopCarNum integerValue] <[activitynum integerValue]  || [self.shoopCarNum isEqualToString:activitynum] )){
+         
+            UserInfo *userInfo = [UserInfo currentAccount];
+             NSInteger num = [self.shoopCarNum integerValue];
+             if (num >0) { // 数量大于0时才可执行
+                 NSDictionary *params = @{@"good_id":self.good_id,@"user_id":userInfo.user_id,@"is_attr":@"0",@"num":self.shoopCarNum,@"directbuy":@"1"};
+                 [self requestDataWithPrams:params andWithTitle:@"立即购买"];
+                
+                 
+             }else{
+                 UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"温馨提示:" message:@"请选择您要加入的商品!" preferredStyle:UIAlertControllerStyleAlert];
+                 UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+                 [alertVC addAction:action];
+                 [self presentViewController:alertVC animated:YES completion:nil];
+                 
+                 return;
+             }
+                  
+     }
 
 }
 - (void)carBtnAction:(UIButton *)sender
 {
-       NSLog(@"我要加入购物车了");
-    UserInfo *userInfo = [UserInfo currentAccount];
-    NSInteger num = [self.shoopCarNum integerValue];
-    if (num >0) { // 数量大于0时才可执行
-        NSDictionary *params = @{@"good_id":self.good_id,@"user_id":userInfo.user_id,@"is_attr":@"0",@"num":self.shoopCarNum};
-        [self requestDataWithPrams:params andWithTitle:@"加入购物车"];
-    }else{
-        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"温馨提示:" message:@"请选择您要加入的商品!" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-        [alertVC addAction:action];
-        [self presentViewController:alertVC animated:YES completion:nil];
+    
+    // 获取限购参数
+    NSString *activitynum = [NSString stringWithFormat:@"%@",self.dataDic[@"goods"][@"activitynum"]];
+    
+    // 对数量没有限制
+    if ([activitynum isEqualToString:@"-1"] ) {
+        UserInfo *userInfo = [UserInfo currentAccount];
+        NSInteger num = [self.shoopCarNum integerValue];
+        if (num >0) { // 数量大于0时才可执行
+            NSDictionary *params = @{@"good_id":self.good_id,@"user_id":userInfo.user_id,@"is_attr":@"0",@"num":self.shoopCarNum};
+            [self requestDataWithPrams:params andWithTitle:@"加入购物车"];
+            
+        }else{
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"温馨提示:" message:@"请选择您要加入的商品!" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+            [alertVC addAction:action];
+            [self presentViewController:alertVC animated:YES completion:nil];
+            
+            return;
+        }
         
-        return;
+       
+    }
+    
+    
+    
+    if ([activitynum isEqualToString:@"0"]) {
+        [GFProgressHUD showInfoMsg:@"此商品只能购买一次"];
+    }
+    if ([activitynum integerValue]>0 && ([self.shoopCarNum integerValue] <[activitynum integerValue]  || [self.shoopCarNum isEqualToString:activitynum] )){
+        
+            // 没有超出限制数量
+            UserInfo *userInfo = [UserInfo currentAccount];
+            NSInteger num = [self.shoopCarNum integerValue];
+            if (num >0) { // 数量大于0时才可执行
+                NSDictionary *params = @{@"good_id":self.good_id,@"user_id":userInfo.user_id,@"is_attr":@"0",@"num":self.shoopCarNum};
+                [self requestDataWithPrams:params andWithTitle:@"加入购物车"];
+               
+            }else{
+                UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"温馨提示:" message:@"请选择您要加入的商品!" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+                [alertVC addAction:action];
+                [self presentViewController:alertVC animated:YES completion:nil];
+                
+                return;
+            }
+            
+
+       
+       
+    }else{
+        [GFProgressHUD showInfoMsg:@"超出要购买的数量了!"];
     }
     
 }
@@ -773,12 +666,56 @@ static NSString *goodPramsCell = @"goodParamsCell";
 
         cell.totallMoneyLab.text = [NSString stringWithFormat:@"¥  %@",self.dataDic[@"goods"][@"price"] ];
         __weak typeof(cell) CellSelf = cell;
+        // 获取限购参数
+        NSString *activitynum = [NSString stringWithFormat:@"%@",self.dataDic[@"goods"][@"activitynum"]];
+          NSString *order_count = [NSString stringWithFormat:@"%@",self.dataDic[@"goods"][@"order_count"]];
         // 加号按钮回调
         cell.addBtnBloock = ^(NSString *str){
-            self.shoopCarNum = str;
-               NSInteger num = [str integerValue];
-            double price =[self.dataDic[@"goods"][@"price"] doubleValue];
-           CellSelf.totallMoneyLab.text = [NSString stringWithFormat:@"¥ %.2f",num*price];
+            
+
+                if ([activitynum isEqualToString:@"0"]) {
+                    // 不可购买
+                    [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
+                    CellSelf.numberTextField.text = @"1";
+                    return ;
+                }
+            
+                if ([activitynum integerValue] > 0) {
+                    if ([order_count integerValue] > 0) {
+                    // 非首次购买
+                    [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
+                    }else{
+                        //只能购买一个
+                        self.shoopCarNum = str;
+                        NSInteger num = [str integerValue];
+                        double price =[self.dataDic[@"goods"][@"price"] doubleValue];
+                        
+                        if ([str integerValue] > [activitynum integerValue]) {
+                            CellSelf.numberTextField.text = activitynum;
+                            [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"此商品只能购买%@件!",activitynum]];
+                            CellSelf.totallMoneyLab.text = [NSString stringWithFormat:@"¥ %.2f", [activitynum integerValue]*price];
+                            self.shoopCarNum = activitynum;
+                        }else{
+                            CellSelf.totallMoneyLab.text = [NSString stringWithFormat:@"¥ %.2f",num*price];
+                            self.shoopCarNum = str;
+                        }
+                        
+                      return ;
+  
+                    }
+                    
+                }
+                if ([activitynum isEqualToString:@"-1"]) {
+                    //不限制数量
+                    self.shoopCarNum = str;
+                    NSInteger num = [str integerValue];
+                    double price =[self.dataDic[@"goods"][@"price"] doubleValue];
+                    CellSelf.totallMoneyLab.text = [NSString stringWithFormat:@"¥ %.2f",num*price];
+                }
+
+                
+                
+       
         };
         // 减号按钮回调
         cell.cutBtnBloock = ^(NSString *str){
@@ -789,10 +726,47 @@ static NSString *goodPramsCell = @"goodParamsCell";
         };
         // 确定按钮的回调
         cell.confirmBtnBlock = ^(NSString *str){
-            self.shoopCarNum = str;
-            NSInteger num = [str integerValue];
-            double price =[self.dataDic[@"goods"][@"price"] doubleValue];
-            CellSelf.totallMoneyLab.text = [NSString stringWithFormat:@"¥ %.2f",num*price];
+
+            if ([activitynum isEqualToString:@"0"]) {
+                // 不可购买
+                [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
+                CellSelf.numberTextField.text = @"1";
+                return ;
+            }
+            if ([activitynum integerValue] > 0) {
+                if ([order_count integerValue] > 0) {
+                    // 非首次购买
+                    [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
+                }else{
+                    //只能购买一个
+                    self.shoopCarNum = str;
+                    NSInteger num = [str integerValue];
+                    double price =[self.dataDic[@"goods"][@"price"] doubleValue];
+                    
+                    if ([str integerValue] > [activitynum integerValue]) {
+                        CellSelf.numberTextField.text = activitynum;
+                        [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"此商品只能购买%@件!",activitynum]];
+                        CellSelf.totallMoneyLab.text = [NSString stringWithFormat:@"¥ %.2f", [activitynum integerValue]*price];
+                        self.shoopCarNum = activitynum;
+                    }else{
+                        CellSelf.totallMoneyLab.text = [NSString stringWithFormat:@"¥ %.2f",num*price];
+                        self.shoopCarNum = str;
+                    }
+                    
+                    return ;
+                    
+                }
+                
+            }
+            
+            if ([activitynum isEqualToString:@"-1"]) {
+                //不限制数量
+                self.shoopCarNum = str;
+                NSInteger num = [str integerValue];
+                double price =[self.dataDic[@"goods"][@"price"] doubleValue];
+                CellSelf.totallMoneyLab.text = [NSString stringWithFormat:@"¥ %.2f",num*price];
+            }
+
         };
         
         return cell;
@@ -901,7 +875,9 @@ static NSString *goodPramsCell = @"goodParamsCell";
             [self.navigationController pushViewController:orderCofirmVC animated:YES];
         }else{
                [GFProgressHUD showSuccess:responseObject[@"msg"]];
+          
         }
+        [self loadData];
         
           } enError:^(NSError *error) {
         NSLog(@"%@请求数据失败%@",title,error);

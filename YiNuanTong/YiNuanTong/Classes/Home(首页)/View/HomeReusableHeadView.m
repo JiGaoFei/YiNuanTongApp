@@ -11,12 +11,22 @@
 #import "YNTNetworkManager.h"
 #import "CycleDetailViewController.h"
 #import "UICollectionReusableView+Controller.h"
-
+#import "HomeBannerModel.h"
+#import "ShopGoodsListViewController.h"
 @interface HomeReusableHeadView ()<SDCycleScrollViewDelegate>
 /**存放要跳转链接的url*/
 @property (nonatomic,strong) NSMutableArray *urlArray;
+/**数据源*/
+@property (nonatomic,strong) NSMutableArray  * modelArray;
 @end
 @implementation HomeReusableHeadView
+- (NSMutableArray *)modelArray
+{
+    if (!_modelArray) {
+        self.modelArray = [[NSMutableArray alloc]init];
+    }
+    return  _modelArray;
+}
 - (NSMutableArray *)urlArray
 {
     if (!_urlArray) {
@@ -49,7 +59,12 @@
         NSDictionary *returnDic = [NSDictionary dictionaryWithDictionary:responseObject];
         NSArray *returnArray = returnDic[@"data"];
     
-        
+        [self.modelArray removeAllObjects];
+        for (NSDictionary *dic in returnArray) {
+            HomeBannerModel *model = [[HomeBannerModel alloc]init];
+            [model setValuesForKeysWithDictionary:dic];
+            [self.modelArray addObject:model];
+        }
         for (NSDictionary *dataDic in returnArray) {
             
             NSString *str = dataDic[@"url"];
@@ -76,15 +91,32 @@
 
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index
 {
+    
+    HomeBannerModel *model = self.modelArray[index];
+    
     CycleDetailViewController *cycleViewController = [[CycleDetailViewController alloc]init];
     cycleViewController.link = self.urlArray[index];
    UIViewController *vc = [self firstViewController];
-    if ([self.urlArray[index] isEqualToString:@""]) {
-        // 链接为空时不跳转
-        return;
+    
+    
+    
+    
+    // 如果ishtml = 1 跳转到网页
+    if (model.ishtml == 1) {
+        if ([self.urlArray[index] isEqualToString:@""]) {
+            // 链接为空时不跳转
+            return;
+        }else{
+            [vc.navigationController pushViewController:cycleViewController animated:YES];
+        }
+
+        
     }else{
-           [vc.navigationController pushViewController:cycleViewController animated:YES];
-    }
+        ShopGoodsListViewController *shopGoodListVC = [[ShopGoodsListViewController alloc]init];
+        shopGoodListVC.cat_id = model.cat_id;
+        [vc.navigationController pushViewController:shopGoodListVC animated:YES];
+          }
+    
 
 }
 @end

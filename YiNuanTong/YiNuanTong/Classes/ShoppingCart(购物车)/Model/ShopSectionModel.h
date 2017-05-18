@@ -38,6 +38,10 @@
 @property (nonatomic,strong) NSMutableArray *good_attr;
 /**存放分区中的model*/
 @property (nonatomic,strong) NSMutableArray *modelArr;
+/**限购数量*/
+@property (nonatomic,assign) NSInteger  activitynum;
+
+
 /** 是否展开 */
 @property (nonatomic,assign) BOOL isOpen;
 - (NSMutableArray *)setValueWithArr:(NSArray *)arr;

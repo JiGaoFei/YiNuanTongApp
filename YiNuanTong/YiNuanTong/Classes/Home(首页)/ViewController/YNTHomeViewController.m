@@ -61,6 +61,8 @@
 @property (nonatomic,strong) NSMutableArray  * identifierArray;
 /**进口壁挂炉数据源*/
 @property (nonatomic,strong) NSMutableArray  * itemsModelArray;
+/**类型数据*/
+@property (nonatomic,strong) NSMutableDictionary  * typeData;
 @end
 static NSString *headViewIdentifier = @"headView";
 static NSString *headViewElseIdentifier = @"headViewElse";
@@ -68,6 +70,13 @@ static NSString *homeFrstCell = @"homeFirstCell";
 static NSString *homeSecondCell = @"homeSecondCell";
 static NSString *homeThreeCell = @"homeThreeCell";
 @implementation YNTHomeViewController
+- (NSMutableDictionary *)typeData
+{
+    if (!_typeData) {
+        self.typeData = [[NSMutableDictionary alloc]init];
+    }
+    return _typeData;
+}
 /**
  *懒加载
  */
@@ -246,6 +255,7 @@ static NSString *homeThreeCell = @"homeThreeCell";
     NSString *url1 = [NSString stringWithFormat:@"%@api/categoryclass.php",baseUrl];
     
  [YNTNetworkManager requestPOSTwithURLStr:url1 paramDic:nil finish:^(id responseObject) {
+     self.typeData = responseObject;
      NSArray *dataArray = responseObject[@"data"];
      for (NSDictionary *dic in dataArray) {
          HomePicModel *model = [[HomePicModel alloc]init];
@@ -449,10 +459,24 @@ static NSString *homeThreeCell = @"homeThreeCell";
         }
     }
     if (indexPath.section == 1) {
-        ShopGoodsListViewController *shopGoodListVC = [[ShopGoodsListViewController alloc]init];
-       HomePicModel *model = self.secondImageArr[indexPath.row];
-       shopGoodListVC.cat_id = model.cat_id;
-        [self.navigationController pushViewController:shopGoodListVC animated:YES];
+        if (indexPath.row <(self.secondImageArr.count - 1)) {
+            ShopGoodsListViewController *shopGoodListVC = [[ShopGoodsListViewController alloc]init];
+            HomePicModel *model = self.secondImageArr[indexPath.row];
+            shopGoodListVC.cat_id = model.cat_id;
+            [self.navigationController pushViewController:shopGoodListVC animated:YES];
+        }else{
+            NSString *start = [NSString stringWithFormat:@"%@",self.typeData[@"is_start"]];
+            
+            if ([start isEqualToString:@"1"]) {
+                ShopGoodsListViewController *shopGoodListVC = [[ShopGoodsListViewController alloc]init];
+                HomePicModel *model = self.secondImageArr[indexPath.row];
+                shopGoodListVC.cat_id = model.cat_id;
+                [self.navigationController pushViewController:shopGoodListVC animated:YES];
+            }else{
+                [GFProgressHUD showInfoMsg:@"此功能暂未开通"];
+            }
+        }
+    
     }
     if (indexPath.section == 2) {
       

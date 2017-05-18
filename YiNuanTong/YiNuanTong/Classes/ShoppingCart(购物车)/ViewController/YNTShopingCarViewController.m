@@ -115,6 +115,7 @@ static NSString *identifier = @"shopCell";
         
     
         }else{
+             [self.emptyViews removeFromSuperview];
             // 加载tableView
             [self setUpTableView];
          
@@ -125,6 +126,7 @@ static NSString *identifier = @"shopCell";
         [self.emptyViews removeFromSuperview];
         [self setUpBottomView];
         }else{
+             [self.emptyViews removeFromSuperview];
             [self setUpEmptyViews];
         }
         
@@ -309,6 +311,7 @@ static NSString *identifier = @"shopCell";
     
     UserInfo *userInfo = [UserInfo currentAccount];
     shopHeadView.numberTextField.text = model.num;
+    __weak typeof(shopHeadView)shopSelf = shopHeadView;
     
     // 删除的点击事件
     shopHeadView.deleteBtnBlock = ^(){
@@ -317,10 +320,27 @@ static NSString *identifier = @"shopCell";
     };
     // 加号点击事件
     shopHeadView.addBtnBloock = ^(NSString *str){
+        NSString *activienum = [NSString stringWithFormat:@"%ld",model.activitynum];
+        if ([activienum isEqualToString:@"-1"]) {
+           
+            NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"1",@"cat_id":model.cat_id};
+            [self modifyGoodNumbRequestData:param andtitle:@"加号"];
+        }else{
+            
+            if ([str integerValue] > model.activitynum) {
+                [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"此商品最多购买%ld件",model.activitynum]];
+     
+                NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"0",@"cat_id":model.cat_id};
+                [self modifyGoodNumbRequestData:param andtitle:@"加号"];
+                shopSelf.numberTextField.text = activienum;
+            }else{
+                NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"1",@"cat_id":model.cat_id};
+                [self modifyGoodNumbRequestData:param andtitle:@"加号"];
+            }
+        }
+      
         
-        NSLog(@"加号回调");
-        NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"1",@"cat_id":model.cat_id};
-        [self modifyGoodNumbRequestData:param andtitle:@"加号"];
+
     };
     // 减号点击事件
     shopHeadView.cutBtnBloock = ^(NSString *str){
@@ -349,12 +369,44 @@ static NSString *identifier = @"shopCell";
             [self presentViewController:alertVC animated:YES completion:nil];
             
         }else{
-            NSInteger current = [self.currentNumber integerValue];
-            NSInteger textNum = [model.num integerValue];
-            NSInteger variableNum = (current - textNum);
-            NSString *num = [NSString stringWithFormat:@"%ld",(long)variableNum];
-            NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":num,@"cat_id":model.cat_id};
-            [self modifyGoodNumbRequestData:param andtitle:@"完成 "];
+            
+            NSString *activienum = [NSString stringWithFormat:@"%ld",model.activitynum];
+            if ([activienum isEqualToString:@"-1"]) {
+                //不限制数量
+                NSInteger current = [self.currentNumber integerValue];
+                NSInteger textNum = [model.num integerValue];
+                NSInteger variableNum = (current - textNum);
+                NSString *num = [NSString stringWithFormat:@"%ld",(long)variableNum];
+                NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":num,@"cat_id":model.cat_id};
+                [self modifyGoodNumbRequestData:param andtitle:@"完成 "];
+                
+            }else{
+                // 限制数量
+                if ([str integerValue] > model.activitynum) {
+                    // 数量大于限制数量时
+                    [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"此商品最多购买%ld件",model.activitynum]];
+                    NSInteger current = [activienum integerValue];
+                    NSInteger textNum = [model.num integerValue];
+                    NSInteger variableNum = (current - textNum);
+                    NSString *num = [NSString stringWithFormat:@"%ld",(long)variableNum];
+                    shopSelf.numberTextField.text = activienum;
+                    
+                    NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":num,@"cat_id":model.cat_id};
+                    [self modifyGoodNumbRequestData:param andtitle:@"完成 "];
+                }else{
+                     // 数量不大于限制数量时
+                    NSInteger current = [self.currentNumber integerValue];
+                    NSInteger textNum = [model.num integerValue];
+                    NSInteger variableNum = (current - textNum);
+                    NSString *num = [NSString stringWithFormat:@"%ld",(long)variableNum];
+                    NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":num,@"cat_id":model.cat_id};
+                    [self modifyGoodNumbRequestData:param andtitle:@"完成 "];
+                    
+                }
+            }
+            
+
+        
         }
     
         

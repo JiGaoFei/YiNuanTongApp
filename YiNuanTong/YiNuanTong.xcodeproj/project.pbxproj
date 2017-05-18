@@ -25,12 +25,15 @@
 		BB286E1C1E11F11B00E81B4E /* OptionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB286E1B1E11F11B00E81B4E /* OptionListViewController.m */; };
 		BB2BF9231E03CF8600A8AA3E /* MinLineCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2BF9221E03CF8600A8AA3E /* MinLineCell.m */; };
 		BB2BF9261E03D88000A8AA3E /* SingLeton.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2BF9251E03D88000A8AA3E /* SingLeton.m */; };
+		BB39AAA61ECD822C008A7C80 /* ShopGoodDetailNoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB39AAA51ECD822C008A7C80 /* ShopGoodDetailNoViewController.m */; };
+		BB39AAA91ECD86F8008A7C80 /* HomeBannerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BB39AAA81ECD86F8008A7C80 /* HomeBannerModel.m */; };
 		BB4A51831E4B161B006F5FCF /* GFProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4A51821E4B161B006F5FCF /* GFProgressHUD.m */; };
 		BB4A51911E4B1911006F5FCF /* GFProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BB4A51901E4B1911006F5FCF /* GFProgressHUD.bundle */; };
 		BB4BA4DF1E0B5D25001A892C /* LogoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4BA4DE1E0B5D25001A892C /* LogoutCell.m */; };
 		BB4BA4E21E0B738C001A892C /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4BA4E11E0B738C001A892C /* AccountViewController.m */; };
 		BB4F4B081E24DE8C00259DF3 /* MineAddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4F4B071E24DE8C00259DF3 /* MineAddressModel.m */; };
 		BB568BE11E014A240018B8A5 /* PhoneAccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB568BE01E014A240018B8A5 /* PhoneAccessViewController.m */; };
+		BB5FAA011ECD351800D8D4A3 /* YNTShopingCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5FAA001ECD351800D8D4A3 /* YNTShopingCarViewController.m */; };
 		BB628D211E163A0400DD3BF9 /* AccountPayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB628D201E163A0400DD3BF9 /* AccountPayCell.m */; };
 		BB6880411E0A6F4600618375 /* MessageListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6880401E0A6F4600618375 /* MessageListCell.m */; };
 		BB6880441E0A768B00618375 /* PhoneListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6880431E0A768B00618375 /* PhoneListCell.m */; };
@@ -147,7 +150,6 @@
 		F116F8C21E9C5F51007C489C /* SubmitOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F8211E9C5F51007C489C /* SubmitOrderViewController.m */; };
 		F116F8C31E9C5F51007C489C /* UIScrollView+EmptyDataSet.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F8231E9C5F51007C489C /* UIScrollView+EmptyDataSet.m */; };
 		F116F8C41E9C5F51007C489C /* WriteOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F8251E9C5F51007C489C /* WriteOrderViewController.m */; };
-		F116F8C51E9C5F51007C489C /* YNTShopingCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F8271E9C5F51007C489C /* YNTShopingCarViewController.m */; };
 		F116F8C71E9C5F51007C489C /* BrandModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F82D1E9C5F51007C489C /* BrandModel.m */; };
 		F116F8C81E9C5F51007C489C /* CartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F82F1E9C5F51007C489C /* CartModel.m */; };
 		F116F8C91E9C5F51007C489C /* HomeGoodDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F8311E9C5F51007C489C /* HomeGoodDetailModel.m */; };
@@ -196,7 +198,6 @@
 		F140F2EB1EAAF94700658765 /* GoodDetailAttrtypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F140F2EA1EAAF94700658765 /* GoodDetailAttrtypeModel.m */; };
 		F14961E41EA8431400E855B1 /* HomeGoodDetailRecommandModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F14961E31EA8431400E855B1 /* HomeGoodDetailRecommandModel.m */; };
 		F14961E81EA8676800E855B1 /* HomeGoodDetailParamsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F14961E71EA8676800E855B1 /* HomeGoodDetailParamsView.m */; };
-		F179DC4E1EA98ED900E916EA /* ShopGoodDetailNoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F179DC4D1EA98ED900E916EA /* ShopGoodDetailNoViewController.m */; };
 		F179DC511EA999AD00E916EA /* GoodDetailSizeNoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F179DC501EA999AD00E916EA /* GoodDetailSizeNoCell.m */; };
 		F179DC551EA9AB7C00E916EA /* GFChooseOneView.m in Sources */ = {isa = PBXBuildFile; fileRef = F179DC541EA9AB7C00E916EA /* GFChooseOneView.m */; };
 		F180225B1EA5DCE1001B1BD5 /* CommentProblemDetaiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F180225A1EA5DCE1001B1BD5 /* CommentProblemDetaiViewController.m */; };
@@ -278,6 +279,10 @@
 		BB2BF9221E03CF8600A8AA3E /* MinLineCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MinLineCell.m; sourceTree = "<group>"; };
 		BB2BF9241E03D88000A8AA3E /* SingLeton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingLeton.h; sourceTree = "<group>"; };
 		BB2BF9251E03D88000A8AA3E /* SingLeton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingLeton.m; sourceTree = "<group>"; };
+		BB39AAA41ECD822C008A7C80 /* ShopGoodDetailNoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopGoodDetailNoViewController.h; sourceTree = "<group>"; };
+		BB39AAA51ECD822C008A7C80 /* ShopGoodDetailNoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopGoodDetailNoViewController.m; sourceTree = "<group>"; };
+		BB39AAA71ECD86F8008A7C80 /* HomeBannerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeBannerModel.h; sourceTree = "<group>"; };
+		BB39AAA81ECD86F8008A7C80 /* HomeBannerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeBannerModel.m; sourceTree = "<group>"; };
 		BB4A51811E4B161B006F5FCF /* GFProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFProgressHUD.h; sourceTree = "<group>"; };
 		BB4A51821E4B161B006F5FCF /* GFProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GFProgressHUD.m; sourceTree = "<group>"; };
 		BB4A51901E4B1911006F5FCF /* GFProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GFProgressHUD.bundle; sourceTree = "<group>"; };
@@ -289,6 +294,8 @@
 		BB4F4B071E24DE8C00259DF3 /* MineAddressModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineAddressModel.m; sourceTree = "<group>"; };
 		BB568BDF1E014A240018B8A5 /* PhoneAccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneAccessViewController.h; sourceTree = "<group>"; };
 		BB568BE01E014A240018B8A5 /* PhoneAccessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneAccessViewController.m; sourceTree = "<group>"; };
+		BB5FA9FF1ECD351800D8D4A3 /* YNTShopingCarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNTShopingCarViewController.h; sourceTree = "<group>"; };
+		BB5FAA001ECD351800D8D4A3 /* YNTShopingCarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNTShopingCarViewController.m; sourceTree = "<group>"; };
 		BB628D1F1E163A0400DD3BF9 /* AccountPayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountPayCell.h; sourceTree = "<group>"; };
 		BB628D201E163A0400DD3BF9 /* AccountPayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountPayCell.m; sourceTree = "<group>"; };
 		BB68803F1E0A6F4600618375 /* MessageListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageListCell.h; sourceTree = "<group>"; };
@@ -576,8 +583,6 @@
 		F116F8231E9C5F51007C489C /* UIScrollView+EmptyDataSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+EmptyDataSet.m"; sourceTree = "<group>"; };
 		F116F8241E9C5F51007C489C /* WriteOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WriteOrderViewController.h; sourceTree = "<group>"; };
 		F116F8251E9C5F51007C489C /* WriteOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WriteOrderViewController.m; sourceTree = "<group>"; };
-		F116F8261E9C5F51007C489C /* YNTShopingCarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNTShopingCarViewController.h; sourceTree = "<group>"; };
-		F116F8271E9C5F51007C489C /* YNTShopingCarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNTShopingCarViewController.m; sourceTree = "<group>"; };
 		F116F82C1E9C5F51007C489C /* BrandModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrandModel.h; sourceTree = "<group>"; };
 		F116F82D1E9C5F51007C489C /* BrandModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrandModel.m; sourceTree = "<group>"; };
 		F116F82E1E9C5F51007C489C /* CartModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartModel.h; sourceTree = "<group>"; };
@@ -674,8 +679,6 @@
 		F14961E31EA8431400E855B1 /* HomeGoodDetailRecommandModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeGoodDetailRecommandModel.m; sourceTree = "<group>"; };
 		F14961E61EA8676800E855B1 /* HomeGoodDetailParamsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeGoodDetailParamsView.h; sourceTree = "<group>"; };
 		F14961E71EA8676800E855B1 /* HomeGoodDetailParamsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeGoodDetailParamsView.m; sourceTree = "<group>"; };
-		F179DC4C1EA98ED900E916EA /* ShopGoodDetailNoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopGoodDetailNoViewController.h; sourceTree = "<group>"; };
-		F179DC4D1EA98ED900E916EA /* ShopGoodDetailNoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopGoodDetailNoViewController.m; sourceTree = "<group>"; };
 		F179DC4F1EA999AD00E916EA /* GoodDetailSizeNoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoodDetailSizeNoCell.h; sourceTree = "<group>"; };
 		F179DC501EA999AD00E916EA /* GoodDetailSizeNoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoodDetailSizeNoCell.m; sourceTree = "<group>"; };
 		F179DC531EA9AB7C00E916EA /* GFChooseOneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFChooseOneView.h; sourceTree = "<group>"; };
@@ -1565,8 +1568,8 @@
 				F116F8231E9C5F51007C489C /* UIScrollView+EmptyDataSet.m */,
 				F116F8241E9C5F51007C489C /* WriteOrderViewController.h */,
 				F116F8251E9C5F51007C489C /* WriteOrderViewController.m */,
-				F116F8261E9C5F51007C489C /* YNTShopingCarViewController.h */,
-				F116F8271E9C5F51007C489C /* YNTShopingCarViewController.m */,
+				BB5FA9FF1ECD351800D8D4A3 /* YNTShopingCarViewController.h */,
+				BB5FAA001ECD351800D8D4A3 /* YNTShopingCarViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1586,6 +1589,8 @@
 			children = (
 				F116F82C1E9C5F51007C489C /* BrandModel.h */,
 				F116F82D1E9C5F51007C489C /* BrandModel.m */,
+				BB39AAA71ECD86F8008A7C80 /* HomeBannerModel.h */,
+				BB39AAA81ECD86F8008A7C80 /* HomeBannerModel.m */,
 				F1A17E641EA87D400097CE4A /* HomeItemsModel.h */,
 				F1A17E651EA87D400097CE4A /* HomeItemsModel.m */,
 				F116F82E1E9C5F51007C489C /* CartModel.h */,
@@ -1721,8 +1726,8 @@
 				F1A17E6B1EA8A7350097CE4A /* ShopGoodDetailOneController.m */,
 				F194AEA61EA9F07B00495917 /* ShopGooodDetailMoreViewController.h */,
 				F194AEA71EA9F07B00495917 /* ShopGooodDetailMoreViewController.m */,
-				F179DC4C1EA98ED900E916EA /* ShopGoodDetailNoViewController.h */,
-				F179DC4D1EA98ED900E916EA /* ShopGoodDetailNoViewController.m */,
+				BB39AAA41ECD822C008A7C80 /* ShopGoodDetailNoViewController.h */,
+				BB39AAA51ECD822C008A7C80 /* ShopGoodDetailNoViewController.m */,
 				F116F8811E9C5F51007C489C /* ShopGoodsListViewController.h */,
 				F116F8821E9C5F51007C489C /* ShopGoodsListViewController.m */,
 				F11C768B1EB024B6000A5BD6 /* SecondBuyGoodViewController.h */,
@@ -1950,6 +1955,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB39AAA91ECD86F8008A7C80 /* HomeBannerModel.m in Sources */,
 				F116F8951E9C5F51007C489C /* OrderTransprotLabCell.m in Sources */,
 				F116F8CE1E9C5F51007C489C /* HomeShopListSizeModel.m in Sources */,
 				F116F8E81E9C5F51007C489C /* LoginViewController.m in Sources */,
@@ -1961,7 +1967,6 @@
 				F116F8BE1E9C5F51007C489C /* WritePaymentAccountCell.m in Sources */,
 				F116F8DF1E9C5F51007C489C /* HomeThreeCell.m in Sources */,
 				F180225B1EA5DCE1001B1BD5 /* CommentProblemDetaiViewController.m in Sources */,
-				F116F8C51E9C5F51007C489C /* YNTShopingCarViewController.m in Sources */,
 				F116F8921E9C5F51007C489C /* OrderPayTypeView.m in Sources */,
 				F1CA931B1E9DFB9800B3F596 /* OrderNewListSectionFooterView.m in Sources */,
 				F116F8EC1E9C5F51007C489C /* RegisterViewController.m in Sources */,
@@ -1987,6 +1992,7 @@
 				F116F8C01E9C5F51007C489C /* PayDetailViewController.m in Sources */,
 				BB1AA0AB1E4AEA7C00FDD71C /* GFDropDownMenu.m in Sources */,
 				F1CA931E1E9DFE4C00B3F596 /* OrderNewListModel.m in Sources */,
+				BB39AAA61ECD822C008A7C80 /* ShopGoodDetailNoViewController.m in Sources */,
 				BBA46A991E2F4BC30085CA40 /* UITextField+IndexPath.m in Sources */,
 				F1ED59051EC2EB3600171CB0 /* GFAddressPicker.m in Sources */,
 				BB286E1C1E11F11B00E81B4E /* OptionListViewController.m in Sources */,
@@ -2077,6 +2083,7 @@
 				F1D3D3741EB088ED00EB1F02 /* MineCompanyModel.m in Sources */,
 				BBCF3C5A1E1105E90046CD49 /* OptionViewController.m in Sources */,
 				BBD03EDC1E02883D00DE6722 /* AccountCell.m in Sources */,
+				BB5FAA011ECD351800D8D4A3 /* YNTShopingCarViewController.m in Sources */,
 				F116F8EB1E9C5F51007C489C /* PasswordSuccessViewController.m in Sources */,
 				BBCF3C511E10F71B0046CD49 /* AddressSwitchCell.m in Sources */,
 				BBE87D2E1E5144EB00523F40 /* RSADataVerifier.m in Sources */,
@@ -2118,7 +2125,6 @@
 				F116F8E91E9C5F51007C489C /* LookingPasswordViewController.m in Sources */,
 				BB6880411E0A6F4600618375 /* MessageListCell.m in Sources */,
 				BB4BA4E21E0B738C001A892C /* AccountViewController.m in Sources */,
-				F179DC4E1EA98ED900E916EA /* ShopGoodDetailNoViewController.m in Sources */,
 				BBE87D2D1E5144EB00523F40 /* RSADataSigner.m in Sources */,
 				F116F8CC1E9C5F51007C489C /* HomeShopListDetailModel.m in Sources */,
 				F116F8CF1E9C5F51007C489C /* MoreBrandModel.m in Sources */,
