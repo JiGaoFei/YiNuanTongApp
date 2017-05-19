@@ -13,6 +13,7 @@
 #import "GFChooseMoreTitleCell.h"
 #import "GFChooseMoreOrderCell.h"
 #import "GoodDetailAttrtypeModel.h"
+#import "GFChooseValueCell.h"
 
 @interface GFChooseMoreView ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong) UITableView *tableView;
@@ -28,6 +29,8 @@
 @property (nonatomic,strong ) GFChooseMoreTitleCell *twoSelectCell;
 @property (nonatomic,strong ) GFChooseMoreTitleCell *threeSelectCell;
 @property (nonatomic,strong ) GFChooseMoreTitleCell *fourSelectCell;
+
+@property (nonatomic,strong )  HomeShopListSizeModel *model1;
 /**单项总件数*/
 @property (nonatomic,assign) double totalNumber;
 /**单项总钱数*/
@@ -50,24 +53,33 @@
 @property (nonatomic,strong) NSMutableArray * sizeDataFourArr;
 /**类型名字*/
 @property (nonatomic,strong) NSMutableArray *attrtypeDataArr;
-
 /** selectStatus 控制为model数量赋值*/
 @property (nonatomic,assign) NSInteger  selectStatus;
+/**点击第1个**/
+@property (nonatomic,copy)  NSString *oneClick_id;
+/**点击第2个**/
+@property (nonatomic,copy)  NSString *twoClick_id;
+/**点击第3个**/
+@property (nonatomic,copy)  NSString *threeClick_id;
+/**点击第4个**/
+@property (nonatomic,copy)  NSString *fourClick_id;
+
+/**点击的是哪个*/
+@property (nonatomic,assign) NSInteger  index;
 
 
 @end
 static NSString *identifier = @"GFChooseOneViewCell1";
-static NSString *identifierTitle1 = @"GFChooseOneViewCellTitle1";
-static NSString *identifierTitle2 = @"GFChooseOneViewCellTitle2";
-static NSString *identifierTitle3 = @"GFChooseOneViewCellTitl3";
-static NSString *identifierTitle4 = @"GFChooseOneViewCellTitl4";
+
 static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
 @implementation GFChooseMoreView
  - (NSMutableDictionary *)shopCarGoodsDic
 {
+   
     if (!_shopCarGoodsDic) {
         self.shopCarGoodsDic = [[NSMutableDictionary alloc]init];
     }
+    
     return _shopCarGoodsDic;
 }
 - (UITableView *)titleOnetableView
@@ -75,6 +87,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     if (!_titleOnetableView) {
         self.titleOnetableView = [[UITableView alloc]init];
     }
+    
     return _titleOnetableView;
 }
 - (UITableView *)titleTwotableView
@@ -208,7 +221,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
         [_confirmBtn addTarget:self action:@selector(GFChooseConfirmBtnAction:) forControlEvents:UIControlEventTouchUpInside];
         [_whiteView addSubview:_confirmBtn];
         
-        
+        self.index = 0;
         [self setUpTableView];
         
         
@@ -225,13 +238,19 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     _titleOneLab.text = @"上进下出:";
  _titleOneLab.font = [UIFont fontWithName:@ "Helvetica-Bold"  size:(17.0)];
     [self addSubview:_titleOneLab];
-      self.titleOnetableView = [[UITableView alloc]initWithFrame:CGRectMake(95 *kWidthScale, 240*kHeightScale  ,KScreenW - 110 *kWidthScale, 50 *kHeightScale)];
+      self.titleOnetableView = [[UITableView alloc]initWithFrame:CGRectMake(330 *kWidthScale, 20*kHeightScale  ,45 *kHeightScale, 500 *kHeightScale )];
+    self.titleOnetableView.transform = CGAffineTransformMakeRotation(-M_PI / 2);
+    CGRect  rect0 = self.titleOnetableView.frame;
+    rect0.size.width -= rect0.size.width/2;
+    self.titleOnetableView.frame = rect0;
+    
       self.titleOnetableView.delegate = self;
    self.titleOnetableView.dataSource = self;
    self.titleOnetableView.separatorStyle = NO;
    self.titleOnetableView.showsVerticalScrollIndicator  = NO;
+    //self.titleOnetableView.scrollEnabled = NO;
     
-    [self.titleOnetableView registerClass:[GFChooseMoreOrderCell class] forCellReuseIdentifier:identifierTitleOrder];
+//    [self.titleOnetableView registerClass:[GFChooseMoreOrderCell class] forCellReuseIdentifier:identifierTitleOrder];
 
     [self addSubview: self.titleOnetableView];
     
@@ -253,7 +272,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
    self.titleTwotableView.dataSource = self;
     self.titleTwotableView.separatorStyle = NO;
    self.titleTwotableView.showsVerticalScrollIndicator  = NO;
-    [self.titleTwotableView  registerClass:[GFChooseMoreTitleCell class] forCellReuseIdentifier:identifierTitle2];
+//    [self.titleTwotableView  registerClass:[GFChooseMoreTitleCell class] forCellReuseIdentifier:identifierTitle2];
   [self addSubview: self.titleTwotableView];
     
      // 创建三级
@@ -273,7 +292,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     self.titleThreetableView.dataSource = self;
     self.titleThreetableView.separatorStyle = NO;
     self.titleThreetableView.showsVerticalScrollIndicator  = NO;
-    [self.titleThreetableView  registerClass:[GFChooseMoreTitleCell class] forCellReuseIdentifier:identifierTitle3];
+//    [self.titleThreetableView  registerClass:[GFChooseMoreTitleCell class] forCellReuseIdentifier:identifierTitle3];
    [self addSubview: self.titleThreetableView];
 
      // 创建四级
@@ -293,7 +312,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
 
      self.titleFouretableView.separatorStyle = NO;
      self.titleFouretableView.showsVerticalScrollIndicator  = NO;
-    [self.titleFouretableView  registerClass:[GFChooseMoreTitleCell class] forCellReuseIdentifier:identifierTitle4];
+   // [self.titleFouretableView  registerClass:[GFChooseMoreTitleCell class] forCellReuseIdentifier:identifierTitle4];
     [self addSubview:  self.titleFouretableView];
 
 
@@ -346,7 +365,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if ([tableView isEqual:self.titleOnetableView]) {
-        return   1;
+        return   self.sizeDataOneArr.count;
     }
     if ([tableView isEqual:self.titleTwotableView]) {
         return self.sizeDataTwoArr.count;
@@ -372,6 +391,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([tableView isEqual:self.tableView]) {
+        
         GFChooseOneViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
         HomeShopListSizeModel *model = self.modelArray[indexPath.row];
        GoodDetailAttrtypeModel *attrtypeModel = self.attrtypeDataArr[4];
@@ -474,30 +494,77 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     }
     if ([tableView isEqual:self.titleOnetableView]) {
         NSString *str = [NSString stringWithFormat:@"cell%ld%ld",indexPath.section,indexPath.row];
-        GFChooseMoreOrderCell *cell = [tableView dequeueReusableCellWithIdentifier:str];
+                static NSString *oneCell = @"onecell";
+       GFChooseValueCell  *cell = [tableView dequeueReusableCellWithIdentifier:oneCell];
         
         if (!cell) {
-            cell = [[GFChooseMoreOrderCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:str];
+            cell = [[GFChooseValueCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:str];
             
         }
         cell.selectionStyle = UITableViewCellAccessoryNone;
         
-        cell.clickedCollectionCellBlock  =  ^(NSInteger row, NSString *good_id){
-            NSLog(@"点击的是第%ld个cell",(long)row);
 
+        HomeShopListSizeModel *model = self.sizeDataOneArr[indexPath.row];
+
+        // 先遍历是否有选中
+        NSMutableArray *selectModelArr = [[NSMutableArray alloc]init];
+        [selectModelArr removeAllObjects];
+        for (HomeShopListSizeModel *model in self.sizeDataOneArr) {
             
-            if ([self.delegate respondsToSelector:@selector(GFChooseMoreViewLine:andWithGoodIDs:)]) {
-                [self.delegate GFChooseMoreViewLine:0 andWithGoodIDs:good_id];
+            NSLog(@"model选中状态为:%@",model.selectStatus);
+            if ([model.selectStatus  isEqualToString:@"1"]) {
+                [selectModelArr addObject:model];
             }
+        }
+        
+        if (selectModelArr.count == 0) {
+            if (indexPath.row == 0) {
+                cell.nameLab.textColor = CGRBlue;
+                cell.nameLab.layer.borderColor =[CGRBlue CGColor];
+                cell.nameLab.layer.borderWidth = 1;
+                cell.nameLab.layer.cornerRadius = 5;
+                cell.nameLab.layer.masksToBounds = YES;
+            }
+        }else{
             
+            if ([model.selectStatus isEqualToString:@"1"]) {
+                cell.nameLab.textColor = CGRBlue;
+                cell.nameLab.layer.borderColor =[CGRBlue CGColor];
+                cell.nameLab.layer.borderWidth = 1;
+                cell.nameLab.layer.cornerRadius = 5;
+                cell.nameLab.layer.masksToBounds = YES;
+                cell.cornerMarkLB.backgroundColor = [UIColor redColor];
+                
+            }else{
+                cell.cornerMarkLB.backgroundColor = [UIColor grayColor];
+                cell.cornerMarkLB.layer.borderColor = [[UIColor grayColor] CGColor];
+                
 
-            
-            self.selectStatus = 0;
-        };
+            }
+        }
+           cell.nameLab.text = model.name;
 
-       //  HomeShopListSizeModel *model = self.sizeDataOneArr[indexPath.row];
-        [cell setValueWithModelArray:self.sizeDataOneArr];
-  
+        [cell setValueWithModel:model];
+     
+        self.alltotalNumber = 0;
+        // 单项总数量
+        self.alltotalNumber +=([model.num doubleValue]+[model.num1 doubleValue]+[model.num2 doubleValue] + [model.num3 doubleValue]);
+        
+        
+        if (self.alltotalNumber == 0) {
+            cell.cornerMarkLB.hidden = YES;
+        }else{
+            cell.cornerMarkLB.hidden = NO;
+            cell.cornerMarkLB.text = [NSString stringWithFormat:@"%ld",(long)self.alltotalNumber];
+        }
+        
+
+        
+        
+        
+        
+        
+        
         return cell;
 
      
@@ -505,23 +572,47 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     }
 
     if ([tableView isEqual:self.titleTwotableView]) {
+        static NSString *twoCell = @"twocell";
         NSString *str = [NSString stringWithFormat:@"cell%ld%ld",indexPath.section,indexPath.row];
-        GFChooseMoreTitleCell *cell = [tableView dequeueReusableCellWithIdentifier:str];
+        GFChooseMoreTitleCell *cell = [tableView dequeueReusableCellWithIdentifier:twoCell];
         
         if (!cell) {
             cell = [[GFChooseMoreTitleCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:str];
-        }        self.twoSelectCell = cell;
+        }
         cell.selectionStyle = UITableViewCellAccessoryNone;
         
         HomeShopListSizeModel *model = self.sizeDataTwoArr[indexPath.row];
         cell.nameLab.text = model.name;
-        if (indexPath.row == 0) {
-           cell.nameLab.textColor = CGRBlue;
-            cell.nameLab.layer.borderColor =[CGRBlue CGColor];
-            cell.nameLab.layer.borderWidth = 1;
-            cell.nameLab.layer.cornerRadius = 5;
-            cell.nameLab.layer.masksToBounds = YES;
+        // 先遍历是否有选中
+        NSMutableArray *selectModelArr = [[NSMutableArray alloc]init];
+        for (HomeShopListSizeModel *model in self.sizeDataTwoArr) {
+          //  NSString *str = [NSString stringWithFormat:@"%@",model.select];
+            NSLog(@"model选中状态为:%@",model.selectStatus);
+            if ([model.selectStatus  isEqualToString:@"1"]) {
+                [selectModelArr addObject:model];
+            }
         }
+        
+        if (selectModelArr.count == 0) {
+            if (indexPath.row == 0) {
+                cell.nameLab.textColor = CGRBlue;
+                cell.nameLab.layer.borderColor =[CGRBlue CGColor];
+                cell.nameLab.layer.borderWidth = 1;
+                cell.nameLab.layer.cornerRadius = 5;
+                cell.nameLab.layer.masksToBounds = YES;
+            }
+        }else{
+            
+            if ([model.selectStatus isEqualToString:@"1"]) {
+                cell.nameLab.textColor = CGRBlue;
+                cell.nameLab.layer.borderColor =[CGRBlue CGColor];
+                cell.nameLab.layer.borderWidth = 1;
+                cell.nameLab.layer.cornerRadius = 5;
+                cell.nameLab.layer.masksToBounds = YES;
+            }
+        }
+      
+
 
            [cell setValueWithModel:model];
         return cell;
@@ -531,7 +622,8 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     if ([tableView isEqual:self.titleThreetableView]) {
         
         NSString *str = [NSString stringWithFormat:@"cell%ld%ld",indexPath.section,indexPath.row];
-        GFChooseMoreTitleCell *cell = [tableView dequeueReusableCellWithIdentifier:str];
+          static NSString *threeCell = @"threecell";
+        GFChooseMoreTitleCell *cell = [tableView dequeueReusableCellWithIdentifier:threeCell];
         
         if (!cell) {
             cell = [[GFChooseMoreTitleCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:str];
@@ -541,14 +633,35 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
         cell.nameLab.text = model.name;
         
         
-        
-        if (indexPath.row == 0) {
-            cell.nameLab.textColor = CGRBlue;
-            cell.nameLab.layer.borderColor =[CGRBlue CGColor];
-            cell.nameLab.layer.borderWidth = 1;
-            cell.nameLab.layer.cornerRadius = 5;
-            cell.nameLab.layer.masksToBounds = YES;
+        // 先遍历是否有选中
+        NSMutableArray *selectModelArr = [[NSMutableArray alloc]init];
+        for (HomeShopListSizeModel *model in self.sizeDataThreeArr) {
+            //  NSString *str = [NSString stringWithFormat:@"%@",model.select];
+            NSLog(@"model选中状态为:%@",model.selectStatus);
+            if ([model.selectStatus  isEqualToString:@"1"]) {
+                [selectModelArr addObject:model];
+            }
         }
+        
+        if (selectModelArr.count == 0) {
+            if (indexPath.row == 0) {
+                cell.nameLab.textColor = CGRBlue;
+                cell.nameLab.layer.borderColor =[CGRBlue CGColor];
+                cell.nameLab.layer.borderWidth = 1;
+                cell.nameLab.layer.cornerRadius = 5;
+                cell.nameLab.layer.masksToBounds = YES;
+            }
+        }else{
+            
+            if ([model.selectStatus isEqualToString:@"1"]) {
+                cell.nameLab.textColor = CGRBlue;
+                cell.nameLab.layer.borderColor =[CGRBlue CGColor];
+                cell.nameLab.layer.borderWidth = 1;
+                cell.nameLab.layer.cornerRadius = 5;
+                cell.nameLab.layer.masksToBounds = YES;
+            }
+        }
+        
         [cell setValueWithModel:model];
         return cell;
     }
@@ -556,7 +669,8 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     if ([tableView isEqual:self.titleFouretableView]) {
     
         NSString *str = [NSString stringWithFormat:@"cell%ld%ld",indexPath.section,indexPath.row];
-        GFChooseMoreTitleCell *cell = [tableView dequeueReusableCellWithIdentifier:str];
+         static NSString *fourCell = @"fourCell";
+        GFChooseMoreTitleCell *cell = [tableView dequeueReusableCellWithIdentifier:fourCell];
  
         if (!cell) {
             cell = [[GFChooseMoreTitleCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:str];
@@ -567,13 +681,36 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
         self.fourSelectCell = cell;
      
      
-        if (indexPath.row == 0) {
-            cell.nameLab.textColor = CGRBlue;
-            cell.nameLab.layer.borderColor =[CGRBlue CGColor];
-            cell.nameLab.layer.borderWidth = 1;
-            cell.nameLab.layer.cornerRadius = 5;
-            cell.nameLab.layer.masksToBounds = YES;
+        // 先遍历是否有选中
+        NSMutableArray *selectModelArr = [[NSMutableArray alloc]init];
+        for (HomeShopListSizeModel *model in self.sizeDataFourArr) {
+          
+            NSLog(@"model选中状态为:%@",model.selectStatus);
+            if ([model.selectStatus  isEqualToString:@"1"]) {
+                [selectModelArr addObject:model];
+            }
         }
+        
+        if (selectModelArr.count == 0) {
+            if (indexPath.row == 0) {
+                cell.nameLab.textColor = CGRBlue;
+                cell.nameLab.layer.borderColor =[CGRBlue CGColor];
+                cell.nameLab.layer.borderWidth = 1;
+                cell.nameLab.layer.cornerRadius = 5;
+                cell.nameLab.layer.masksToBounds = YES;
+            }
+        }else{
+            
+            if ([model.selectStatus isEqualToString:@"1"]) {
+                cell.nameLab.textColor = CGRBlue;
+                cell.nameLab.layer.borderColor =[CGRBlue CGColor];
+                cell.nameLab.layer.borderWidth = 1;
+                cell.nameLab.layer.cornerRadius = 5;
+                cell.nameLab.layer.masksToBounds = YES;
+            }
+        }
+        
+
         [cell setValueWithModel:model];
         return cell;
         
@@ -583,21 +720,77 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
-    if ([tableView isEqual:self.titleTwotableView]) {
-       
-        HomeShopListSizeModel *model = self.sizeDataTwoArr[indexPath.row];
-        [self.sizeDataTwoArr removeObject:model];
+    
+    if ([tableView isEqual:self.titleOnetableView]) {
+        
+        HomeShopListSizeModel *model = self.sizeDataOneArr[indexPath.row];
+        
         if ([self.delegate respondsToSelector:@selector(GFChooseMoreViewLine:andWithGoodIDs:)]) {
-            HomeShopListSizeModel *model1 = self.sizeDataOneArr[0];
-            NSString *good_id = [NSString stringWithFormat:@"%@,%@",model1.attrid,model.attrid];
+            
+            NSString *good_id = [NSString stringWithFormat:@"%@",model.attrid];
             [self.delegate GFChooseMoreViewLine:1 andWithGoodIDs:good_id];
         }
         
+        
+        for (int i = 0;i<self.sizeDataOneArr.count; i++) {
+            HomeShopListSizeModel *model = self.sizeDataOneArr[i];
+            
+            [self.sizeDataOneArr removeObject:model];
+            model.selectStatus = @"0";
+            [self.sizeDataOneArr insertObject:model atIndex:i];
+        }
+        [self.sizeDataOneArr removeObject:model];
+        model.selectStatus = @"1";
+    
+        [self.sizeDataOneArr insertObject:model atIndex:indexPath.row];
+        
+        [self.titleOnetableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        
+        [self.titleOnetableView reloadData];
+        
+        
+        self.index = indexPath.row;
+       self.selectStatus = 0;
 
-        [self.sizeDataTwoArr insertObject:model atIndex:0];
+    }
+    
+    
+    
+    if ([tableView isEqual:self.titleTwotableView]) {
+    
+        
+     HomeShopListSizeModel *model = self.sizeDataTwoArr[indexPath.row];
+      
+        self.twoClick_id = model.attrid;
+        
+        if (self.oneClick_id.length == 0) {
+            HomeShopListSizeModel *model1 = self.sizeDataOneArr[0];
+            self.oneClick_id  = model1.attrid;
+        }
+   
+        if ([self.delegate respondsToSelector:@selector(GFChooseMoreViewLine:andWithGoodIDs:)]) {
+                
+     NSString *good_id = [NSString stringWithFormat:@"%@,%@",self.oneClick_id,model.attrid];
+                [self.delegate GFChooseMoreViewLine:1 andWithGoodIDs:good_id];
+            }
+ 
+   
+        for (int i = 0;i<self.sizeDataTwoArr.count; i++) {
+            HomeShopListSizeModel *model = self.sizeDataTwoArr[i];
+            model.selectStatus = @"0";
+            [self.sizeDataTwoArr removeObject:model];
+            [self.sizeDataTwoArr insertObject:model atIndex:i];
+        }
+        
+        model.selectStatus = @"1";
+        [self.sizeDataTwoArr removeObject:model];
+        [self.sizeDataTwoArr insertObject:model atIndex:indexPath.row];
+  
+       [self.titleTwotableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    
         [self.titleTwotableView reloadData];
-      //  self.titleTwotableView.contentOffset = CGPointMake(0, 0);
+        
+    
         
              self.selectStatus = 1;
     }
@@ -605,16 +798,40 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     if ([tableView isEqual:self.titleThreetableView]) {
      
         HomeShopListSizeModel *model = self.sizeDataThreeArr[indexPath.row];
-        [self.sizeDataThreeArr removeObject:model];
+    
+        
+        self.threeClick_id = model.attrid;
+        
+        if (self.oneClick_id.length == 0) {
+            HomeShopListSizeModel *model1 = self.sizeDataOneArr[0];
+            self.oneClick_id  = model1.attrid;
+        }
+        if (self.twoClick_id.length == 0) {
+            HomeShopListSizeModel *model1 = self.sizeDataTwoArr[0];
+            self.twoClick_id  = model1.attrid;
+        }
+        
         
         if ([self.delegate respondsToSelector:@selector(GFChooseMoreViewLine:andWithGoodIDs:)]) {
-            HomeShopListSizeModel *model1 = self.sizeDataOneArr[0];
-            HomeShopListSizeModel *model2 = self.sizeDataTwoArr[0];
-            NSString *good_id = [NSString stringWithFormat:@"%@,%@,%@",model1.attrid,model2.attrid,model.attrid];
+      
+            NSString *good_id = [NSString stringWithFormat:@"%@,%@,%@",self.oneClick_id,self.twoClick_id,model.attrid];
             [self.delegate GFChooseMoreViewLine:2 andWithGoodIDs:good_id];
         }
 
-        [self.sizeDataThreeArr insertObject:model atIndex:0];
+        
+        for (int i = 0;i<self.sizeDataThreeArr.count; i++) {
+            HomeShopListSizeModel *model = self.sizeDataThreeArr[i];
+            model.selectStatus = @"0";
+            [self.sizeDataThreeArr removeObject:model];
+            [self.sizeDataThreeArr insertObject:model atIndex:i];
+        }
+        
+        model.selectStatus = @"1";
+        [self.sizeDataThreeArr removeObject:model];
+        [self.sizeDataThreeArr insertObject:model atIndex:indexPath.row];
+        
+        [self.titleThreetableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        
         [self.titleThreetableView reloadData];
         
              self.selectStatus = 2;
@@ -622,18 +839,42 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     
     if ([tableView isEqual:self.titleFouretableView]) {
         HomeShopListSizeModel *model = self.sizeDataFourArr[indexPath.row];
-        [self.sizeDataFourArr removeObject:model];
+        self.fourClick_id = model.attrid;
+        
+        if (self.oneClick_id.length == 0) {
+            HomeShopListSizeModel *model1 = self.sizeDataOneArr[0];
+            self.oneClick_id  = model1.attrid;
+        }
+        if (self.twoClick_id.length == 0) {
+            HomeShopListSizeModel *model1 = self.sizeDataTwoArr[0];
+            self.twoClick_id  = model1.attrid;
+        }
+        if (self.threeClick_id.length == 0) {
+            HomeShopListSizeModel *model1 = self.sizeDataThreeArr[0];
+            self.threeClick_id = model1.attrid;
+        }
       
         if ([self.delegate respondsToSelector:@selector(GFChooseMoreViewLine:andWithGoodIDs:)]) {
-            HomeShopListSizeModel *model1 = self.sizeDataOneArr[0];
-            HomeShopListSizeModel *model2 = self.sizeDataTwoArr[0];
-            HomeShopListSizeModel *model3 = self.sizeDataThreeArr[0];
-            NSString *good_id = [NSString stringWithFormat:@"%@,%@,%@,%@",model1.attrid,model2.attrid,model3.attrid,model.attrid];
+
+            NSString *good_id = [NSString stringWithFormat:@"%@,%@,%@,%@",self.oneClick_id,self.twoClick_id,self.threeClick_id,model.attrid];
             [self.delegate GFChooseMoreViewLine:3 andWithGoodIDs:good_id];
         }
 
         
-        [self.sizeDataFourArr insertObject:model atIndex:0];
+        for (int i = 0;i<self.sizeDataFourArr.count; i++) {
+            HomeShopListSizeModel *model = self.sizeDataFourArr[i];
+            model.selectStatus = @"0";
+            [self.sizeDataFourArr removeObject:model];
+            [self.sizeDataFourArr insertObject:model atIndex:i];
+        }
+        
+        model.selectStatus = @"1";
+        [self.sizeDataFourArr removeObject:model];
+        [self.sizeDataFourArr insertObject:model atIndex:indexPath.row];
+        
+        [self.titleFouretableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        
+
         [self.titleFouretableView reloadData];
  
              self.selectStatus = 3;
@@ -650,7 +891,9 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     }
     if ([tableView isEqual:self.titleOnetableView]) {
 
-        return 50 *kHeightScale;
+        HomeShopListSizeModel *model = self.sizeDataOneArr[indexPath.row];
+        CGFloat  H =       [self widthForLabel:model.name fontSize:15 *kHeightScale];
+        return H+30 *kHeightScale;
     }
     if ([tableView isEqual:self.titleTwotableView]) {
         HomeShopListSizeModel *model = self.sizeDataTwoArr[indexPath.row];
@@ -945,7 +1188,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     }
     
 
-    HomeShopListSizeModel *oneModel = self.sizeDataOneArr[0];
+    HomeShopListSizeModel *oneModel = self.sizeDataOneArr[self.index];
     
     
     switch (self.selectStatus) {
@@ -954,7 +1197,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
             oneModel.num =[NSString stringWithFormat:@"%f",self.totalNumber];
             oneModel.price = [NSString stringWithFormat:@"%f",self.totalMoney];
             
-            [self.sizeDataOneArr replaceObjectAtIndex:0 withObject:oneModel];
+            [self.sizeDataOneArr replaceObjectAtIndex:self.index withObject:oneModel];
             
         }
             break;
@@ -962,21 +1205,22 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
         {
             oneModel.num1 =[NSString stringWithFormat:@"%f",self.totalNumber];
             oneModel.price1 = [NSString stringWithFormat:@"%f",self.totalMoney];
-            [self.sizeDataOneArr replaceObjectAtIndex:0 withObject:oneModel];
+            [self.sizeDataOneArr replaceObjectAtIndex:self.index withObject:oneModel];
+            
         }
             break;
         case 2:
         {
             oneModel.num2 =[NSString stringWithFormat:@"%f",self.totalNumber];
             oneModel.price2 = [NSString stringWithFormat:@"%f",self.totalMoney];
-            [self.sizeDataOneArr replaceObjectAtIndex:0 withObject:oneModel];
+            [self.sizeDataOneArr replaceObjectAtIndex:self.index withObject:oneModel];
         }
             break;
         case 3:
         {
             oneModel.num3 =[NSString stringWithFormat:@"%f",self.totalNumber];
             oneModel.price3 = [NSString stringWithFormat:@"%f",self.totalMoney];
-            [self.sizeDataOneArr replaceObjectAtIndex:0 withObject:oneModel];
+            [self.sizeDataOneArr replaceObjectAtIndex:self.index withObject:oneModel];
         }
             break;
             

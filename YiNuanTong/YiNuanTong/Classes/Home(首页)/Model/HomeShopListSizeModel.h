@@ -38,6 +38,8 @@
 /**库存量*/
 @property (nonatomic,copy) NSString *stock;
 @property (nonatomic,assign) BOOL isHave;
+/**选中状态*/
+@property (nonatomic,copy) NSString * selectStatus;
 
 
 @end

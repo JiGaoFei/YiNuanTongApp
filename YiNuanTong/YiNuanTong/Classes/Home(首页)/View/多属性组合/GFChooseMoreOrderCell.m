@@ -77,6 +77,7 @@ static NSString *identifierCollectionCell = @"orderCollectionViewCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
 NSString *str= [NSString stringWithFormat:@"cell%ld%ld",indexPath.section,indexPath.row];
+
     
     // 注册
     [self.collectionView registerClass:[OrderCollectionViewCell class] forCellWithReuseIdentifier:str];
@@ -91,18 +92,32 @@ NSString *str= [NSString stringWithFormat:@"cell%ld%ld",indexPath.section,indexP
     
     // 设置颜色
       HomeShopListSizeModel *model = self.modelArray[indexPath.row];
-    if (indexPath.row == 0) {
-        cell.nameLab.textColor = CGRBlue;
-        cell.nameLab.layer.borderColor =[CGRBlue CGColor];
-        cell.nameLab.layer.borderWidth = 1;
-        cell.nameLab.layer.cornerRadius = 5;
-        cell.nameLab.layer.masksToBounds = YES;
+    // 遍历 获取isHave的个数
+    NSMutableArray *selceModelArr = [[NSMutableArray alloc]init];
+    for (int i = 0; i<self.modelArray.count; i++) {
+        HomeShopListSizeModel *model = self.modelArray[i];
+        if (model.isHave) {
+            [selceModelArr addObject:model];
+        }
+    }
+    
+    if (selceModelArr.count == 0) {
+        if (indexPath.row == 0) {
+            cell.nameLab.textColor = CGRBlue;
+            cell.nameLab.layer.borderColor =[CGRBlue CGColor];
+            cell.nameLab.layer.borderWidth = 1;
+            cell.nameLab.layer.cornerRadius = 5;
+            cell.nameLab.layer.masksToBounds = YES;
+        }
     }else{
-        cell.nameLab.textColor =[UIColor grayColor];
-        cell.nameLab.layer.borderColor =[RGBA(220, 220, 220, 1) CGColor];
-        cell.nameLab.layer.borderWidth = 1;
-        cell.nameLab.layer.cornerRadius = 5;
-        cell.cornerMarkLab.backgroundColor = [UIColor grayColor];
+        if (model.isHave) {
+            cell.nameLab.textColor = CGRBlue;
+            cell.nameLab.layer.borderColor =[CGRBlue CGColor];
+            cell.nameLab.layer.borderWidth = 1;
+            cell.nameLab.layer.cornerRadius = 5;
+            cell.nameLab.layer.masksToBounds = YES;
+        }
+      
 
     }
   
@@ -149,8 +164,11 @@ NSString *str= [NSString stringWithFormat:@"cell%ld%ld",indexPath.section,indexP
     
     for (int i = 0; i<self.modelArray.count; i++) {
             HomeShopListSizeModel *model = self.modelArray[i];
-        model.isHave = NO;
-        [self.modelArray replaceObjectAtIndex:i withObject:model];
+               [self.modelArray removeObject:model];
+             model.isHave = NO;
+ 
+        [self.modelArray insertObject:model atIndex:i];
+       // [self.modelArray replaceObjectAtIndex:i withObject:model];
     }
         HomeShopListSizeModel *model = self.modelArray[indexPath.row];
     // 回调出去
@@ -160,9 +178,11 @@ NSString *str= [NSString stringWithFormat:@"cell%ld%ld",indexPath.section,indexP
 
     
 
-    [self.modelArray removeObject:model];
+
     model.isHave = YES;
-    [self.modelArray insertObject:model atIndex:0];
+    [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
+   
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
     
     [self.collectionView reloadData];
 
