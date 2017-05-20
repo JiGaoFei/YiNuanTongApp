@@ -724,6 +724,7 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     if ([tableView isEqual:self.titleOnetableView]) {
         
         HomeShopListSizeModel *model = self.sizeDataOneArr[indexPath.row];
+        self.oneClick_id = model.attrid;
         
         if ([self.delegate respondsToSelector:@selector(GFChooseMoreViewLine:andWithGoodIDs:)]) {
             
@@ -742,13 +743,25 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
         [self.sizeDataOneArr removeObject:model];
         model.selectStatus = @"1";
     
+        // 改变2的选择状态
+        for (int i = 0;i<self.sizeDataTwoArr.count; i++) {
+            HomeShopListSizeModel *model = self.sizeDataTwoArr[i];
+            
+            [self.sizeDataTwoArr removeObject:model];
+            model.selectStatus = @"0";
+            [self.sizeDataTwoArr insertObject:model atIndex:i];
+        }
+        
         [self.sizeDataOneArr insertObject:model atIndex:indexPath.row];
         
         [self.titleOnetableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
         
         [self.titleOnetableView reloadData];
+          [self.titleTwotableView reloadData];
         
-        
+        [self.titleTwotableView setContentOffset:CGPointMake(0,0) animated:YES];
+        [self.titleThreetableView setContentOffset:CGPointMake(0,0) animated:YES];
+        [self.titleFouretableView setContentOffset:CGPointMake(0,0) animated:YES];
         self.index = indexPath.row;
        self.selectStatus = 0;
 
@@ -790,7 +803,9 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     
         [self.titleTwotableView reloadData];
         
-    
+        [self.titleThreetableView setContentOffset:CGPointMake(0,0) animated:YES];
+        [self.titleFouretableView setContentOffset:CGPointMake(0,0) animated:YES];
+
         
              self.selectStatus = 1;
     }
@@ -833,6 +848,9 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
         [self.titleThreetableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
         
         [self.titleThreetableView reloadData];
+        [self.titleFouretableView setContentOffset:CGPointMake(0,0) animated:YES];
+      
+
         
              self.selectStatus = 2;
     }

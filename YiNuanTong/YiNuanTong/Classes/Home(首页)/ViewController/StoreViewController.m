@@ -227,9 +227,9 @@ static NSString *listCell = @"listCell";
 {
 
     UserInfo *userInfo = [UserInfo currentAccount];
-    self.params = @{@"act":@"list",@"user_id":userInfo.user_id,@"page":@"0",@"tpagesize":@"10"};
+    self.params = @{@"act":@"list",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"10"};
      //清空数据源
-    [dataArray removeAllObjects];
+  //  [dataArray removeAllObjects];
     // 请求列表数据
     NSString *goodListUrl = [NSString stringWithFormat:@"%@api/goods_favorite.php",baseUrl];
     [YNTNetworkManager requestPOSTwithURLStr:goodListUrl paramDic:self.params finish:^(id responseObject) {
@@ -254,9 +254,13 @@ static NSString *listCell = @"listCell";
         for (NSDictionary *dic in dataArr) {
             
             HomeGoodsModel *model = [[HomeGoodsModel alloc]init];
-            [model setValuesForKeysWithDictionary:dic];
-            NSLog(@"收藏商品名:%@",model.name);
-            [dataArray addObject:model];
+            
+            if (![dataArr containsObject:model]) {
+                [model setValuesForKeysWithDictionary:dic];
+                //NSLog(@"收藏商品名:%@",model.name);
+                [dataArray addObject:model];
+            }
+       
             
         }
         // 获取更多品牌数据
@@ -271,7 +275,7 @@ static NSString *listCell = @"listCell";
 
         if (myTableView) {
             [myTableView reloadData];
-            [myTableView setContentOffset:CGPointMake(0,0) animated:NO];
+          //  [myTableView setContentOffset:CGPointMake(0,0) animated:NO];
 
         }
         else

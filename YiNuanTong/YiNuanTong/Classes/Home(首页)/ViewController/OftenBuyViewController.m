@@ -228,19 +228,23 @@ static NSString *listCell = @"listCell";
         NSArray *dataArr= returnDic[@"goods"];
         if (dataArr.count == 0) {
             // 无数据时
-            [GFProgressHUD showInfoMsg:@"没有你想要的商品了"];
+         //   [GFProgressHUD showInfoMsg:@"没有你想要的商品了"];
             return ;
         }
         
         // 有数据时
-        [dataArray removeAllObjects];
+
 
         for (NSDictionary *dic in dataArr) {
             
             HomeGoodsModel *model = [[HomeGoodsModel alloc]init];
-            [model setValuesForKeysWithDictionary:dic];
+            if (![dataArr containsObject:model]) {
+                [model setValuesForKeysWithDictionary:dic];
+                
+                [dataArray addObject:model];
+            }
             
-            [dataArray addObject:model];
+            
         }
      
         

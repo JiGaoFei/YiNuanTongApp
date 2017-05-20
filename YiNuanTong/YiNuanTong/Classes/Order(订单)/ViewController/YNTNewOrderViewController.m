@@ -280,7 +280,7 @@ static NSString *identier = @"orderNewCell";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 110 *kHeightScale;
+    return 100 *kHeightScale;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {

@@ -21,7 +21,7 @@
 }
 - (void)setUpChildrenViews
 {
-    UIView *bagView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 120 *kHeightScale)];
+    UIView *bagView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, 100 *kHeightScale)];
     
     bagView.backgroundColor = [UIColor whiteColor];
     // 创建数量lab
@@ -40,11 +40,15 @@
     [bagView addSubview:linLab];
     // 创建按钮
     
-    self.deletOrderBtn = [YNTUITools createButton:CGRectMake(KScreenW - 233 *kWidthScale, 50 *kHeightScale, 103 *kWidthScale, 42 *kHeightScale) bgColor:RGBA(52, 162, 252, 1) title:@"" titleColor:[UIColor whiteColor] action:@selector(deleteOrderBtnAction:) vc:self];
+    self.deletOrderBtn = [YNTUITools createButton:CGRectMake(KScreenW - 233 *kWidthScale, 50 *kHeightScale, 103 *kWidthScale, 32 *kHeightScale) bgColor:RGBA(52, 162, 252, 1) title:@"" titleColor:[UIColor whiteColor] action:@selector(deleteOrderBtnAction:) vc:self];
+    self.deletOrderBtn.layer.cornerRadius = 5;
+    self.deletOrderBtn.layer.masksToBounds = YES;
     
     [bagView addSubview:_deletOrderBtn];
     
-    self.seconBuyBtn = [YNTUITools createButton:CGRectMake(KScreenW - 120 *kWidthScale, 50 *kHeightScale, 103 *kWidthScale, 42 *kHeightScale) bgColor:RGBA(52, 162, 252, 1) title:@"" titleColor:[UIColor whiteColor] action:@selector(secondBuyBtnAction:) vc:self];
+    self.seconBuyBtn = [YNTUITools createButton:CGRectMake(KScreenW - 120 *kWidthScale, 50 *kHeightScale, 103 *kWidthScale, 32 *kHeightScale) bgColor:RGBA(52, 162, 252, 1) title:@"" titleColor:[UIColor whiteColor] action:@selector(secondBuyBtnAction:) vc:self];
+    self.seconBuyBtn.layer.cornerRadius = 5;
+    self.seconBuyBtn.layer.masksToBounds = YES;
     [bagView addSubview:_seconBuyBtn];
   
     UILabel *lineLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 104 *kHeightScale, KScreenW, 6*kHeightScale)];

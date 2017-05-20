@@ -82,6 +82,10 @@
     bagImageView.image = [UIImage imageNamed:@"attention"];
     [self.view addSubview:bagImageView];
     
+    // 客服电话
+    UILabel *customLab = [YNTUITools createLabel:CGRectMake(15 *kWidthScale, 390 *kHeightScale, KScreenW - 30 *kWidthScale, 17*kHeightScale) text:[NSString stringWithFormat:@"客服电话:%@",self.kefu] textAlignment:NSTextAlignmentLeft textColor:RGBA(49, 49, 49, 1) bgColor:nil font:15 *kHeightScale];
+    [self.view addSubview:customLab];
+    
 }
 - (void)payBtnAction:(UIButton *)sender
 {

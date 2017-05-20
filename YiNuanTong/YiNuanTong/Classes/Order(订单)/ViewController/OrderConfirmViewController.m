@@ -772,6 +772,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
             OrderNewCompleteViewController *ordelCompleteVC =[[OrderNewCompleteViewController alloc]init];
             ordelCompleteVC.payDic = responseObject;
             ordelCompleteVC.pay_id = self.pay_id;
+            ordelCompleteVC.kefu = responseObject[@"kefu"];
         
                  [self.navigationController pushViewController:ordelCompleteVC animated:YES];
         

@@ -12,4 +12,6 @@
 /**提交订单传值*/
 @property (nonatomic,strong) NSDictionary  *payDic;
 @property (nonatomic,copy) NSString *pay_id;
+/**客服电话**/
+@property (nonatomic,copy) NSString *kefu;
 @end
