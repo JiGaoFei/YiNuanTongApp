@@ -8,6 +8,7 @@
 
 #import "GFShopTableViewCell.h"
 #import "YNTUITools.h"
+#import "UIButton+touch.h"
 
 // 宏定义当前屏幕的宽度
 #define KScreenW [UIScreen mainScreen].bounds.size.width
@@ -20,6 +21,10 @@
 
 @interface GFShopTableViewCell ()
 @property (nonatomic,assign) BOOL isSelect;
+/**是否停止加*/
+@property (nonatomic,assign) BOOL  isStopAdd;
+
+
 
 @end
 @implementation GFShopTableViewCell
@@ -28,6 +33,7 @@
 {
     if ([super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.isSelect = YES;
+        self.isStopAdd = NO;
         //  创建视图
         [self setUpChildrenView];
         
@@ -69,6 +75,7 @@
     //数量加按钮
     UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     addBtn.frame = CGRectMake(KScreenW - 87*kWidthScale,65 *kHeightScale, 22 *kWidthScale,22*kWidthScale);
+    addBtn.timeInterval = 1;
     
     [addBtn addTarget:self action:@selector(addBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:addBtn];
@@ -105,6 +112,20 @@
     _numberTextField.inputAccessoryView = bar;
     [self.contentView addSubview:self.numberTextField];
 
+    // 监听是否停止加
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopAdd:) name:@"ShopCarAddStop" object:nil];
+}
+#pragma mark  是否停止加
+- (void)stopAdd:(NSNotification *)sender
+{
+    NSString *str = [sender.userInfo objectForKey:@"ShopCarAddStop"];
+    if ([str isEqualToString:@"1"]) {
+        self.isStopAdd = YES;
+    }
+    
+    if ([str isEqualToString:@"0"]) {
+        self.isStopAdd = NO;
+    }
 }
 
 #pragma mark -  删除按钮点击的事件
@@ -161,14 +182,20 @@
 - (void)addBtnClick:(UIButton *)sender
 {
     NSLog(@"点击的是加号");
-   NSInteger textNumber = [self.numberTextField.text integerValue];
-    textNumber +=1;
     
-    self.numberTextField.text = [NSString stringWithFormat:@"%ld",(long)textNumber];
-    if (self.addBtnBloock) {
-        self.addBtnBloock(self.numberTextField.text);
+    if (self.isStopAdd) {
+        
+    }else{
+        NSInteger textNumber = [self.numberTextField.text integerValue];
+        textNumber +=1;
+        
+        self.numberTextField.text = [NSString stringWithFormat:@"%ld",(long)textNumber];
+        if (self.addBtnBloock) {
+            self.addBtnBloock(self.numberTextField.text);
+        }
+        
     }
-    
+
 }
 - (void)cutBtnClick:(UIButton *)sender
 {

@@ -253,8 +253,9 @@ static NSString *homeThreeCell = @"homeThreeCell";
     self.firstImageArr = @[@"收藏商品",@"常购商品",@"再次购买",@"联系我们"].mutableCopy;
        [self.secondImageArr removeAllObjects];
     NSString *url1 = [NSString stringWithFormat:@"%@api/categoryclass.php",baseUrl];
+    NSDictionary *params = @{@"banben":@"1.2.1"};
     
- [YNTNetworkManager requestPOSTwithURLStr:url1 paramDic:nil finish:^(id responseObject) {
+ [YNTNetworkManager requestPOSTwithURLStr:url1 paramDic:params finish:^(id responseObject) {
      self.typeData = responseObject;
      NSArray *dataArray = responseObject[@"data"];
      for (NSDictionary *dic in dataArray) {

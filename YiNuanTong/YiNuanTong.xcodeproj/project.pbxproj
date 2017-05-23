@@ -29,6 +29,7 @@
 		BB4A51911E4B1911006F5FCF /* GFProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BB4A51901E4B1911006F5FCF /* GFProgressHUD.bundle */; };
 		BB4BA4DF1E0B5D25001A892C /* LogoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4BA4DE1E0B5D25001A892C /* LogoutCell.m */; };
 		BB4BA4E21E0B738C001A892C /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4BA4E11E0B738C001A892C /* AccountViewController.m */; };
+		BB4CAEE41ED4358A0074B290 /* UIButton+touch.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4CAEE31ED4358A0074B290 /* UIButton+touch.m */; };
 		BB4F4B081E24DE8C00259DF3 /* MineAddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4F4B071E24DE8C00259DF3 /* MineAddressModel.m */; };
 		BB568BE11E014A240018B8A5 /* PhoneAccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB568BE01E014A240018B8A5 /* PhoneAccessViewController.m */; };
 		BB5FAA011ECD351800D8D4A3 /* YNTShopingCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5FAA001ECD351800D8D4A3 /* YNTShopingCarViewController.m */; };
@@ -288,6 +289,8 @@
 		BB4BA4DE1E0B5D25001A892C /* LogoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoutCell.m; sourceTree = "<group>"; };
 		BB4BA4E01E0B738C001A892C /* AccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountViewController.h; sourceTree = "<group>"; };
 		BB4BA4E11E0B738C001A892C /* AccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountViewController.m; sourceTree = "<group>"; };
+		BB4CAEE21ED4358A0074B290 /* UIButton+touch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+touch.h"; sourceTree = "<group>"; };
+		BB4CAEE31ED4358A0074B290 /* UIButton+touch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+touch.m"; sourceTree = "<group>"; };
 		BB4F4B061E24DE8C00259DF3 /* MineAddressModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineAddressModel.h; sourceTree = "<group>"; };
 		BB4F4B071E24DE8C00259DF3 /* MineAddressModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineAddressModel.m; sourceTree = "<group>"; };
 		BB568BDF1E014A240018B8A5 /* PhoneAccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneAccessViewController.h; sourceTree = "<group>"; };
@@ -826,6 +829,15 @@
 				BB4A51821E4B161B006F5FCF /* GFProgressHUD.m */,
 			);
 			path = GFProgreesHud;
+			sourceTree = "<group>";
+		};
+		BB4CAEE11ED4358A0074B290 /* UIButton+touch */ = {
+			isa = PBXGroup;
+			children = (
+				BB4CAEE21ED4358A0074B290 /* UIButton+touch.h */,
+				BB4CAEE31ED4358A0074B290 /* UIButton+touch.m */,
+			);
+			path = "UIButton+touch";
 			sourceTree = "<group>";
 		};
 		BB85ACFE1DFEDD40009BEBF9 /* UITools */ = {
@@ -1581,6 +1593,7 @@
 		F116F8191E9C5F51007C489C /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				BB4CAEE11ED4358A0074B290 /* UIButton+touch */,
 				F116F81A1E9C5F51007C489C /* AddressSelectViewController.h */,
 				F116F81B1E9C5F51007C489C /* AddressSelectViewController.m */,
 				F116F81C1E9C5F51007C489C /* PayDetailViewController.h */,
@@ -2129,6 +2142,7 @@
 				F116F8C81E9C5F51007C489C /* CartModel.m in Sources */,
 				F116F8C31E9C5F51007C489C /* UIScrollView+EmptyDataSet.m in Sources */,
 				F116F8D51E9C5F51007C489C /* GFtableviewCell.m in Sources */,
+				BB4CAEE41ED4358A0074B290 /* UIButton+touch.m in Sources */,
 				F1F7FD3F1EBB6A9E00924574 /* HomePicModel.m in Sources */,
 				BB9D34E91ECEE74700E4CF5D /* GFBageLable.m in Sources */,
 				F116F8E71E9C5F51007C489C /* GoodDetailBtnView.m in Sources */,

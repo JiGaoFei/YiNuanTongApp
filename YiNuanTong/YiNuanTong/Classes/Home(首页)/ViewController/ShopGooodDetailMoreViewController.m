@@ -256,10 +256,10 @@ static NSString *goodPramsCell = @"goodParamsCell";
     NSString *url = [NSString stringWithFormat:@"%@api/goodattrclass.php",baseUrl];
     NSDictionary *param = @{@"good_id":self.good_id};
     [YNTNetworkManager requestPOSTwithURLStr:url paramDic:param finish:^(id responseObject) {
-        NSLog(@"商品详情数据请求成功%@",responseObject);
+
         self.GFGoodPrice = responseObject[@"jiafanwei"];
         NSDictionary *dataDic= responseObject[@"data"];
-        
+
         // 清空数据源
         [self.sizeDataOneArr removeAllObjects];
         [self.sizeDataTwoArr removeAllObjects];
@@ -648,19 +648,79 @@ static NSString *goodPramsCell = @"goodParamsCell";
 // 立刻购买点击事件
 - (void)imdedateAction:(UIButton *)sender
 {
-    self.isImmedateShopCar= YES;
     self.chooseView = [[GFChooseMoreView alloc]initWithFrame:CGRectMake(0, kScreenH, KScreenW, kScreenH)];
-    _chooseView.totallMoneyLab.text =@"¥0";
-    self.chooseView.delegate = self;
-    [self.view addSubview:_chooseView];
+    // 为限制数量赋值
+    [self.chooseView  setActivityNumWithStr:self.activitynum andOrderCout:self.order_count];
+    
+    if ([self.activitynum isEqualToString:@"0"]) {
+        
+        // 此商品只能购买一次
+        [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
+         self.isImmedateShopCar= NO;
+        return ;
+    }
+    
+
+    
+    if ([self.activitynum  integerValue] >0) {
+        
+        if (self.order_count >0) {
+    
+            // 此商品只能购买一次
+            [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
+
+            return;
+        }else{
+                       //  第1次购买
+                      if (self.cart_count >0) {
+                            //此时进货单中有数据
+                            [GFProgressHUD showInfoMsg:@"请在进货单中购买!"];
+                          return;
+                        }else{
+                            // 此时进货单中无数据
+                            self.isImmedateShopCar= YES;
+                            // 此时不限制数量
+                            _chooseView.totallMoneyLab.text =@"¥0";
+                            self.chooseView.delegate = self;
+                            [self.view addSubview:_chooseView];
+                            
+                            
+                            ///为多级赋值
+                            NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
+                            [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
+                            // 为规格赋值
+                            NSMutableDictionary *params2 = @{@"url":self.GFChoosePicUrl,@"price":self.GFGoodPrice,@"name":self.GFGoodName}.mutableCopy;
+                            [_chooseView setGFChooseMoreViewValueWithModelArray:self.chooseDataArr andParams:params2];
+                        }
+            
+            
+            
+        }
+    
+ 
+    }
     
     
-    ///为多级赋值
-    NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
-    [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
-    // 为规格赋值
-    NSMutableDictionary *params2 = @{@"url":self.GFChoosePicUrl,@"price":self.GFGoodPrice,@"name":self.GFGoodName}.mutableCopy;
-    [_chooseView setGFChooseMoreViewValueWithModelArray:self.chooseDataArr andParams:params2];
+    
+    
+    
+    if ([self.activitynum isEqualToString:@"-1"]) {
+        self.isImmedateShopCar= YES;
+        // 此时不限制数量
+        _chooseView.totallMoneyLab.text =@"¥0";
+        self.chooseView.delegate = self;
+        [self.view addSubview:_chooseView];
+        
+        
+        ///为多级赋值
+        NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
+        [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
+        // 为规格赋值
+        NSMutableDictionary *params2 = @{@"url":self.GFChoosePicUrl,@"price":self.GFGoodPrice,@"name":self.GFGoodName}.mutableCopy;
+         [_chooseView setGFChooseMoreViewValueWithModelArray:self.chooseDataArr andParams:params2];
+    }
+   
+   
     
     
     [UIView animateWithDuration: 0.35 animations: ^{
@@ -675,21 +735,59 @@ static NSString *goodPramsCell = @"goodParamsCell";
     
     self.chooseView = [[GFChooseMoreView alloc]initWithFrame:CGRectMake(0, kScreenH, KScreenW, kScreenH)];
     self.chooseView.delegate = self;
-  
+    // 为限制数量赋值
+ [self.chooseView  setActivityNumWithStr:self.activitynum andOrderCout:self.order_count];
+    // 等于0时 只能购买一次
+    if ([self.activitynum isEqualToString:@"0"]) {
+        // 此商品只能购买一次
+        [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
+        return ;
+    }
+    
+    
+    // 如果大于0时
+    if ([self.activitynum integerValue] > 0) {
+        
+        if (self.order_count >0) {
+        //非第一次购买
+            [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
+              return;
+        }else{
+            self.isImmedateShopCar = NO;
+            // 为多级赋值
+            NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
+            [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
+            // 为规格赋值
+            NSMutableDictionary *params2 = @{@"url":self.GFChoosePicUrl,@"price":self.GFGoodPrice,@"name":self.GFGoodName}.mutableCopy;
+            [_chooseView setGFChooseMoreViewValueWithModelArray:self.chooseDataArr andParams:params2
+             ];
+            
 
+        }
+        
+        
+    }
+    
+    
 //    _chooseView.totallMoneyLab.text =@"¥0";
-
+//  activitynum
 
     [self.view addSubview:_chooseView];
-    
-    // 为多级赋值
-    NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
+    // 等于-1的时候无限制
+    if ([self.activitynum isEqualToString:@"-1"]) {
+        
+          self.isImmedateShopCar = NO;
+        // 为多级赋值
+        NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
         [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
-    // 为规格赋值
-    NSMutableDictionary *params2 = @{@"url":self.GFChoosePicUrl,@"price":self.GFGoodPrice,@"name":self.GFGoodName}.mutableCopy;
+        // 为规格赋值
+        NSMutableDictionary *params2 = @{@"url":self.GFChoosePicUrl,@"price":self.GFGoodPrice,@"name":self.GFGoodName}.mutableCopy;
         [_chooseView setGFChooseMoreViewValueWithModelArray:self.chooseDataArr andParams:params2
          ];
-    
+        
+
+       
+    }
     
     [UIView animateWithDuration: 0.35 animations: ^{
         _chooseView.frame =CGRectMake(0, 0, KScreenW, kScreenH);
@@ -818,15 +916,61 @@ static NSString *goodPramsCell = @"goodParamsCell";
         _chooseView.totallMoneyLab.text =@"¥0";
         self.chooseView.delegate = self;
                [self.view addSubview:_chooseView];
-    
+        // 为限制数量赋值
+      [self.chooseView  setActivityNumWithStr:self.activitynum andOrderCout:self.order_count];
         
-        ///为多级赋值
-        NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
-        [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
-        // 为规格赋值
-        NSMutableDictionary *params2 = @{@"url":self.GFChoosePicUrl,@"price":self.GFGoodPrice,@"name":self.GFGoodName}.mutableCopy;
-        [_chooseView setGFChooseMoreViewValueWithModelArray:self.chooseDataArr andParams:params2];
-
+        
+        // 等于0时 只能购买一次
+        if ([self.activitynum isEqualToString:@"0"]) {
+            // 此商品只能购买一次
+            [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
+            return ;
+        }
+        
+        
+        // 如果大于0时
+        if ([self.activitynum integerValue] > 0) {
+            
+            if (self.order_count >0) {
+                //非第一次购买
+                [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
+                return;
+            }else{
+                
+                // 为多级赋值
+                NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
+                [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
+                // 为规格赋值
+                NSMutableDictionary *params2 = @{@"url":self.GFChoosePicUrl,@"price":self.GFGoodPrice,@"name":self.GFGoodName}.mutableCopy;
+                [_chooseView setGFChooseMoreViewValueWithModelArray:self.chooseDataArr andParams:params2
+                 ];
+                
+                
+            }
+            
+            
+        }
+        
+        
+        //    _chooseView.totallMoneyLab.text =@"¥0";
+        //  activitynum
+        
+        [self.view addSubview:_chooseView];
+        // 等于-1的时候无限制
+        if ([self.activitynum isEqualToString:@"-1"]) {
+            
+            
+            // 为多级赋值
+            NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
+            [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
+            // 为规格赋值
+            NSMutableDictionary *params2 = @{@"url":self.GFChoosePicUrl,@"price":self.GFGoodPrice,@"name":self.GFGoodName}.mutableCopy;
+            [_chooseView setGFChooseMoreViewValueWithModelArray:self.chooseDataArr andParams:params2
+             ];
+            
+            
+            
+        }
         
         [UIView animateWithDuration: 0.35 animations: ^{
             _chooseView.frame =CGRectMake(0, 0, KScreenW, kScreenH);
@@ -840,10 +984,15 @@ static NSString *goodPramsCell = @"goodParamsCell";
 {
     NSLog(@"点击的是第%ld行 商品id为:%@",LineNumber,good_ids);
     [self requestDetailSizeDataWithGoods_id:good_ids andIndex:LineNumber];
+    
 }
 // 确定按钮点击事件
 - (void)GFChooseMoreViewClickConfirmBtnActionWithDic:(NSMutableDictionary *)dic
 {
+    [self.chooseView removeFromSuperview];
+    // 刷新数据
+    [self loadSizeData];
+    
     NSString *url = [NSString stringWithFormat:@"%@api/addcart.php",baseUrl];
     UserInfo *userInfo = [UserInfo currentAccount];
     
@@ -887,10 +1036,16 @@ static NSString *goodPramsCell = @"goodParamsCell";
             orderCofirmVC.directbuy = @"1";
             [self.navigationController pushViewController:orderCofirmVC animated:YES];
             self.isImmedateShopCar = NO;
+            
+            // 点击确定的时候刷新数据 为限制数量赋值
+            [self requestGoodDetaiDataWith];
+        
+            
         }else{
          
                 [GFProgressHUD showSuccess:responseObject[@"msg"]];
-         
+            // 点击确定的时候刷新数据 为限制数量赋值
+           [self requestGoodDetaiDataWith];
 
             NSLog(@"提交购物车请求数据成功%@",responseObject);
         }
@@ -914,6 +1069,8 @@ static NSString *goodPramsCell = @"goodParamsCell";
 // 取消按钮点击事件
 - (void)GFChooseMoreViewCancelBtn
 {
+    // 刷新数据
+    [self loadSizeData];
     [UIView animateWithDuration: 0.35 animations: ^{
         self.chooseView.frame =CGRectMake(0, kScreenH, KScreenW, kScreenH);
         
@@ -932,6 +1089,10 @@ static NSString *goodPramsCell = @"goodParamsCell";
         NSLog(@"请求详情数据成功");
         self.isfavorite = [NSString stringWithFormat:@"%@",responseObject[@"goods"][@"isfavorite"]];
         
+        self.activitynum = [NSString stringWithFormat:@"%@",responseObject[@"goods"][@"activitynum"]];
+        
+        self.order_count =[responseObject[@"goods"][@"order_count"]  integerValue] ;
+        self.cart_count =[responseObject[@"goods"][@"cart_count"]  integerValue] ;
     } enError:^(NSError *error) {
         NSLog(@"请求详情数据失败");
     }];

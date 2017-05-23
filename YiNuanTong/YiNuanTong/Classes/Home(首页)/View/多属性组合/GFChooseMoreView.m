@@ -25,10 +25,25 @@
 @property (nonatomic,strong) UILabel *titleTwoLab;
 @property (nonatomic,strong) UILabel *titleThreeLab;
 @property (nonatomic,strong) UILabel *titleFourLab;
+
+
+
+/**限制数量*/
+@property (nonatomic,copy)    NSString *activitynum;
+/**购买次数*/
+@property (nonatomic,assign) NSInteger order_count;
+/**当等于限制数量的时候赋值*/
+@property (nonatomic,copy)  NSString *current;
+/**是否要进addBlock*/
+@property (nonatomic,assign) BOOL  isEnterBlock;
+
+
+
 @property (nonatomic,strong ) GFChooseMoreTitleCell *oneSelectCell;
 @property (nonatomic,strong ) GFChooseMoreTitleCell *twoSelectCell;
 @property (nonatomic,strong ) GFChooseMoreTitleCell *threeSelectCell;
 @property (nonatomic,strong ) GFChooseMoreTitleCell *fourSelectCell;
+@property (nonatomic,strong ) GFChooseOneViewCell *cell;
 
 @property (nonatomic,strong )  HomeShopListSizeModel *model1;
 /**单项总件数*/
@@ -66,6 +81,8 @@
 
 /**点击的是哪个*/
 @property (nonatomic,assign) NSInteger  index;
+
+
 
 
 @end
@@ -163,6 +180,8 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
     if (self) {
         
         self.selectStatus = 0;
+      // 要进addBlcok
+        self.isEnterBlock = YES;
         
         self.backgroundColor = [UIColor clearColor];
         //半透明视图
@@ -395,11 +414,10 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
         GFChooseOneViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
         HomeShopListSizeModel *model = self.modelArray[indexPath.row];
        GoodDetailAttrtypeModel *attrtypeModel = self.attrtypeDataArr[4];
-        
-        
+        self.cell = cell;
+        __weak typeof(cell)CellSelf = cell;
         [cell setValueWithModel:model andWithAttryModel:attrtypeModel];
-   
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
        // 如果数据源里有直接拿出来赋值
         if ([self.shopCarGoodsDic[model.good_attid] integerValue] >0) {
               cell.numberTextField.text =self.shopCarGoodsDic[model.good_attid];
@@ -407,33 +425,112 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
             // 更换数据源
             [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
         }
-        cell.addBtnBloock =  ^(NSString *str){
-            NSLog(@"点击的是规格加号,数量为%@",str);
-               // 重新为数量赋值
-                  model.num = str;
-            // 更换数据源
-            [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
-             NSInteger number = [model.num integerValue];
-            if (number == 0) {
-                return ;
-            }else{
-                [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
-                // 计算价格
-                [self countSizeTableViewAllShopGoodNums:self.modelArray];
+        
+        
+      
+
+            cell.addBtnBloock =  ^(NSString *str){
+                NSLog(@"点击的是规格加号,数量为%@",str);
+              
+                if ([self.activitynum isEqualToString:@"-1"]) {
+                    // 重新为数量赋值
+                    model.num = str;
+                    // 更换数据源
+                    [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
+                    NSInteger number = [model.num integerValue];
+                    if (number == 0) {
+                        return ;
+                    }else{
+                        [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+                        // 计算价格
+                        [self countSizeTableViewAllShopGoodNums:self.modelArray];
+                        
+                        // 刷新该行数据源
+                        [self.tableView reloadData];
+                    }
+                    
+                    
+                    
+                }
                 
-                // 刷新该行数据源
-                [self.tableView reloadData];
-            }
-            
-           
-        
-            
-            
-            
-        };
-        
+                
+                // 只能购买一次
+                if ([self.activitynum isEqualToString:@"0"]) {
+                    [GFProgressHUD showInfoMsg:@"此商品只能买一次!"];
+                }
+                
+                
+                // 限制数量
+                if ([self.activitynum integerValue]>0) {
+                    
+                    if (self.order_count >0) {
+                        [GFProgressHUD showInfoMsg:@"此商品只能买一次!"];
+                    }else{
+                        if ([self countSizeTableViewAllShopGoodNums:self.modelArray] >[self.activitynum integerValue] ) {
+                            
+                            [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"此商品只能购买%@件",self.activitynum]];
+                            CellSelf.numberTextField.text =@"0";
+                            
+             
+                    model.num = @"0";
+                    // 更换数据源
+                    [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
+
+                    [self.tableView reloadData];
+                            
+                        }else{
+                            // 重新为数量赋值
+                            model.num = str;
+                            // 更换数据源
+                            [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
+                            NSInteger number = [model.num integerValue];
+                            if (number == 0) {
+                                return ;
+                            }else{
+                                
+                                  if ([self countSizeTableViewAllShopGoodNums:self.modelArray] ==[self.activitynum integerValue] ) {
+                                          [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"此商品只能购买%@件",self.activitynum]];
+                                      NSDictionary *dic = @{@"addStop":@"1"};
+                                      //创建一个消息对象
+                                      NSNotification * notice = [NSNotification notificationWithName:@"addStop" object:nil userInfo:dic];
+                                      //  发送消息
+                                      [[NSNotificationCenter defaultCenter]postNotification:notice];
+                                  }
+                                
+                                
+                                
+                                [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+                                // 计算价格
+                                [self countSizeTableViewAllShopGoodNums:self.modelArray];
+                                
+                                // 刷新该行数据源
+                                [self.tableView reloadData];
+                            }
+
+                  
+                        }
+                        
+                        
+                        
+                    }
+                    
+                    
+                    
+                }
+                
+                
+                
+            };
+       
         cell.cutBtnBloock =  ^(NSString *str){
+                    
+                    NSDictionary *dic = @{@"addStop":@"0"};
+                    //创建一个消息对象
+                    NSNotification * notice = [NSNotification notificationWithName:@"addStop" object:nil userInfo:dic];
+                    //  发送消息
+                    [[NSNotificationCenter defaultCenter]postNotification:notice];
             NSLog(@"点击的是规格减号,数量为%@",str);
+            self.tableView.userInteractionEnabled = YES;
             // 重新为数量赋值
                 model.num = str;
  
@@ -469,24 +566,106 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
 
         cell.confirmBtnBlock = ^(NSString *str){
             
-            // 重新为数量赋值
-            model.num = str;
-            // 更换数据源
-            [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
-            if ([str isEqualToString:@""]||[str isEqualToString:@"0"]) {
-              // 数据为空时移除
-                [self.shopCarGoodsDic removeObjectForKey:model.good_attid];
+            // 对数量没有限制
+            if ([self.activitynum isEqualToString:@"-1"]) {
+                // 重新为数量赋值
+                model.num = str;
+                // 更换数据源
+                [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
+                if ([str isEqualToString:@""]||[str isEqualToString:@"0"]) {
+                    // 数据为空时移除
+                    [self.shopCarGoodsDic removeObjectForKey:model.good_attid];
+                    
+                }else{
+                    // 数据不为空时添加数据源
+                    [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+                }
                 
-            }else{
-                // 数据不为空时添加数据源
-                 [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+                // 计算价格
+                [self countSizeTableViewAllShopGoodNums:self.modelArray];
+                
+                // 刷新该行数据源
+                [self.tableView reloadData];
             }
-           
-            // 计算价格
-            [self countSizeTableViewAllShopGoodNums:self.modelArray];
             
-            // 刷新该行数据源
-            [self.tableView reloadData];
+            
+            // 对数量进行限制
+            if ([self.activitynum integerValue]>0) {
+                if (self.order_count >0) {
+                    [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
+                }else{
+                    
+                 
+                    if ( ([self countSizeTableViewAllShopGoodNums:self.modelArray] >[self.activitynum integerValue])) {
+                        [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"此商品最多只能购买%@件",self.activitynum]];
+                      
+       
+                        // 重新为数量赋值
+                        model.num = @"0";
+                        // 更换数据源
+                        [self.modelArray removeObject:model];
+                        [self.modelArray insertObject:model atIndex:indexPath.row];
+                    [CellSelf setValueWithModel:model andWithAttryModel:attrtypeModel];
+                        
+                        // 刷新该行数据源
+                      [self.tableView reloadData];
+                        
+                    }else{
+                        
+                        if ( ([self countSizeTableViewAllShopGoodNums:self.modelArray] >[self.activitynum integerValue])) {
+                            [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"此商品最多只能购买%@件",self.activitynum]];
+                            
+                            
+                            // 重新为数量赋值
+                            model.num = @"0";
+                            // 更换数据源
+                            [self.modelArray removeObject:model];
+                            [self.modelArray insertObject:model atIndex:indexPath.row];
+                            [CellSelf setValueWithModel:model andWithAttryModel:attrtypeModel];
+                            
+                            // 刷新该行数据源
+                            [self.tableView reloadData];
+                        }else{
+                             [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"此商品最多只能购买%@件",self.activitynum]];
+                            // 重新为数量赋值
+                            model.num = @"0";
+                            // 更换数据源
+                            [self.modelArray removeObject:model];
+                            [self.modelArray insertObject:model atIndex:indexPath.row];
+                            [CellSelf setValueWithModel:model andWithAttryModel:attrtypeModel];
+                            
+                            // 刷新该行数据源
+                            [self.tableView reloadData];
+                            return ;
+                        }
+                        
+                        if ([str  integerValue]>[self.activitynum integerValue]) {
+                            
+                        }
+                        
+                        // 重新为数量赋值
+                        model.num = str;
+                        // 更换数据源
+                        [self.modelArray replaceObjectAtIndex:indexPath.row withObject:model];
+                        if ([str isEqualToString:@""]||[str isEqualToString:@"0"]) {
+                            // 数据为空时移除
+                            [self.shopCarGoodsDic removeObjectForKey:model.good_attid];
+                            
+                        }else{
+                            // 数据不为空时添加数据源
+                            [self.shopCarGoodsDic setObject:model.num forKey:model.good_attid];
+                        }
+                        
+                        // 计算价格
+                        [self countSizeTableViewAllShopGoodNums:self.modelArray];
+                        
+                        // 刷新该行数据源
+                        [self.tableView reloadData];
+                        
+                    }
+                }
+            }
+          
         };
    
              return cell;
@@ -952,14 +1131,27 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
 - (void)GFChooseConfirmBtnAction:(UIButton *)sender
 {
     NSLog(@"确定按钮的点击事件");
+    NSDictionary *dic = @{@"addStop":@"0"};
+    //创建一个消息对象
+    NSNotification * notice = [NSNotification notificationWithName:@"addStop" object:nil userInfo:dic];
+    //  发送消息
+    [[NSNotificationCenter defaultCenter]postNotification:notice];
     if ([self.delegate respondsToSelector:@selector(GFChooseMoreViewClickConfirmBtnActionWithDic:)]) {
         [self.delegate GFChooseMoreViewClickConfirmBtnActionWithDic:self.shopCarGoodsDic];
     }
+    
+    
+    
 }
 #pragma mark - 取消按钮点击事件
 - (void)cancelBtnAction:(UIButton *)sender
 {
     NSLog(@"取消按钮点击事件");
+    NSDictionary *dic = @{@"addStop":@"0"};
+    //创建一个消息对象
+    NSNotification * notice = [NSNotification notificationWithName:@"addStop" object:nil userInfo:dic];
+    //  发送消息
+    [[NSNotificationCenter defaultCenter]postNotification:notice];
     if ([self.delegate respondsToSelector:@selector(GFChooseMoreViewCancelBtn)]) {
         [self.delegate GFChooseMoreViewCancelBtn];
     }
@@ -1259,15 +1451,48 @@ static NSString *identifierTitleOrder = @"GFChooseOneViewCellTitlOrder";
         NSLog(@"%f",self.totalMoney);
     }
    
+    if ([self.activitynum integerValue]>0) {
+        
+        // 为件数赋值
+        [self setToatalNumberColor:self.goodsNumberLab andStr:[NSString stringWithFormat:@"共%ld件",(long)self.alltotalNumber]];
+        // 为总价格赋值
+        [self setToatalNumberColor:self.totallMoneyLab andStr:[NSString stringWithFormat:@"¥%.2f",self.alltotalMoney]];
+     
     
-    // 为件数赋值
-    [self setToatalNumberColor:self.goodsNumberLab andStr:[NSString stringWithFormat:@"共%ld件",(long)self.alltotalNumber]];
-    // 为总价格赋值
-    [self setToatalNumberColor:self.totallMoneyLab andStr:[NSString stringWithFormat:@"¥%.2f",self.alltotalMoney]];
-    [self.titleOnetableView reloadData];
+        [self.titleOnetableView reloadData];
+       
+
+     
+    }
+    // 等于0时只能购买一次
+       if ([self.activitynum integerValue] ==0) {
+           [GFProgressHUD showInfoMsg:@"此商品只能购买一次"];
+       }
+    
+    // 等于-1的时候不限制数量
+    
+      if ([self.activitynum isEqualToString:@"-1"]) {
+          
+          // 为件数赋值
+          [self setToatalNumberColor:self.goodsNumberLab andStr:[NSString stringWithFormat:@"共%ld件",(long)self.alltotalNumber]];
+          // 为总价格赋值
+          [self setToatalNumberColor:self.totallMoneyLab andStr:[NSString stringWithFormat:@"¥%.2f",self.alltotalMoney]];
+          [self.titleOnetableView reloadData];
+      }
+    
+
     
     return self.alltotalNumber;
 }
+#pragma mark - 为限制数量赋值
+// 传递限制数量
+// 传递限制数量
+- (void)setActivityNumWithStr:(NSString *)activitynum andOrderCout:(NSInteger)orderCount
+{
+    self.activitynum = activitynum;
+    self.order_count = orderCount;
+}
+
 #pragma mark - 设置字体颜色
 - (void)setToatalNumberColor:(UILabel *)lab andStr:(NSString *)str
 {

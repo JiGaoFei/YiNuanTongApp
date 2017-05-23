@@ -52,8 +52,8 @@
     
     // 请求轮播图数据
     NSString *bannerPicUrl = [NSString stringWithFormat:@"%@api/bannerclass.php",baseUrl];
-
-    [YNTNetworkManager requestPOSTwithURLStr:bannerPicUrl paramDic:nil finish:^(id responseObject) {
+   NSDictionary *params = @{@"banben":@"1.2.1"};
+    [YNTNetworkManager requestPOSTwithURLStr:bannerPicUrl paramDic:params finish:^(id responseObject) {
         
         NSLog(@"%@",responseObject);
         NSDictionary *returnDic = [NSDictionary dictionaryWithDictionary:responseObject];

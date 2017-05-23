@@ -40,6 +40,8 @@
 @property(nonatomic,strong)UIButton *cancelBtn;
 
 - (instancetype)initWithFrame:(CGRect)frame;
+// 传递限制数量
+- (void)setActivityNumWithStr:(NSString *)activitynum andOrderCout:(NSInteger)orderCount;
 // 为多级赋值
 - (void)setGFChooseMoreViewValueWithParams:(NSMutableDictionary *)params andWithAttrtypeArr:(NSMutableArray *)modelArray;
 // 为规格赋值

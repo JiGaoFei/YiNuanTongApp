@@ -324,7 +324,8 @@ static NSString *identifier = @"shopCell";
         if ([activienum isEqualToString:@"-1"]) {
            
             NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"1",@"cat_id":model.cat_id};
-            [self modifyGoodNumbRequestData:param andtitle:@"加号"];
+
+          [self modifyGoodNumbRequestData:param andtitle:@"加号"];
         }else{
             
             if ([str integerValue] > model.activitynum) {
@@ -608,11 +609,58 @@ static NSString *identifier = @"shopCell";
     // 点击加号
     cell.addBtnBloock = ^(NSString *str){
         NSLog(@"加号数量为:%@",str);
-          NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"1",@"cat_attrid":model.cat_attrid};
-        [self modifyGoodNumbRequestData:param andtitle:@"加号"];
+     
+        
+        NSDictionary *dic = @{@"ShopCarAddStop":@"1"};
+        //创建一个消息对象
+        NSNotification * notice = [NSNotification notificationWithName:@"ShopCarAddStop" object:nil userInfo:dic];
+        //  发送消息
+        [[NSNotificationCenter defaultCenter]postNotification:notice];
+        
+         NSString *activienum = [NSString stringWithFormat:@"%ld",sectionModel.activitynum];
+        // 对数量不限制
+        if ([activienum isEqualToString:@"-1"]) {
+            NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"1",@"cat_attrid":model.cat_attrid};
+            [self modifyGoodNumbRequestData:param andtitle:@"加号"];
+        }
+        // 如果等于0
+        if ([activienum isEqualToString:@"0"]) {
+            
+         
+          
+            
+        }
+        
+        if ([activienum integerValue]<-1) {
+            [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"超出要购买的数量了!"]];
+            NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"0",@"cat_attrid":model.cat_attrid};
+            [self modifyGoodNumbRequestData:param andtitle:@"加号"];
+        }
+        // 对数量进行限制
+    
+        if ([activienum integerValue]>0) {
+          
+    
+            if ((sectionModel.good_num  > [activienum integerValue])||(sectionModel.good_num  == [activienum integerValue])) {
+
+                  [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"超出要购买的数量了!"]];
+                NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"0",@"cat_attrid":model.cat_attrid};
+                [self modifyGoodNumbRequestData:param andtitle:@"加号"];
+            }else{
+                NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"1",@"cat_attrid":model.cat_attrid};
+                [self modifyGoodNumbRequestData:param andtitle:@"加号"];
+            }
+
+        }
     };
     // 点击减号
     cell.cutBtnBloock = ^(NSString *str){
+        
+        NSDictionary *dic = @{@"ShopCarAddStop":@"0"};
+        //创建一个消息对象
+        NSNotification * notice = [NSNotification notificationWithName:@"ShopCarAddStop" object:nil userInfo:dic];
+        //  发送消息
+        [[NSNotificationCenter defaultCenter]postNotification:notice];
         NSLog(@"减号数量为:%@",str);
         NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":@"-1",@"cat_attrid":model.cat_attrid};
         [self modifyGoodNumbRequestData:param andtitle:@"减号"];
@@ -629,6 +677,13 @@ static NSString *identifier = @"shopCell";
     
     // 点击完成时的数
     cell.confirmBtnBlock = ^(NSString *str){
+        NSDictionary *dic = @{@"ShopCarAddStop":@"0"};
+        //创建一个消息对象
+        NSNotification * notice = [NSNotification notificationWithName:@"ShopCarAddStop" object:nil userInfo:dic];
+        //  发送消息
+        [[NSNotificationCenter defaultCenter]postNotification:notice];
+        
+        
         NSInteger currentNember = [self.goodsNum integerValue];
         NSInteger  netNumber = [model.num  integerValue];
         NSInteger resultNumber = (currentNember - netNumber);
@@ -647,9 +702,52 @@ static NSString *identifier = @"shopCell";
             [alertVC addAction:action1];
             [self presentViewController:alertVC animated:YES completion:nil];
         }else{
-            NSString *resultStr = [NSString stringWithFormat:@"%ld",(long)resultNumber];
-            NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":resultStr,@"cat_attrid":model.cat_attrid};
-            [self modifyGoodNumbRequestData:param andtitle:@"完成"];
+            
+                NSString *activienum = [NSString stringWithFormat:@"%ld",sectionModel.activitynum];
+            // 对数量没有限制
+            if ([activienum isEqualToString:@"-1"]) {
+                NSString *resultStr = [NSString stringWithFormat:@"%ld",(long)resultNumber];
+                NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":resultStr,@"cat_attrid":model.cat_attrid};
+                [self modifyGoodNumbRequestData:param andtitle:@"完成"];
+            }
+            
+            // 对数量为0时
+             if ([activienum integerValue]<-1) {
+                    [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"超出要购买的数量了!"]];
+                 NSString *resultStr = [NSString stringWithFormat:@"%ld",(long)resultNumber];
+                 NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"0":resultStr,@"cat_attrid":model.cat_attrid};
+                 [self modifyGoodNumbRequestData:param andtitle:@"完成"];
+             }
+            
+            
+            // 对数量进行限制
+            
+            if ([activienum integerValue]>0) {
+                
+                
+                if ((sectionModel.good_num  > [activienum integerValue])||(sectionModel.good_num  == [activienum integerValue])) {
+                    
+                    [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"超出要购买的数量了!"]];
+                    NSString *resultStr = [NSString stringWithFormat:@"%ld",(long)resultNumber];
+                    NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"0":resultStr,@"cat_attrid":model.cat_attrid};
+                    [self modifyGoodNumbRequestData:param andtitle:@"完成"];
+                }else{
+                    
+                    if ([str integerValue] > [activienum integerValue]) {
+                        NSString *resultStr = [NSString stringWithFormat:@"%ld",(long)resultNumber];
+                        NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"0":resultStr,@"cat_attrid":model.cat_attrid};
+                        [self modifyGoodNumbRequestData:param andtitle:@"完成"];
+                    }else{
+                        NSString *resultStr = [NSString stringWithFormat:@"%ld",(long)resultNumber];
+                        NSDictionary *param = @{@"act":@"edit",@"user_id":userInfo.user_id,@"num":resultStr,@"cat_attrid":model.cat_attrid};
+                        [self modifyGoodNumbRequestData:param andtitle:@"完成"];
+                    }
+                  
+                }
+                
+            }
+            
+           
         }
 
 
@@ -743,6 +841,14 @@ static NSString *identifier = @"shopCell";
         NSLog(@"%@数据请求成功********%@",title,responseObject);
       
             [self loadData];
+        if ([title isEqualToString:@"加号"]) {
+            NSDictionary *dic = @{@"ShopCarAddStop":@"0"};
+            //创建一个消息对象
+            NSNotification * notice = [NSNotification notificationWithName:@"ShopCarAddStop" object:nil userInfo:dic];
+            //  发送消息
+            [[NSNotificationCenter defaultCenter]postNotification:notice];
+            
+        }
      
         
     } enError:^(NSError *error) {

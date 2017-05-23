@@ -1215,6 +1215,10 @@ static NSString *listCell = @"listCell";
             shopGoodDetailVC.picUrl = model.cover_img;
             shopGoodDetailVC.dataDic = responseObject;
             shopGoodDetailVC.isfavorite = isfavorite;
+            
+            shopGoodDetailVC.activitynum = [NSString stringWithFormat:@"%@",responseObject[@"goods"][@"activitynum"]];
+            shopGoodDetailVC.order_count = [responseObject[@"goods"][@"order_count"] integerValue];
+            shopGoodDetailVC.cart_count = [responseObject[@"goods"][@"cart_count"] integerValue];
             [self.navigationController pushViewController:shopGoodDetailVC animated:YES];
         }
         if ([is_attr isEqualToString:@"2"]) {
@@ -1223,6 +1227,9 @@ static NSString *listCell = @"listCell";
             shopDetaiOneVC.good_id = model.good_id;
             shopDetaiOneVC.dataDic = responseObject;
             shopDetaiOneVC.isfavorite = isfavorite;
+            shopDetaiOneVC.activitynum = [NSString stringWithFormat:@"%@",responseObject[@"goods"][@"activitynum"]];
+            shopDetaiOneVC.order_count = [responseObject[@"goods"][@"order_count"] integerValue];
+             shopDetaiOneVC.cart_count = [responseObject[@"goods"][@"cart_count"] integerValue];
             [self.navigationController pushViewController:shopDetaiOneVC animated:YES];
         }
 

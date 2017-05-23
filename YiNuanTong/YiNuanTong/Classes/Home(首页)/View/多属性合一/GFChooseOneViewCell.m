@@ -10,11 +10,15 @@
 #import "YNTUITools.h"
 #import "HomeShopListSizeModel.h"
 #import "GoodDetailAttrtypeModel.h"
+
+@interface GFChooseOneViewCell ()
+@property (nonatomic,assign)BOOL isStopAdd;
+@end
 @implementation GFChooseOneViewCell
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if ([super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-    
+        self.isStopAdd = NO;
         //  创建视图
         [self setUpChildrenView];
         
@@ -90,6 +94,25 @@
     [self.contentView addSubview:self.numberTextField];
     
     
+    
+    // 监听是否停止加
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopAdd:) name:@"addStop" object:nil];
+    
+    
+}
+#pragma mark - 监听是否是停止 
+- (void)stopAdd:(NSNotification *)userInfo
+{
+    NSString *str = [userInfo.userInfo objectForKey:@"addStop"];
+    NSLog(@"%@",str);
+    if ([str isEqualToString:@"1"]) {
+        self.isStopAdd = YES;
+    }
+    if ([str isEqualToString:@"0"]) {
+          self.isStopAdd = NO;
+    }
+    
+    
 }
 #pragma mark - 文字输入框实时输入
 - (void)textFiledChange:(NSNotification *)userInf
@@ -115,13 +138,21 @@
 - (void)addBtnClick:(UIButton *)sender
 {
     NSLog(@"点击的是加号");
-    NSInteger textNumber = [self.numberTextField.text integerValue];
-    textNumber +=1;
     
-    self.numberTextField.text = [NSString stringWithFormat:@"%ld",(long)textNumber];
-    if (self.addBtnBloock) {
-        self.addBtnBloock(self.numberTextField.text);
+    if (self.isStopAdd) {
+        
+    }else{
+        NSInteger textNumber = [self.numberTextField.text integerValue];
+        textNumber +=1 ;
+        self.numberTextField.text = [NSString stringWithFormat:@"%ld",(long)textNumber];
+        
+        if (self.addBtnBloock) {
+            self.addBtnBloock(self.numberTextField.text);
+        }
+        
     }
+  
+
     
 }
 - (void)cutBtnClick:(UIButton *)sender

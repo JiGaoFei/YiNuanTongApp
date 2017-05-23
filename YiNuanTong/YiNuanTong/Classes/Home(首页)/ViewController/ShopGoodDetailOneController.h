@@ -17,4 +17,11 @@
 @property (nonatomic,copy) NSString *isfavorite;
 /**商品详情数据源*/
 @property (nonatomic,strong) NSMutableDictionary *dataDic;
+/**限制数量*/
+@property (nonatomic,copy) NSString *  activitynum;
+/**购买次数*/
+@property (nonatomic,assign) NSInteger  order_count;
+/**购物车购买次数*/
+@property (nonatomic,assign) NSInteger  cart_count;
+
 @end
