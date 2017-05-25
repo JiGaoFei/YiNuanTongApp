@@ -290,14 +290,22 @@ static NSString *identifier = @"GFChooseOneViewCell";
             [GFProgressHUD showInfoMsg:@"此商品只能购买一次"];
             }else{
                 
-            if ([self countSizeTableViewAllShopGoodNums:self.modelArray] >[self.activitynum integerValue]) {
+            if (([self countSizeTableViewAllShopGoodNums:self.modelArray] >[self.activitynum integerValue]) ||([self countSizeTableViewAllShopGoodNums:self.modelArray] ==[self.activitynum integerValue])) {
                 [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"此商品最多只能购买%@件",self.activitynum]];
+              
+                // 此时赋值为0 加号可点击
+                NSDictionary *dic = @{@"addStop":@"0"};
+                //创建一个消息对象
+                NSNotification * notice = [NSNotification notificationWithName:@"addStop" object:nil userInfo:dic];
+                //  发送消息
+                [[NSNotificationCenter defaultCenter]postNotification:notice];
+               
                 // 重新为数量赋值
                 model.num = @"0";
                 // 更换数据源
                 [self.modelArray removeObject:model];
                 [self.modelArray insertObject:model atIndex:indexPath.row];
-          
+                [self countSizeTableViewAllShopGoodNums:self.modelArray];
                 
                 // 刷新该行数据源
                 [self.tableView reloadData];
@@ -306,7 +314,7 @@ static NSString *identifier = @"GFChooseOneViewCell";
                                         
                 }else{
                     
-                    if ([str integerValue] >[self.activitynum integerValue]) {
+                    if ([self countSizeTableViewAllShopGoodNums:self.modelArray] >[self.activitynum integerValue]) {
                         [GFProgressHUD showInfoMsg:[NSString stringWithFormat:@"此商品最多只能购买%@件",self.activitynum]];
                         // 重新为数量赋值
                         model.num = @"0";
