@@ -41,14 +41,10 @@
 @property (nonatomic,copy) NSString *huo_id;
 /**用于存放被选中的model*/
 @property (nonatomic,strong) NSMutableArray *titleSelectModelArr;
-
-
 /**加入购物车的数量*/
 @property (nonatomic,copy) NSString *shoopCarNum;
-
 /**webView*/
 @property (nonatomic,strong) UIWebView*webView;
-
 /**加入或收藏的商品id*/
 @property (nonatomic,strong) NSString  * storeAndAddGood_id;
 /**加入购物车的数量*/
@@ -80,14 +76,11 @@
 @property (nonatomic,assign) NSInteger selectNum;
 /**决断是否有多属性*/
 @property (nonatomic,copy) NSString *is_attr;
-
 /** 记录四个选中的model */
 @property (nonatomic,strong)HomeShopListSizeModel *model1;
 @property (nonatomic,strong) HomeShopListSizeModel *model2;
 @property (nonatomic,strong) HomeShopListSizeModel *model3;
 @property (nonatomic,strong) HomeShopListSizeModel *model4;
-
-
 /**点击按钮后是否执行*/
 @property (nonatomic,assign) BOOL isComeOn;
 /**层级*/
@@ -106,8 +99,6 @@
 @property (nonatomic,strong) NSMutableArray *detailSizeParamArray;
 /**推荐商品*/
 @property (nonatomic,strong) NSMutableArray *recommandModelArray;
-
-
 
 @end
 static NSString *goodDetailCell = @"goodDetailCell";
@@ -270,8 +261,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
     // 加载子视图
     [self setUpChildrenViews];
     [self setUpBottomViews];
-
-   
 }
 /**
  *加载数据
@@ -279,20 +268,14 @@ static NSString *goodPramsCell = @"goodParamsCell";
 - (void)loadData
 {
     
-   // 请求详情数据
-
-  
-        
+       // 请求详情数据
         NSDictionary *goodDic =self.dataDic[@"goods"];
         self.detailDataDic =self.dataDic[@"goods"];
-        
         self.cengji = goodDic[@"cengji"];
         NSLog(@"%@",self.cengji);
         self.is_attr = goodDic[@"is_attr"];
         self.model = [[HomeShopListDetailModel alloc]init];
         [_model setValuesForKeysWithDictionary:goodDic];
-        
-        
         // 取轮播图
         
         // 清空数据源
@@ -384,7 +367,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
                     [self.sizeDataFiveArr addObject:model];
                 }
                 
-      
                 [self.chooseDataArr addObject:self.sizeDataOneArr];
 
             }
@@ -417,8 +399,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
                     [self.sizeDataFiveArr addObject:model];
                 }
                 
-                
-
                 [self.chooseDataArr addObject:self.sizeDataOneArr];
                 [self.chooseDataArr addObject:self.sizeDataTwoArr];
             }

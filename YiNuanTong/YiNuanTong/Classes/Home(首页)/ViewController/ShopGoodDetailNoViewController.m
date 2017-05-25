@@ -58,7 +58,6 @@
 
 /**webView*/
 @property (nonatomic,strong) UIWebView*webView;
-
 /**加入或收藏的商品id*/
 @property (nonatomic,strong) NSString  * storeAndAddGood_id;
 /**加入购物车的数量*/
@@ -69,7 +68,6 @@
 @property (nonatomic,strong)  UIView *bigView ;
 /**html文本*/
 @property (nonatomic,strong) UITextView*htmlLab;
-
 /**用于决定是否要取消收藏*/
 @property (nonatomic,strong) NSString  *isCancelStroe;
 @property (nonatomic,assign) NSInteger index;
@@ -86,7 +84,6 @@
 @property (nonatomic,strong) NSMutableDictionary *detailDataDic;
 /**决断是否有多属性*/
 @property (nonatomic,copy) NSString *is_attr;
-
 @end
 static NSString *goodDetailCell = @"goodDetailCell";
 static NSString *goodSizeCell = @"goodSizeCell";
@@ -125,7 +122,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
-    
     self.tabBarController.tabBar.hidden = YES;
     // 加载数据
     [self loadData];
@@ -134,7 +130,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
     self.tabBarController.tabBar.hidden = NO;
 }
 
@@ -148,11 +143,8 @@ static NSString *goodPramsCell = @"goodParamsCell";
     self.shoopCarNum = @"1";
     self.cengji = @"";
     self.isCancelStroe = self.isfavorite;
-    
-    
     [self setUpNavView];
   
-
     [self loadSizeData];
     // 加载子视图
     [self setUpChildrenViews];
@@ -166,8 +158,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
 
 - (void)rightBarButtonItemAction:(UIButton *)sender
 {
-    
-    
     NSLog(@"点击的是右边items");
     YNTShopingCarViewController *shopingVC = [[YNTShopingCarViewController alloc]init];
     
@@ -195,8 +185,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
     self.is_attr = goodDic[@"is_attr"];
     self.model = [[HomeShopListDetailModel alloc]init];
     [_model setValuesForKeysWithDictionary:goodDic];
-    
-    
     // 取轮播图
     
     // 清空数据源
@@ -206,7 +194,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
     }
     
     [self setUpChildrenViews];
-    
     // 获取规格参数
     // 清空数据源
     [self.detailSizeParamArray removeAllObjects];
@@ -228,18 +215,15 @@ static NSString *goodPramsCell = @"goodParamsCell";
         [self.recommandModelArray addObject:recModle];
     }
     
-    
     if (self.tableView) {
         [self.tableView reloadData];
     }else{
         [self setUpChildrenViews];
     }
 
-    
 } enError:^(NSError *error) {
     
 }];
-    
     
 }
 #pragma mark - 请求规格数据
@@ -251,13 +235,10 @@ static NSString *goodPramsCell = @"goodParamsCell";
     NSDictionary *param = @{@"good_id":self.good_id};
     [YNTNetworkManager requestPOSTwithURLStr:url paramDic:param finish:^(id responseObject) {
         NSLog(@"商品详情数据请求成功%@",responseObject);
-        
-
+    
         self.jiagequjian = responseObject[@"jiafanwei"];
         self.cengji = responseObject[@"cengji"];
 
-        
-        
     } enError:^(NSError *error) {
         NSLog(@"商品详情数据请求失败%@",error);
     }];
@@ -285,11 +266,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
     self.navLineLab = [[UILabel alloc]initWithFrame:CGRectMake(60,42, 40, 2)];
     self.navLineLab.backgroundColor = RGBA(219, 112, 0, 1);
     [bagView addSubview:self.navLineLab];
-    
-    
-    
-    
-    
+
     
 }
 // 点击商品按钮的回调
@@ -337,23 +314,15 @@ static NSString *goodPramsCell = @"goodParamsCell";
     [self.tableView registerClass:[GoodDetailSizeNoCell class] forCellReuseIdentifier:goodSizeCell];
     [self.tableView registerClass:[GoodDetaiParamsCell class] forCellReuseIdentifier:goodPramsCell];
     
-    
-    
-    
-    
     [self.view addSubview:self.tableView];
     
     // 创建轮播图
-    
     SDCycleScrollView *cycleScroollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 64, KScreenW, 335*kHeightScale) imageURLStringsGroup:self.picsArray];
     
     self.tableView.tableHeaderView = cycleScroollView;
-    
     // 创建尾部视图
     UIView *footerView = [self setUpFooterVIews];
-    
     self.tableView.tableFooterView = footerView;
-    
     
 }
 /**
@@ -362,9 +331,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
 - (UIView *)setUpFooterVIews
 {
     self.bigView = [[UIView alloc]initWithFrame:CGRectMake(0,0, KScreenW, 500 )];
-    
-    
-    
     //加载默认数据
     self.webHeight = 0;
     NSString *width = @"";
@@ -387,12 +353,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
     self.htmlLab.attributedText = attributedString;
     [_bigView addSubview:self.htmlLab];
     
-    
-    
-    
-    
-    
-    
     return _bigView;
     
 }
@@ -405,8 +365,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
     [self.view addSubview:bagView];
     // 创建收藏按钮
     UIButton *stroeBtn = [YNTUITools createCustomButton:CGRectMake(14*kWidthScale, 6 *kHeightScale, 36 *kWidthScale, 35 *kHeightScale) bgColor:RGBA(251, 251, 251, 1) title:nil titleColor:nil image:@"" action:@selector(storeBtnAction:) vc:self];
-    
-    
+
     if ([self.isfavorite isEqualToString:@"1"]) {
         [stroeBtn setImage:[UIImage imageNamed:@"collection"] forState:UIControlStateNormal];
     }else{
@@ -417,10 +376,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
     // 创建线
     UILabel *lineLab = [[UILabel alloc]initWithFrame:CGRectMake(60*kWidthScale, 6*kHeightScale, 1*kWidthScale, 36 *kHeightScale)];
     lineLab.backgroundColor = [UIColor grayColor];
-    //  [bagView addSubview:lineLab];
-    
-    
-    
+  
     // 创建客服按钮
     UIButton *customerServiceBtn =  [YNTUITools createCustomButton:CGRectMake(65*kWidthScale, 6 *kHeightScale, 28 *kWidthScale, 36 *kHeightScale) bgColor:RGBA(251, 251, 251, 1) title:nil titleColor:nil image:@"customer_service" action:@selector(customerServiceBtnAction:) vc:self];
     [bagView addSubview:customerServiceBtn];
@@ -439,8 +395,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
     UIButton*carBtn = [YNTUITools createButton:CGRectMake(KScreenW / 2 +78*kWidthScale, 0, (KScreenW - 154 *kWidthScale)/2, 50)  bgColor:CGRBlue title:@"加入进货单" titleColor:[UIColor whiteColor] action:@selector(carBtnAction:) vc:self];
     
     [bagView addSubview:carBtn];
-    
-
     
 }
 #pragma mark- 底部按钮的点击事件
@@ -492,15 +446,12 @@ static NSString *goodPramsCell = @"goodParamsCell";
     }
     
     
-    
-    
-    
-    
-    
     if ([self.isfavorite isEqualToString:@"1"]) {
+        // 如果已经收藏 点击后图标变暗
         [sender setImage:[UIImage imageNamed:@"no_collection"] forState:UIControlStateNormal];
         
     }else{
+        // 如果无收藏  点击后图标变亮
         [sender setImage:[UIImage imageNamed:@"collection"] forState:UIControlStateNormal];
         
     }
@@ -528,8 +479,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
 - (void)imdedateAction:(UIButton *)sender
 {
     
-    
-
     // 获取限购参数
     NSString *activitynum = [NSString stringWithFormat:@"%@",self.dataDic[@"goods"][@"activitynum"]];
     // 没有数量限制
@@ -831,9 +780,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
     if (indexPath.row == 2) {
         return 355 *kHeightScale;
     }
-    
-    
-    return 0;
+        return 0;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -841,7 +788,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
     if (indexPath.row == 2) {
         if (self.detailSizeParamArray.count>0) {
             // 有参数时才让弹出
-            
             HomeGoodDetailParamsView *view = [[HomeGoodDetailParamsView alloc]initWithFrame:CGRectMake(0, 64, KScreenW, kScreenH)];
             __weak typeof(view)weakSelf = view;
             [view setValueWithModelArray:self.detailSizeParamArray];
@@ -947,9 +893,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
             [self.navigationController pushViewController:shopDetaiOneVC animated:YES];
         }
         
-        
-        
-    } enError:^(NSError *error) {
+            } enError:^(NSError *error) {
         NSLog(@"请求详情数据失败");
     }];
     
@@ -957,17 +901,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+  
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

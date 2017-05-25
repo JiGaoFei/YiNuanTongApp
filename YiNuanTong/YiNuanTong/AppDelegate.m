@@ -42,7 +42,7 @@
     if ([[UserDefaults getLaunchTimes] integerValue] == 1) {
         // 说明是第一次启动,要添加引导页
         GuideViewController *guideVC = [[GuideViewController alloc]init];
-        
+        // 给引导页图片赋值
         guideVC.imageArray = @[@"引导页1",@"引导页2",@"引导页3",@"引导页4"];
         //将引导页设置当前window的根控制器
         self.window.rootViewController = guideVC;
@@ -74,11 +74,10 @@
     // 更新应用启动次数
     [UserDefaults setLaunchTimes:[NSString stringWithFormat:@"%ld",[[UserDefaults getLaunchTimes] integerValue] + 1]];
     // 注册微信id
-  // [WXApi registerApp:@"wxc4cf6018a3b7aacf"];
+ 
    [WXApi registerApp:@"wxc4cf6018a3b7aacf" withDescription:@"demo 2.0"];
     
-    
-    //向微信注册wxd930ea5d5a258f4f
+
      
     // 监测网络状态
     [self NetworkMonitoring];
@@ -97,12 +96,7 @@
     [manger startMonitoring];
     //3.监听网络状态的改变
     [manger setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        /*
-         AFNetworkReachabilityStatusUnknown = -1,
-         AFNetworkReachabilityStatusNotReachable = 0,
-         AFNetworkReachabilityStatusReachableViaWWAN = 1,
-         AFNetworkReachabilityStatusReachableViaWiFi = 2,
-         */
+     
       
         UIView *backView = [[UIView alloc]initWithFrame:CGRectMake(0,64, KScreenW, kScreenH-64-49)];
         backView.tag = 1236;
@@ -116,21 +110,19 @@
                 NSLog(@"此时没有网络");
                 [GFProgressHUD showFailure:@"亲,断网了,马上到达月球!"];
      
-             //   [[UIApplication sharedApplication].keyWindow addSubview:backView];
             
             }
                 break;
             case AFNetworkReachabilityStatusReachableViaWWAN:{
                               NSLog(@"移动网络");
-              //  [GFProgressHUD showSuccess:@"你已开启移动网络数据!"];
-                //  [[[UIApplication sharedApplication].keyWindow viewWithTag:1236] removeFromSuperview];
+      
                 
             }
                 break;
             case AFNetworkReachabilityStatusReachableViaWiFi:{
             
                 NSLog(@"WiFi");
-              //  [GFProgressHUD showSuccess:@"你已连接wifi!"];
+           
              
         [[[UIApplication sharedApplication].keyWindow viewWithTag:1236] removeFromSuperview];
             }
@@ -154,6 +146,8 @@
             NSLog(@"支付宝返回结果result = %@",resultDic);
             if ([resultDic[@"resultStatus"] isEqualToString:@"9000"]) {
                 
+                // 支付成功发送通知
+                
                 //创建一个消息对象
                 NSNotification * notice = [NSNotification notificationWithName:@"aliPayReslutYnt" object:nil userInfo:nil];
                 //  发送消息
@@ -163,6 +157,7 @@
             if([resultDic[@"resultStatus"] isEqualToString:@"6001"])
             {
                 NSLog(@"已取消支付");
+                // 取消支付发送通知
                 NSNotification * notice = [NSNotification notificationWithName:@"aliPayReslutYntCancel" object:nil userInfo:nil];
                 //  发送消息
                 [[NSNotificationCenter defaultCenter]postNotification:notice];
@@ -199,53 +194,6 @@
     return YES;
 
 }
-
-//// NOTE: 9.0以后使用新API接口
-//- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
-//{
-//    // 微信支付代理
-//    [WXApi handleOpenURL:url delegate:self];
-//
-//    
-//    if ([url.host isEqualToString:@"safepay"]) {
-//        // 支付跳转支付宝钱包进行支付，处理支付结果
-//        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-//            
-//            NSLog(@"支付宝返回结果result = %@",resultDic);
-//            //创建一个消息对象
-//            NSNotification * notice = [NSNotification notificationWithName:@"aliPayReslutYnt" object:nil userInfo:nil];
-//         //  发送消息
-//            [[NSNotificationCenter defaultCenter]postNotification:notice];
-//            
-//                    }];
-//        
-//        // 授权跳转支付宝钱包进行支付，处理支付结果
-//        [[AlipaySDK defaultService] processAuth_V2Result:url standbyCallback:^(NSDictionary *resultDic) {
-//            NSLog(@"宝宝result = %@",resultDic);
-//            
-//                      
-//            
-//            
-//            
-//            // 解析 auth code
-//            NSString *result = resultDic[@"result"];
-//            NSString *authCode = nil;
-//            if (result.length>0) {
-//                NSArray *resultArr = [result componentsSeparatedByString:@"&"];
-//                for (NSString *subResult in resultArr) {
-//                    if (subResult.length > 10 && [subResult hasPrefix:@"auth_code="]) {
-//                        authCode = [subResult substringFromIndex:10];
-//                        break;
-//                    }
-//                }
-//            }
-//            NSLog(@"授权结果 authCode = %@", authCode?:@"");
-//        }];
-//    }
-//    return YES;
-//}
-//
-//
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -285,14 +233,11 @@
 
 
 
+#pragma mark - 微信支付回调
 
 -(void)onResp:(BaseResp *)resp {
    
-
-    
-   
     NSString *strTitle;
-    
     
     if([resp isKindOfClass:[PayResp class]]){
         //支付返回结果，实际支付结果需要去微信服务器端查询

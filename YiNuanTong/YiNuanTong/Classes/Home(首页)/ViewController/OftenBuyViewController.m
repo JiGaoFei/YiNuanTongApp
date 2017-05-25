@@ -228,7 +228,7 @@ static NSString *listCell = @"listCell";
         NSArray *dataArr= returnDic[@"goods"];
         if (dataArr.count == 0) {
             // 无数据时
-         //   [GFProgressHUD showInfoMsg:@"没有你想要的商品了"];
+         
             return ;
         }
         
@@ -252,7 +252,7 @@ static NSString *listCell = @"listCell";
         
         if (myTableView) {
             [myTableView reloadData];
-           // [myTableView setContentOffset:CGPointMake(0,0) animated:NO];
+          
             
         }
         else

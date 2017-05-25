@@ -26,6 +26,8 @@
  */
 - (void)setUpChildrenViews
 {
+    
+    
     UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, KScreenW, kScreenH)];
     webView.scrollView.showsVerticalScrollIndicator = NO;
     webView.scrollView.showsHorizontalScrollIndicator = NO;
@@ -34,6 +36,8 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [webView loadRequest:request];
     [self.view addSubview:webView];
+    
+    
    }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

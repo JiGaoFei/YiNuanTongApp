@@ -50,9 +50,7 @@
     
     [self.view addSubview:navView];
     
-    // 创建titleLab
-//    UILabel *titleNavLab = [YNTUITools createLabel:CGRectMake(42 *kPlus , 79, KScreenW - 42 *2*kPlus, 12) text:@"开通订货功能需要您进行手机验证,给您带来的不便请您见谅!" textAlignment:NSTextAlignmentCenter textColor:CGRGray bgColor:nil font:12];
-//    [self.view addSubview:titleNavLab];
+ 
     
     // 创建返回btn
     UIButton *backBtn = [YNTUITools createButton:CGRectMake(21.5, 20, 25, 32) bgColor: nil title:nil titleColor:nil action:@selector(backBtnAction:) vc:self];
@@ -123,9 +121,7 @@
     nextBtn.userInteractionEnabled = NO;
     nextBtn.alpha = 0.3;
     self.nextBtn = nextBtn;
-//    UIImage *nextImg = [UIImage imageNamed:@"下一步"];
-//    nextImg = [nextImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//    [nextBtn setImage:nextImg forState:UIControlStateNormal];
+
     [self.view addSubview:nextBtn];
     
     
@@ -255,14 +251,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+
 
 @end

@@ -71,7 +71,7 @@
     NSLog(@"我立刻登陆");
     UIViewController *vc =self.presentingViewController;
     
-    //LoginViewController要跳转的界面
+
     
     while (![vc isKindOfClass:[LoginViewController class]]) {
                 vc = vc.presentingViewController;

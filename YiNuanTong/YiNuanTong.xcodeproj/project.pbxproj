@@ -183,7 +183,6 @@
 		F116F8E11E9C5F51007C489C /* ShopListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F8651E9C5F51007C489C /* ShopListCell.m */; };
 		F116F8E21E9C5F51007C489C /* ShopListChooseView.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F8671E9C5F51007C489C /* ShopListChooseView.m */; };
 		F116F8E31E9C5F51007C489C /* ShopThreeCooperationView.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F8691E9C5F51007C489C /* ShopThreeCooperationView.m */; };
-		F116F8E41E9C5F51007C489C /* AddPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F86C1E9C5F51007C489C /* AddPasswordViewController.m */; };
 		F116F8E51E9C5F51007C489C /* CompanyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F86E1E9C5F51007C489C /* CompanyViewController.m */; };
 		F116F8E61E9C5F51007C489C /* CycleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F8701E9C5F51007C489C /* CycleDetailViewController.m */; };
 		F116F8E71E9C5F51007C489C /* GoodDetailBtnView.m in Sources */ = {isa = PBXBuildFile; fileRef = F116F8721E9C5F51007C489C /* GoodDetailBtnView.m */; };
@@ -652,8 +651,6 @@
 		F116F8671E9C5F51007C489C /* ShopListChooseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopListChooseView.m; sourceTree = "<group>"; };
 		F116F8681E9C5F51007C489C /* ShopThreeCooperationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopThreeCooperationView.h; sourceTree = "<group>"; };
 		F116F8691E9C5F51007C489C /* ShopThreeCooperationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopThreeCooperationView.m; sourceTree = "<group>"; };
-		F116F86B1E9C5F51007C489C /* AddPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPasswordViewController.h; sourceTree = "<group>"; };
-		F116F86C1E9C5F51007C489C /* AddPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPasswordViewController.m; sourceTree = "<group>"; };
 		F116F86D1E9C5F51007C489C /* CompanyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompanyViewController.h; sourceTree = "<group>"; };
 		F116F86E1E9C5F51007C489C /* CompanyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompanyViewController.m; sourceTree = "<group>"; };
 		F116F86F1E9C5F51007C489C /* CycleDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CycleDetailViewController.h; sourceTree = "<group>"; };
@@ -1738,8 +1735,6 @@
 		F116F86A1E9C5F51007C489C /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				F116F86B1E9C5F51007C489C /* AddPasswordViewController.h */,
-				F116F86C1E9C5F51007C489C /* AddPasswordViewController.m */,
 				F116F86D1E9C5F51007C489C /* CompanyViewController.h */,
 				F116F86E1E9C5F51007C489C /* CompanyViewController.m */,
 				F116F86F1E9C5F51007C489C /* CycleDetailViewController.h */,
@@ -2008,7 +2003,6 @@
 				F116F8C71E9C5F51007C489C /* BrandModel.m in Sources */,
 				F116F8B51E9C5F51007C489C /* BirthdayDatePickView.m in Sources */,
 				BBFEF0B41E0D4E7B009FF11E /* CreditViewController.m in Sources */,
-				F116F8E41E9C5F51007C489C /* AddPasswordViewController.m in Sources */,
 				F1CA93211E9DFF3600B3F596 /* OrderListSectionModel.m in Sources */,
 				F11C768D1EB024B6000A5BD6 /* SecondBuyGoodViewController.m in Sources */,
 				F116F8981E9C5F51007C489C /* OrderNewCompleteViewController.m in Sources */,

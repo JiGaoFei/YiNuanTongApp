@@ -109,7 +109,7 @@
     UIImage *loginBtnImage = [UIImage imageNamed:@"登录"];
     loginBtnImage = [loginBtnImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 
-//    [loginBtn setImage:loginBtnImage forState:UIControlStateNormal];
+
     [loginBtn setBackgroundImage:loginBtnImage forState:UIControlStateNormal];
     [self.view addSubview:loginBtn];
     
@@ -121,14 +121,7 @@
     [quickRegistBtn setImage:quickRegistBtnImage forState:UIControlStateNormal];
     [self.view addSubview:quickRegistBtn];
 
-//    // 审核进度btn
-//    UIButton *reviewProgressBtn = [YNTUITools createButton:CGRectMake(KScreenW -(51 +152)*kPlus*kWidthScale, kScreenH - 82*kPlus*kHeightScale, 152*kPlus*kWidthScale, 31*kPlus*kHeightScale) bgColor:nil  title:@"审核进度>>"   titleColor:[UIColor whiteColor] action:@selector(reviewProgressBtnAction:) vc:self];
-//    
-//    UIImage *reviewProgressBtnImage =[UIImage imageNamed:@"审核进度"];
-//    reviewProgressBtnImage = [reviewProgressBtnImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//    [reviewProgressBtn setImage:reviewProgressBtnImage forState:UIControlStateNormal];
-//    
-//    [self.view addSubview:reviewProgressBtn];
+
 
     }
 #pragma mark -监听文字的改变

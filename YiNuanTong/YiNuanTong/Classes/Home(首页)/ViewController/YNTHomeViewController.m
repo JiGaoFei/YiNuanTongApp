@@ -27,7 +27,6 @@
 #import "OftenBuyViewController.h"
 #import "StoreViewController.h"
 #import "UserInfo.h"
-#import "AddPasswordViewController.h"
 #import <SDCycleScrollView/SDCycleScrollView.h>
 #import "HomeWebViewController.h"
 #import "HomeItemsModel.h"
@@ -128,9 +127,7 @@ static NSString *homeThreeCell = @"homeThreeCell";
     self.tabBarController.tabBar.hidden = NO;
   
        UserInfo *userInfo = [UserInfo currentAccount];
-       // 首页出现后设置角标
-     //   [[[[[self tabBarController] viewControllers] objectAtIndex: 1] tabBarItem] setBadgeValue:userInfo.badge];
-    
+
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
       self.edgesForExtendedLayout = UIRectEdgeNone;
      
@@ -151,8 +148,8 @@ static NSString *homeThreeCell = @"homeThreeCell";
             LoginViewController *logInVC = [[LoginViewController alloc]init];
             [self presentViewController:logInVC animated:YES completion:nil];
 
-                  [self setNavgationChildViews];
-            // 加载数据
+            [self setNavgationChildViews];
+        
        
         
 
@@ -187,13 +184,11 @@ static NSString *homeThreeCell = @"homeThreeCell";
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(weChatNotition:) name:@"weChatPaySuccessYNT" object:nil];
 
     }
-
+// 微信支付成功后的回调
 - (void)weChatNotition:(NSNotification *)info
 {
     PayDetailViewController *payDetailVC = [[PayDetailViewController alloc]init];
-    
     HomeGoodListSingLeton *singLeton = [HomeGoodListSingLeton shareHomeGoodListSingLeton];
-    
     payDetailVC.orderNumber =   singLeton.dic[@"sn"];
     if ([[NSString stringWithFormat:@"%@",  singLeton.dic[@"status"]] isEqualToString:@"1"]) {
         payDetailVC.payStatus = @"支付成功";
@@ -204,7 +199,7 @@ static NSString *homeThreeCell = @"homeThreeCell";
     [self.navigationController pushViewController:payDetailVC animated:YES];
  
 }
-
+// 支付宝支付成功通知
 - (void)aliPayNotition:(NSNotification *)info
 {
     PayDetailViewController *payDetailVC = [[PayDetailViewController alloc]init];
@@ -274,12 +269,9 @@ static NSString *homeThreeCell = @"homeThreeCell";
  }];
     
     
-        //self.secondImageArr = @[@"PP-R",@"阀门",@"水暖配件",@"电料",@"地暖材料",@"散热器",@"壁挂炉",@"空气能",@"风机盘管",@"锅炉",@"锅炉"].mutableCopy;
-        self.threeImageArr = @[@"1暖通商城",@"import_cb"].mutableCopy;
-      //  self.identifierArray = @[@"15",@"20",@"25",@"26",@"16",@"27",@"28",@"29",@"30",@"31"].mutableCopy;
-    
-    
-      //
+    // 第三方平台数据源
+    self.threeImageArr = @[@"1暖通商城",@"import_cb"].mutableCopy;
+
     NSString *url = [NSString stringWithFormat:@"%@api/disanfang.php",baseUrl];
 
     [YNTNetworkManager requestPOSTwithURLStr:url paramDic:nil finish:^(id responseObject) {

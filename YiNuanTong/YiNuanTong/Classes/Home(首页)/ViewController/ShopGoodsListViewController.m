@@ -38,14 +38,12 @@
 @property (nonatomic,strong)  DropDownCell *downCell;
 /**搜索框*/
 @property (nonatomic,strong) UISearchBar *searchBar;
-
 /**创建筛选视图*/
 @property (nonatomic,strong) ShopListChooseView  * chooseView;
 /**当前选中的按钮(用于控制按钮的颜色)*/
 @property (nonatomic,strong) UIButton *selectedButton;
 /**创建购物车视图*/
 @property (nonatomic,strong) UIView *shopCarView;
-
 /**购物车中数量*/
 @property (nonatomic,strong) UITextField *numberTextField;
 /**创建collectionView*/
@@ -66,7 +64,6 @@
 @property (nonatomic,strong) NSMutableArray  * shopCarBrandArray;
 /**蒙层view*/
 @property (nonatomic,strong) UIView  * maskView;
-
 /**加入购物车的数量*/
 @property (nonatomic,assign) NSInteger  shopGoodsNum;
 /**价格排序的状态(yes代表低到高)*/
@@ -85,7 +82,6 @@
 @property (nonatomic,strong) GFDropDownMenu *dropDownMenu;
 /**huo_id*/
 @property (nonatomic,copy) NSString *huo_id;
-
 /**购物车视图名称*/
 @property (nonatomic,strong) UILabel *goodNameLab;
 /**购物车视图价格*/
@@ -119,8 +115,6 @@
 
 /**数据源*/
 @property (nonatomic,strong) NSMutableDictionary *dataDic;
-
-
 @end
 static NSString *dropDownCell = @"dropDownCell";
 static NSString *listCell = @"listCell";
@@ -208,7 +202,6 @@ static NSString *listCell = @"listCell";
     self.serialNumber = 1;
     [self loadData];
     self.view.backgroundColor = [UIColor grayColor];
-  // self.isPriceLowToHigh = NO;
     self.brandStr = @"";
     self.brand_id = @"";
     self.moreBrand_id = @"";
@@ -222,10 +215,7 @@ static NSString *listCell = @"listCell";
       // 加载下拉菜单
     [self setUpDropDownMenu];
     
-  
-
-    
-}
+  }
 
 /**
  *加载数据
@@ -238,47 +228,50 @@ static NSString *listCell = @"listCell";
         [self.moreBrandArray removeAllObjects];
     }
     
- 
-  
-    
     UserInfo *userInfo = [UserInfo currentAccount];
     if (_serialNumber == 1) {//默认
-       
-     
-      self.params = @{@"cat_id":self.cat_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9"};
+             self.params = @{@"cat_id":self.cat_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9"};
 
     }
     if (_serialNumber == 2) {//商品搜索
+        [self.modelArr removeAllObjects];
         self.params = @{@"searchstr":self.searchStr,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id};
         
     }
     if (_serialNumber == 3) {//搜索品牌
+         [self.modelArr removeAllObjects];
         self.params = @{@"brand_id":self.brand_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"zongHeOrder":self.salePrice};
         
     }
 
     if (_serialNumber == 4) {//价格从低到高
+         [self.modelArr removeAllObjects];
         self.params = @{@"zongHeOrder":self.salePrice,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id};
         
     }
     if (_serialNumber == 5) {//价格从高到低
+         [self.modelArr removeAllObjects];
            self.params = @{@"zongHeOrder":self.salePrice,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id};
         
     }
     if (_serialNumber == 6) {//搜索更多
+         [self.modelArr removeAllObjects];
         self.params = @{@"cat_id":self.cat_id,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"brand_id":self.brand_id,@"zongHeOrder":self.salePrice};
         
     }
     if (_serialNumber == 7) {//筛选价格区间
+         [self.modelArr removeAllObjects];
         self.params = @{@"price_qujian":self.price_qujian,@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.cat_id,@"zongHeOrder":self.salePrice};
         
     }
     if (_serialNumber == 8) {//销量从高到低
+         [self.modelArr removeAllObjects];
         self.params = @{@"salesOrderBy":@"1",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"cat_id":self.cat_id,@"zongHeOrder":self.salePrice};
         
     }
     
     if (_serialNumber == 9) {//销量从低到高
+         [self.modelArr removeAllObjects];
        self.params = @{@"salesOrderBy":@"0",@"user_id":userInfo.user_id,@"page":@(self.page),@"tpagesize":@"9",@"cat_id":self.cat_id,@"brand_id":self.brand_id,@"zongHeOrder":self.salePrice};
     }
     NSString *goodListUrl = [NSString stringWithFormat:@"%@/api/goodsclass.php",baseUrl];
@@ -297,13 +290,9 @@ static NSString *listCell = @"listCell";
             [GFProgressHUD showFailure:@"没有找到你要的商品!"];
             return ;
         }
-//        if (dataArray.count == 0) {
-//            [GFProgressHUD showFailure:@"没有更多数据了"];
-//            return;
-//        }
+
         
-        
-        //[self.modelArr removeAllObjects];
+     
         for (NSDictionary *dic in dataArray) {
             HomeShopListModel *model = [[HomeShopListModel alloc]init];
             if (![self.modelArr containsObject:model]) {
@@ -347,7 +336,7 @@ static NSString *listCell = @"listCell";
 
         }else{
             
-            //  [self.tableView setContentOffset:CGPointMake(0,100) animated:NO];
+         
         }
         [self.collectionView reloadData];
         [self.tableView reloadData];
@@ -717,10 +706,6 @@ static NSString *listCell = @"listCell";
     [self.shopCarView addSubview:_numberTextField];
     
     
-    
-
-    
-    
     [UIView animateWithDuration:1.0 animations:^{
         CGRect  rect = self.bagView.frame;
         rect.origin.x = 0;
@@ -796,12 +781,6 @@ static NSString *listCell = @"listCell";
     [self.dropDownView addSubview:self.collectionView];
     
     
-// 创建确定 取消按钮
-  //  UIButton *cancelBtn =[YNTUITools  createButton:CGRectMake(0, 200, KScreenW / 2, 40) bgColor:[UIColor whiteColor] title:@"取消" titleColor:[UIColor blackColor] action:@selector(cancelBtnAction:) vc:self];
-    
-    
-   // [self.dropDownView addSubview:cancelBtn];
-    
     UIButton *confirmBtn =[YNTUITools createButton:CGRectMake(0, 200, KScreenW , 40) bgColor:CGRBlue title:@"取消" titleColor:[UIColor whiteColor] action:@selector(confirmBtnAction:) vc:self];
     [self.dropDownView addSubview:confirmBtn];
     
@@ -848,7 +827,6 @@ static NSString *listCell = @"listCell";
 
     self.chooseView.backgroundColor = [UIColor whiteColor];
  
-    
     
     __weak typeof (self) weakSelf = self;
   weakSelf.chooseView.btnClicked = ^(NSInteger index){
@@ -940,9 +918,6 @@ static NSString *listCell = @"listCell";
     }
     
     
-//    if (collectionView == self.shopCarCollectionView) {
-//        return 3;
-//    }
 
     return 0;
  
@@ -956,7 +931,7 @@ static NSString *listCell = @"listCell";
 {
     if (collectionView == self.collectionView) {
         self.downCell= [collectionView dequeueReusableCellWithReuseIdentifier:dropDownCell forIndexPath:indexPath];
-      //   _downCell.backgroundColor = RGBA(217, 217, 217, 1);
+    
                 if (_downCell.isSelected) {
             _downCell.backgroundColor = CGRBlue;
         }
@@ -971,19 +946,8 @@ static NSString *listCell = @"listCell";
         return _downCell;
         
     }
-//    if (collectionView == self.shopCarCollectionView) {
-//        self.downCell= [collectionView dequeueReusableCellWithReuseIdentifier:dropDownCell forIndexPath:indexPath];
-//        _downCell.backgroundColor = RGBA(217, 217, 217, 1);
-//        if (_downCell.isSelected) {
-//            _downCell.backgroundColor = CGRBlue;
-//        }
-//        return _downCell;
-//        
-//    }
+
     
-
-       
-
     return 0;
     
 }
@@ -998,10 +962,8 @@ static NSString *listCell = @"listCell";
             _downCell.lab.text = model.catname;
             self.serialNumber = 3;
             self.brand_id = model.brand_id;
-            
-         
             [self loadData];
-          //  [self requestBrandDataWithModel:model];
+         
         }else{
             MoreBrandModel *model = self.transmitArray[indexPath.row];
             _downCell.lab.text = model.catname;
@@ -1009,7 +971,7 @@ static NSString *listCell = @"listCell";
             self.cat_id = model.catson_id;
           
             [self loadData];
-           // [self requestMoreBrandData:model];
+        
         }
       
          self.isSelectViewApperar = NO;
@@ -1054,10 +1016,7 @@ static NSString *listCell = @"listCell";
     cell.carBtnClicked = ^(NSInteger index){
         if (index == 1720) {
             NSLog(@"购物车要出来了");
-      
-           
-        
-        }
+              }
         
     };
    
@@ -1074,9 +1033,7 @@ static NSString *listCell = @"listCell";
     UserInfo *userInfo = [UserInfo currentAccount];
     NSDictionary *param = @{@"good_id":model.good_id,@"user_id":userInfo.user_id};
     [self requestGoodDetaiDataWith:param andModel:model];
-    
-    
-}
+    }
 #pragma mark - searchBar代理方法
 
 // 文字改变的时候进行搜索
@@ -1092,17 +1049,7 @@ static NSString *listCell = @"listCell";
 {
     
     [self.searchBar resignFirstResponder];
-//    [UIView animateWithDuration:0.5 animations:^{
-//        // 购物车视图消失
-//      
-//        CGRect  rect = self.bagView.frame;
-//        rect.origin.x = KScreenW;
-//        self.bagView.frame = rect;
-//        
-//    } completion:^(BOOL finished) {
-//     
-//    }];
-    
+
 }
 
 #pragma mark - 点击更多时候请求数据
@@ -1233,7 +1180,6 @@ static NSString *listCell = @"listCell";
             [self.navigationController pushViewController:shopDetaiOneVC animated:YES];
         }
 
-        
         
     } enError:^(NSError *error) {
           NSLog(@"请求详情数据失败");
