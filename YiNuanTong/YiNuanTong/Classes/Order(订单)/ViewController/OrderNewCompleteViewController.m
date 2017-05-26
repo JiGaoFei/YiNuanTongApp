@@ -106,9 +106,7 @@
         NSString *sign = self.payDic[@"sign"];
                
               [self doAlipayPay:sign];
-          //  [self.navigationController popViewControllerAnimated:YES];
-         
-         //      [self.navigationController pushViewController:payDetailVC animated:YES];
+        
                
    
 
@@ -118,9 +116,7 @@
         NSDictionary *data = self.payDic[@"sign"];
 
         [self WXZhiFUWith:data];
-                 //  [self.navigationController popViewControllerAnimated:YES];
-
-       
+        
     }
 
     
@@ -334,13 +330,13 @@
             }
             case WXErrCodeUserCancel:{
                 strMsg = @"已取消支付!";
-                // [MYNotificationCenter postNotificationName:@"weixinPaystatusSuccess" object:nil userInfo:@{@"status":@"cancle"}];
+        
                 break;
             }
             default:{
                 
                 strMsg = [NSString stringWithFormat:@"支付失败 !"];
-                //   [MYNotificationCenter postNotificationName:@"weixinPaystatusSuccess" object:nil userInfo:@{@"status":@"cancle"}];
+
                 break;
             }
         }

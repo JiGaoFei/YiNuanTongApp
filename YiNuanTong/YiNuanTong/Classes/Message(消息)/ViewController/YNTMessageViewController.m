@@ -57,6 +57,7 @@ static NSString *messagListCell = @"messageListCell";
     self.view.backgroundColor = [UIColor orangeColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.tableFooterView = [UIView new];
     // 注册cell
     [self.tableView registerClass:[MessageListCell class] forCellReuseIdentifier:messagListCell];
     [self.view addSubview:self.tableView];

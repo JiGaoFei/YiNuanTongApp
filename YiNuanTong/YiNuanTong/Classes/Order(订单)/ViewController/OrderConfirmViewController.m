@@ -617,8 +617,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
      
                 [self.tableView reloadData];
             
-//                NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:self.sectionModelArray.count -2];
-//                [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+
             };
         }else{
               OrderConfirmModel *payModel = self.sectionModelArray[self.sectionModelArray.count -1];

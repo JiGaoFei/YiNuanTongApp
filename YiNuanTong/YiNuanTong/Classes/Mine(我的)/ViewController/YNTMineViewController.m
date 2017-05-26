@@ -169,21 +169,7 @@ static NSString *minLogout = @"logoutCell";
     
     
     
-    
-    
-    
-    
-
-    
-    // 六个cell数据源
-//    self.sixCellTitleArr = @[@"公司信息",@"mine-收获地址",@"我的订单",@"信用申请",@"mine-确认收货",@"申请退换"].mutableCopy;
- 
-   
- //   self.lineTitleArr = @[@"常见问题",@"订货流程",@"意见反馈",@"联系我们1",@"mine_change_the_password",@"我的邀请"].mutableCopy;
-    
-    
-    
-}
+    }
 
 /**
  *创建子视图
@@ -289,9 +275,7 @@ static NSString *minLogout = @"logoutCell";
         return CGSizeMake(KScreenW, 20);
 
     }
-//    if (section == 4) {
-//        return CGSizeMake(KScreenW, 40);
-//    }
+
     return CGSizeMake(KScreenW, 20);
 }
 // 返回列间距
@@ -301,9 +285,7 @@ static NSString *minLogout = @"logoutCell";
     if (section == 0) {
         // 设置第一个分区item大小
         self.flowLayout.itemSize = CGSizeMake(KScreenW/2, 60 *kHeightScale);
-//        if (KScreenW == 414) {
-//            self.flowLayout.itemSize = CGSizeMake(KScreenW/2 *kHeightScale, 60*kHeightScale );
-//            }
+
         
         return 0;
     }else if (section ==1){
@@ -408,7 +390,7 @@ static NSString *minLogout = @"logoutCell";
           
             __weak typeof(self) weakSelf = self;
             self.headView.companyImageViewClicked = ^(){
-              // weakSelf.headView.companyImageView.image = weakSelf.oneImgView.image;
+             
                 NSLog(@"我是头像点击的回调");
                 [weakSelf loadAlum];
             };
@@ -435,18 +417,16 @@ static NSString *minLogout = @"logoutCell";
                
             case 0:
             {
-                                NSLog(@"点击的是账户余额");
-//                AccountViewController *accountVC = [[AccountViewController alloc]init];
-//                [self.navigationController pushViewController:accountVC animated:YES];
+                
+                NSLog(@"点击的是账户余额");
+
 
                 
             }
                 break;
             case 1:
             {
-//                             NSLog(@"点击的是信用币");
-//                CreditViewController *creditViewVC = [[CreditViewController alloc]init];
-//                [self.navigationController pushViewController:creditViewVC animated:YES];
+
 
             }
                 break;
@@ -500,9 +480,7 @@ static NSString *minLogout = @"logoutCell";
             case 5:
             {
                 NSLog(@"点击的是申请退换");
-//                ApplyRefundViewController *applyRefundVC = [[ApplyRefundViewController alloc]init];
-//                [self.navigationController pushViewController:applyRefundVC animated:YES];
-                
+
                 
                 [GFProgressHUD showInfoMsg:@"此功能暂未开通!"];
             }
@@ -717,12 +695,7 @@ static NSString *minLogout = @"logoutCell";
         }
         
       
-        
-        
-        
-        
-        
-        
+                
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
       

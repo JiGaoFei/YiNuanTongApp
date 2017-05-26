@@ -46,7 +46,6 @@
 @property (nonatomic,strong) NSMutableArray  * picsArray;
 /**数据模型*/
 @property (nonatomic,strong) HomeShopListDetailModel  * model;
-
 /**规格(加入购物车的时候要用)*/
 @property (nonatomic,copy) NSString *goodSize;
 /**huo_id*/
@@ -55,10 +54,8 @@
 @property (nonatomic,strong) NSMutableArray *titleSelectModelArr;
 /**加入购物车的数量*/
 @property (nonatomic,copy) NSString *shoopCarNum;
-
 /**webView*/
 @property (nonatomic,strong) UIWebView*webView;
-
 /**加入或收藏的商品id*/
 @property (nonatomic,strong) NSString  * storeAndAddGood_id;
 /**加入购物车的数量*/
@@ -69,7 +66,6 @@
 @property (nonatomic,strong)  UIView *bigView ;
 /**html文本*/
 @property (nonatomic,strong) UITextView*htmlLab;
-
 /**用于决定是否要取消收藏*/
 @property (nonatomic,strong) NSString  *isCancelStroe;
 // 弹出视图
@@ -86,7 +82,6 @@
 @property (nonatomic,strong) NSMutableArray *chooseDataArr;
 /**详情数据*/
 @property (nonatomic,strong) NSMutableDictionary *detailDataDic;
-
 /**决断是否有多属性*/
 @property (nonatomic,copy) NSString *is_attr;
 /**GFChooseOneView图片路径*/
@@ -97,7 +92,6 @@
 @property (nonatomic,copy) NSString *GFGoodPrice;
 /**是否是立即购买*/
 @property (nonatomic,assign) BOOL isImmedateShopCar;
-
 /** 一级规格尺寸数据 */
 @property (nonatomic,strong) NSMutableArray *sizeDataOneArr;
 /** 二级规格尺寸 */
@@ -110,15 +104,11 @@
 @property (nonatomic,strong) NSMutableArray *sizeDataFiveArr;
 /**类型名字*/
 @property (nonatomic,strong) NSMutableArray *attrtypeDataArr;
-
-
 @end
 static NSString *goodDetailCell = @"goodDetailCell";
 static NSString *goodSizeCell = @"goodSizeCell";
 static NSString *goodPramsCell = @"goodParamsCell";
 @implementation ShopGooodDetailMoreViewController
-
-
 #pragma mark - 懒加载
  - (NSMutableArray *)attrtypeDataArr
 {
@@ -204,16 +194,15 @@ static NSString *goodPramsCell = @"goodParamsCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear: animated];
+    [self requestGoodDetaiDataWith];
     // 加载数据
     [self loadSizeData];
     self.tabBarController.tabBar.hidden = YES;
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
     self.tabBarController.tabBar.hidden = NO;
 }
 
@@ -223,12 +212,10 @@ static NSString *goodPramsCell = @"goodParamsCell";
     self.title = @"多属性合一";
     self.view.backgroundColor = [UIColor whiteColor];
     self.goodSize =@"";
-    
     self.shoopCarNum = @"1";
     self.cengji = @"";
     self.isCancelStroe = self.isfavorite;
     [self setUpNavView];
-
     // 加载子视图
     [self setUpChildrenViews];
     [self setUpBottomViews];
@@ -239,8 +226,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
 
 - (void)rightBarButtonItemAction:(UIButton *)sender
 {
-    
-    
+
     NSLog(@"点击的是右边items");
     YNTShopingCarViewController *shopingVC = [[YNTShopingCarViewController alloc]init];
     shopingVC.isFromdetail = @"1";
@@ -338,25 +324,19 @@ static NSString *goodPramsCell = @"goodParamsCell";
  */
 - (void)loadData
 {
-    
     // 请求详情数据
-    
     NSDictionary *goodDic = self.dataDic[@"goods"];
     //图片路径
     self.GFChoosePicUrl = goodDic[@"full_cover_img"];
     // 图片名字
     self.GFGoodName = goodDic[@"name"];
-    
-    
     self.detailDataDic =self.dataDic[@"goods"];
-    
     self.cengji = goodDic[@"cengji"];
     NSLog(@"%@",self.cengji);
     self.is_attr = goodDic[@"is_attr"];
     self.model = [[HomeShopListDetailModel alloc]init];
     [_model setValuesForKeysWithDictionary:goodDic];
     // 取轮播图
-    
     // 清空数据源
     [self.picsArray removeAllObjects];
     for (NSDictionary *dic in _model.xiangce) {
@@ -416,8 +396,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
     self.navLineLab = [[UILabel alloc]initWithFrame:CGRectMake(60,42, 40, 2)];
     self.navLineLab.backgroundColor = RGBA(219, 112, 0, 1);
     [bagView addSubview:self.navLineLab];
-    
-    
 }
 // 点击商品按钮的回调
 - (void)goodBtnAction:(UIButton *)sender
@@ -430,15 +408,12 @@ static NSString *goodPramsCell = @"goodParamsCell";
         self.navLineLab.frame = rect;
     }];
     self.navSelectBtn = sender;
-    
     self.tableView.contentOffset = CGPointMake(0, 0);
-    
 }
 // 点击详情按钮的回调
 - (void)detailBtnAction:(UIButton *)sender
 {
     self.tableView.contentOffset = CGPointMake(0, 900);
-    
     [sender setTitleColor:RGBA(219, 112, 0, 1) forState:UIControlStateNormal];
     [UIView animateWithDuration:0.2 animations:^{
         [self.navSelectBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -458,30 +433,17 @@ static NSString *goodPramsCell = @"goodParamsCell";
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, KScreenW, kScreenH-50*kHeightScale - 64) style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    
     // 注册cell
     [self.tableView registerClass:[GoodsDetailTitleCell class] forCellReuseIdentifier:goodDetailCell];
     [self.tableView registerClass:[GoodDetailSizeCell class] forCellReuseIdentifier:goodSizeCell];
     [self.tableView registerClass:[GoodDetaiParamsCell class] forCellReuseIdentifier:goodPramsCell];
-    
-    
-    
-    
-    
     [self.view addSubview:self.tableView];
-    
     // 创建轮播图
-    
     SDCycleScrollView *cycleScroollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 64, KScreenW, 335*kHeightScale) imageURLStringsGroup:self.picsArray];
-    
     self.tableView.tableHeaderView = cycleScroollView;
-    
     // 创建尾部视图
     UIView *footerView = [self setUpFooterVIews];
-    
     self.tableView.tableFooterView = footerView;
-    
-    
 }
 /**
  *创建尾部视图
@@ -489,9 +451,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
 - (UIView *)setUpFooterVIews
 {
     self.bigView = [[UIView alloc]initWithFrame:CGRectMake(0,0, KScreenW, 500 )];
-    
-    
-    
     //加载默认数据
     self.webHeight = 0;
     NSString *width = @"";
@@ -509,14 +468,10 @@ static NSString *goodPramsCell = @"goodParamsCell";
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[str  dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
     
     self.htmlLab = [[UITextView alloc]initWithFrame:CGRectMake(10*kWidthScale, 10 *kHeightScale, KScreenW - 20 *kWidthScale, 500)];
-    
-    
     self.htmlLab.attributedText = attributedString;
     [_bigView addSubview:self.htmlLab];
-    
-    
+
     return _bigView;
-    
 }
 /**
  *创建底部视图
@@ -540,10 +495,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
     // 创建线
     UILabel *lineLab = [[UILabel alloc]initWithFrame:CGRectMake(60*kWidthScale, 6*kHeightScale, 1*kWidthScale, 36 *kHeightScale)];
     lineLab.backgroundColor = [UIColor grayColor];
-    //  [bagView addSubview:lineLab];
-    
-    
-    
+
     // 创建客服按钮
     UIButton *customerServiceBtn =  [YNTUITools createCustomButton:CGRectMake(65*kWidthScale, 6 *kHeightScale, 28 *kWidthScale, 36 *kHeightScale) bgColor:RGBA(251, 251, 251, 1) title:nil titleColor:nil image:@"customer_service" action:@selector(customerServiceBtnAction:) vc:self];
     [bagView addSubview:customerServiceBtn];
@@ -551,18 +503,14 @@ static NSString *goodPramsCell = @"goodParamsCell";
     // 创建客服按钮
     UIButton *goShopVCBtn =  [YNTUITools createCustomButton:CGRectMake(110*kWidthScale, 6 *kHeightScale, 36 *kWidthScale, 36 *kHeightScale) bgColor:RGBA(251, 251, 251, 1) title:nil titleColor:nil image:@"goods-details-receipt" action:@selector(goShopVCBtn:) vc:self];
     [bagView addSubview:goShopVCBtn];
-    
-    
+
     // 创建立刻购买
     UIButton*imdedateBtn = [YNTUITools createButton:CGRectMake(154 *kWidthScale, 0, (KScreenW - 154 *kWidthScale)/2 , 50)  bgColor:CGRBlue title:@"立刻购买" titleColor:[UIColor whiteColor] action:@selector(imdedateAction:) vc:self];
-    
     [bagView addSubview:imdedateBtn];
     
     // 创建加入购物车按钮
     UIButton*carBtn = [YNTUITools createButton:CGRectMake(KScreenW / 2 +78*kWidthScale, 0, (KScreenW - 154 *kWidthScale)/2, 50)  bgColor:CGRBlue title:@"加入进货单" titleColor:[UIColor whiteColor] action:@selector(carBtnAction:) vc:self];
-    
     [bagView addSubview:carBtn];
-    
 }
 #pragma mark- 底部按钮的点击事件
 - (void)storeBtnAction:(UIButton *)sender
@@ -596,13 +544,9 @@ static NSString *goodPramsCell = @"goodParamsCell";
             NSLog(@"添加收藏夹数据成功%@",responseObject);
             NSString *msg = responseObject[@"msg"];
             if ([msg isEqualToString:@"success"]) {
-                
-                
                 [GFProgressHUD showSuccess:responseObject[@"info"]];
-                
             }else{
                 [GFProgressHUD showFailure:responseObject[@"info"]];
-                
             }
             [self requestGoodDetaiDataWith];
             NSLog(@"收藏按钮的点击");
@@ -611,12 +555,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
         }];
         
     }
-    
-    
-    
-    
-    
-    
     
     if ([self.isfavorite isEqualToString:@"1"]) {
         [sender setImage:[UIImage imageNamed:@"no_collection"] forState:UIControlStateNormal];
@@ -631,13 +569,12 @@ static NSString *goodPramsCell = @"goodParamsCell";
 - (void)customerServiceBtnAction:(UIButton *)sender
 {
     NSLog(@"这是客服");
-    
+    // 点击拨打电话
     UIWebView *webView = [[UIWebView alloc]init];
     [self.view addSubview:webView];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"tel://4007713123"]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [webView loadRequest:request];
-    
 }
 - (void)goShopVCBtn:(UIButton *)sender
 {
@@ -651,9 +588,8 @@ static NSString *goodPramsCell = @"goodParamsCell";
     self.chooseView = [[GFChooseMoreView alloc]initWithFrame:CGRectMake(0, kScreenH, KScreenW, kScreenH)];
     // 为限制数量赋值
     [self.chooseView  setActivityNumWithStr:self.activitynum andOrderCout:self.order_count];
-    
+    // 当限制商品数量为0时只能购买一次
     if ([self.activitynum isEqualToString:@"0"]) {
-        
         // 此商品只能购买一次
         [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
          self.isImmedateShopCar= NO;
@@ -661,11 +597,11 @@ static NSString *goodPramsCell = @"goodParamsCell";
     }
     
 
-    
+    // 当限制商品数量大于0时,对购买次数限制条件进行判断
     if ([self.activitynum  integerValue] >0) {
         
         if (self.order_count >0) {
-    
+            // 购买次数大于0 ,说明不是第一次购买
             // 此商品只能购买一次
             [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
 
@@ -683,9 +619,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
                             _chooseView.totallMoneyLab.text =@"¥0";
                             self.chooseView.delegate = self;
                             [self.view addSubview:_chooseView];
-                            
-                            
-                            ///为多级赋值
+                            //为多级赋值
                             NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
                             [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
                             // 为规格赋值
@@ -693,26 +627,18 @@ static NSString *goodPramsCell = @"goodParamsCell";
                             [_chooseView setGFChooseMoreViewValueWithModelArray:self.chooseDataArr andParams:params2];
                         }
             
-            
-            
-        }
+                    }
     
  
     }
-    
-    
-    
-    
-    
+    // 当数量为-1时,此时不限制购买
     if ([self.activitynum isEqualToString:@"-1"]) {
         self.isImmedateShopCar= YES;
         // 此时不限制数量
         _chooseView.totallMoneyLab.text =@"¥0";
         self.chooseView.delegate = self;
         [self.view addSubview:_chooseView];
-        
-        
-        ///为多级赋值
+        //为多级赋值
         NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
         [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
         // 为规格赋值
@@ -745,7 +671,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
     }
     
     
-    // 如果大于0时
+    // 如果大于0时,对购买次数进行判断
     if ([self.activitynum integerValue] > 0) {
         
         if (self.order_count >0) {
@@ -754,6 +680,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
               return;
         }else{
             self.isImmedateShopCar = NO;
+            _chooseView.totallMoneyLab.text =@"¥0";
             // 为多级赋值
             NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
             [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
@@ -768,15 +695,14 @@ static NSString *goodPramsCell = @"goodParamsCell";
         
     }
     
-    
-//    _chooseView.totallMoneyLab.text =@"¥0";
-//  activitynum
 
-    [self.view addSubview:_chooseView];
+
+   
     // 等于-1的时候无限制
     if ([self.activitynum isEqualToString:@"-1"]) {
         
           self.isImmedateShopCar = NO;
+        _chooseView.totallMoneyLab.text =@"¥0";
         // 为多级赋值
         NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
         [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
@@ -788,6 +714,9 @@ static NSString *goodPramsCell = @"goodParamsCell";
 
        
     }
+    
+    
+     [self.view addSubview:_chooseView];
     
     [UIView animateWithDuration: 0.35 animations: ^{
         _chooseView.frame =CGRectMake(0, 0, KScreenW, kScreenH);
@@ -928,7 +857,7 @@ static NSString *goodPramsCell = @"goodParamsCell";
         }
         
         
-        // 如果大于0时
+        // 如果大于0时,对购买次数进行判断
         if ([self.activitynum integerValue] > 0) {
             
             if (self.order_count >0) {
@@ -936,7 +865,8 @@ static NSString *goodPramsCell = @"goodParamsCell";
                 [GFProgressHUD showInfoMsg:@"此商品只能购买一次!"];
                 return;
             }else{
-                
+                // 第一次购买
+                _chooseView.totallMoneyLab.text =@"¥0";
                 // 为多级赋值
                 NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
                 [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
@@ -951,15 +881,12 @@ static NSString *goodPramsCell = @"goodParamsCell";
             
         }
         
-        
-        //    _chooseView.totallMoneyLab.text =@"¥0";
-        //  activitynum
+     
         
         [self.view addSubview:_chooseView];
         // 等于-1的时候无限制
         if ([self.activitynum isEqualToString:@"-1"]) {
-            
-            
+            _chooseView.totallMoneyLab.text =@"¥0";
             // 为多级赋值
             NSMutableDictionary *params1 = @{@"a0":self.sizeDataOneArr,@"a1":self.sizeDataTwoArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.attrtypeDataArr}.mutableCopy;
             [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr];
@@ -967,8 +894,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
             NSMutableDictionary *params2 = @{@"url":self.GFChoosePicUrl,@"price":self.GFGoodPrice,@"name":self.GFGoodName}.mutableCopy;
             [_chooseView setGFChooseMoreViewValueWithModelArray:self.chooseDataArr andParams:params2
              ];
-            
-            
             
         }
         
@@ -1101,87 +1026,6 @@ static NSString *goodPramsCell = @"goodParamsCell";
 // 请求规格数据
 - (void)requestDetailSizeDataWithGoods_id:(NSString *)good_id andIndex:(NSInteger )index
 {
-    
-//    // 请求详情数据
-//    UserInfo *userInfo = [UserInfo currentAccount];
-//    
-//    NSString *url = [NSString stringWithFormat:@"%@api/goodattrclass.php",baseUrl];
-//    NSDictionary *param = @{@"good_id":self.good_id ,@"user_id":userInfo.user_id,@"xuanze":good_id};
-//    [YNTNetworkManager requestPOSTwithURLStr:url paramDic:param finish:^(id responseObject) {
-//        NSLog(@"商品详情数据请求成功%@",responseObject);
-//        self.GFGoodPrice = responseObject[@"jiafanwei"];
-//        NSDictionary *dataDic= responseObject[@"data"];
-//        
-//        [self.sizeDataTwoArr removeAllObjects];
-//        [self.sizeDataThreeArr removeAllObjects];
-//        [self.sizeDataFourArr removeAllObjects];
-//        [self.chooseDataArr removeAllObjects];
-//        [self.attrtypeDataArr removeAllObjects];
-//        
-//        NSArray *attrtypeArr = responseObject[@"attrtype"];
-//        
-//        for (NSDictionary *dic in attrtypeArr) {
-//            GoodDetailAttrtypeModel *model = [[GoodDetailAttrtypeModel alloc]init];
-//            [model setValuesForKeysWithDictionary:dic];
-//            
-//            [self.attrtypeDataArr addObject:model];
-//        }
-//        NSArray *arr1 = dataDic[@"a1"];
-//        NSArray *arr2= dataDic[@"a2"];
-//        NSArray *arr3 = dataDic[@"a3"];
-//        NSArray *arr4 = dataDic[@"a4"];
-//    
-//        for (NSDictionary *dic in arr1) {
-//            HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-//            [model setValuesForKeysWithDictionary:dic];
-//            NSLog(@"%@",model.name);
-//            model.isHave = NO;
-//            [self.sizeDataTwoArr addObject:model];
-//            
-//        }
-//        
-//        for (NSDictionary *dic in arr2) {
-//            HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-//            [model setValuesForKeysWithDictionary:dic];
-//            NSLog(@"%@",model.name);
-//            model.isHave = NO;
-//            [self.sizeDataThreeArr addObject:model];
-//            
-//        }
-//        
-//        for (NSDictionary *dic in arr3) {
-//            HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-//            [model setValuesForKeysWithDictionary:dic];
-//            NSLog(@"%@",model.name);
-//            model.isHave = NO;
-//            [self.sizeDataFourArr addObject:model];
-//            
-//        }
-//        
-//        for (NSDictionary *dic in arr4) {
-//            HomeShopListSizeModel *model = [[HomeShopListSizeModel alloc]init];
-//            [model setValuesForKeysWithDictionary:dic];
-//            NSLog(@"%@",model.name);
-//            [self.chooseDataArr addObject:model];
-//            
-//        }
-//        
-//        // 为多级赋值
-//        NSDictionary *params1 = @{@"a1":self.sizeDataFourArr,@"a2":self.sizeDataThreeArr,@"a3":self.sizeDataFourArr,@"a4":self.chooseDataArr};
-//        
-//     [_chooseView setGFChooseMoreViewValueWithParams:params1 andWithAttrtypeArr:self.attrtypeDataArr andWithIndex:index];
-//      // 为规格赋值
-//        NSMutableDictionary *params2 = @{@"url":self.GFChoosePicUrl,@"price":self.GFGoodPrice,@"name":self.GFGoodName}.mutableCopy;
-//        [_chooseView setGFChooseMoreViewValueWithModelArray:self.chooseDataArr andParams:params2
-//         ];
-//        
-//
-//   
-//    } enError:^(NSError *error) {
-//        NSLog(@"商品详情数据请求失败%@",error);
-//    }];
-//
-    
     
     
     // 请求详情数据

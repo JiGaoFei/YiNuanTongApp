@@ -22,6 +22,8 @@
 @interface SecondBuyGoodViewController ()<UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate>
 /**tableView*/
 @property (nonatomic,strong) UITableView *tableView;
+/**空数据视图*/
+@property (nonatomic,strong) UIView  * emptyViews;
 /**线*/
 @property (nonatomic,strong) UILabel *lineLab;
 /**选中按钮*/
@@ -64,6 +66,7 @@ static NSString *identier = @"orderNewCell";
 // 加载数据
 - (void)loadData
 {
+     [self.emptyViews removeFromSuperview];
     // 清空数据源
     [self.sectionModelArr removeAllObjects];
     
@@ -77,9 +80,10 @@ static NSString *identier = @"orderNewCell";
         NSMutableArray *array = responseObject[@"order"];
         if (array.count == 0) {
             // 数据为空
-            [self emptyDataOperation];
+            [self setUpEmptyViews];
           
         }else{
+            [self.emptyViews removeFromSuperview];
             // 数据非空
             for (NSDictionary *dic in array) {
                 OrderListSectionModel *model = [[OrderListSectionModel alloc]init];
@@ -496,13 +500,34 @@ static NSString *identier = @"orderNewCell";
 
 #pragma mark - 空数据处理
 
-- (void)emptyDataOperation
+- (void)setUpEmptyViews
 {
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"温馨提示:" message:@"空空哒,快去逛逛吧!" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }];
-    [alertVC addAction:action];
-    [self presentViewController:alertVC animated:YES completion:nil];
+    self.emptyViews = [[UIView alloc]initWithFrame:CGRectMake(0, 64, KScreenW, kScreenH)];
+    self.emptyViews.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.emptyViews];
+    
+    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenW / 2 - 50 *kWidthScale, 133 *kHeightScale, 100 *kWidthScale, 124 *kHeightScale)];
+    imgView.image = [UIImage imageNamed:@"orde_-list_-empty"];
+    [self.emptyViews addSubview:imgView];
+    
+    UILabel *titleLab = [[UILabel alloc]initWithFrame:CGRectMake(65 *kWidthScale, 296 *kHeightScale, KScreenW - 130 *kWidthScale, 16*kHeightScale)];
+    titleLab.font = [UIFont systemFontOfSize:16 *kHeightScale];
+    titleLab.text = @"空空的,去挑几件好货吧!";
+    titleLab.textColor = RGBA(102, 102, 102, 1);
+    titleLab.textAlignment = NSTextAlignmentCenter;
+    [self.emptyViews addSubview:titleLab];
+    
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(147 *kWidthScale, 330 *kHeightScale, 80 *kWidthScale, 30 *kHeightScale);
+    [btn setImage:[UIImage imageNamed:@"orde_-list_-empty_casually_browse"] forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(goButAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.emptyViews addSubview:btn];
+    
+    
 }
+- (void)goButAction:(UIButton *)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 @end

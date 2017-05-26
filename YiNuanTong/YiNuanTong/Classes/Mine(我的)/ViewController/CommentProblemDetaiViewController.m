@@ -31,8 +31,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"问题详情";
     [self loadData];
-    // 加载视图
-  //  [self  setUpChildViews];
+  
     
 }
 // 加载数据

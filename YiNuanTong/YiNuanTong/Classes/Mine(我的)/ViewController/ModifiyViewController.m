@@ -27,7 +27,7 @@
     
     self.title = @"修改密码";
     [self setUpChildrenViews];
-    // Do any additional setup after loading the view.
+    
 }
 
 - (void)setUpChildrenViews
@@ -124,15 +124,7 @@
         }
         
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
+                
     }
     
     

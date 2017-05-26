@@ -55,7 +55,7 @@
     
     
     //my_invitation_my_brand
-    UIImageView *imgView = [YNTUITools createImageView:CGRectMake(KScreenW/ 2 - 90 *kWidthScale, 64+55*kHeightScale, 180 *kWidthScale, 180 *kWidthScale) bgColor:nil imageName:@"my_invitation_my_brand"];
+    UIImageView *imgView = [YNTUITools createImageView:CGRectMake(KScreenW/ 2 - 90 *kWidthScale, 64+55*kHeightScale, 180 *kWidthScale, 180 *kWidthScale) bgColor:nil imageName:@""];
         [imgView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",self.dataDic[@"erweima"]]]];
     [self.view addSubview:imgView];
     

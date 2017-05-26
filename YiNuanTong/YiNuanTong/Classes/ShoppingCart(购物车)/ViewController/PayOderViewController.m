@@ -471,22 +471,7 @@
     // 返回订单结果
     order.return_url = @"m.alipay.com";
     
-    //将商品信息拼接成字符串
-//    NSString *orderInfo = [order orderInfoEncoded:NO];
-//    NSString *orderInfoEncoded = [order orderInfoEncoded:YES];
-//    NSLog(@"orderSpec = %@",orderInfo);
-    
-    // NOTE: 获取私钥并将商户信息签名，外部商户的加签过程请务必放在服务端，防止公私钥数据泄露；
-    //       需要遵循RSA签名规范，并将签名字符串base64编码和UrlEncode
-   // NSString *signedString = nil;
-//    RSADataSigner* signer = [[RSADataSigner alloc] initWithPrivateKey:((rsa2PrivateKey.length > 1)?rsa2PrivateKey:rsaPrivateKey)];
-//    if ((rsa2PrivateKey.length > 1)) {
-//        signedString = [signer signString:orderInfo withRSA2:YES];
-//    } else {
-//        signedString = [signer signString:orderInfo withRSA2:NO];
-//    }
-// 
-     // NOTE: 如果加签成功，则继续执行支付
+       // NOTE: 如果加签成功，则继续执行支付
      if (signedString != nil) {
      //应用注册scheme,在AliSDKDemo-Info.plist定义URL types
      // NOTE: 将签名成功字符串格式化为订单字符串,请严格按照该格式
@@ -519,15 +504,7 @@
              NSNotification * notice = [NSNotification notificationWithName:@"aliPayReslut" object:nil userInfo:dataDic];
              //发送消息
              [[NSNotificationCenter defaultCenter]postNotification:notice];
-//             PayDetailViewController *payDetailViewVC = [[PayDetailViewController alloc]init];
-//             // 没有商品名称
-//             payDetailViewVC.shopName =@"测试数据";
-//             payDetailViewVC.orderNumber =dataDic[@"out_trade_no"];
-//             payDetailViewVC.tradingTime =dataDic[@"timestamp"];
-//             payDetailViewVC.payStatus = @"已支付";
-//             payDetailViewVC.payType = @"支付宝";
-//             [[NSNotificationCenter defaultCenter]postNotificationName:@"aliPayReslut" object:nil userInfo:resultDic];
-//             
+   
           
              
   
@@ -604,19 +581,19 @@
             case WXSuccess:{
                 strMsg = @"恭喜您，支付成功!";
                 
-               // [MYNotificationCenter postNotificationName:@"weixinPaystatusSuccess" object:nil userInfo:@{@"status":@"success"}];
+         
                 
                 break;
             }
             case WXErrCodeUserCancel:{
                 strMsg = @"已取消支付!";
-               // [MYNotificationCenter postNotificationName:@"weixinPaystatusSuccess" object:nil userInfo:@{@"status":@"cancle"}];
+    
                 break;
             }
             default:{
                 
                 strMsg = [NSString stringWithFormat:@"支付失败 !"];
-             //   [MYNotificationCenter postNotificationName:@"weixinPaystatusSuccess" object:nil userInfo:@{@"status":@"cancle"}];
+            
                 break;
             }
         }

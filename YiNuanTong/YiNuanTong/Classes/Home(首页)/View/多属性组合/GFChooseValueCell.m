@@ -45,7 +45,6 @@
     self.cornerMarkLB.layer.borderColor = [[UIColor redColor] CGColor];
     self.cornerMarkLB.text = @"0";
     self.cornerMarkLB.textColor = [UIColor whiteColor];
-    //    self.cornerMarkLB.hidden = YES;
     self.cornerMarkLB.textAlignment = NSTextAlignmentCenter;
     self.cornerMarkLB.transform = CGAffineTransformMakeRotation(M_PI / 2);
     self.cornerMarkLB.font=[UIFont systemFontOfSize:12];
@@ -55,7 +54,7 @@
 }
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
+    
 }
 - (void)setValueWithModel:(HomeShopListSizeModel *)model
 {

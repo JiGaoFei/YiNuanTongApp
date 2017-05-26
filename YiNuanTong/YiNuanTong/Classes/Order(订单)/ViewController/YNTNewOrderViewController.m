@@ -70,62 +70,9 @@ static NSString *identier = @"orderNewCell";
     self.currentStatus = @"0";
     // 加载数据
     [self loadData];
-    
-//    // 获取通知中心对象
-//    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-//    // 添加当前类对象为一个观察者,name 和obeject设置为nil,表示接收一切消息
-//    [center addObserver:self selector:@selector(receiveNotificiation:) name:@"aliPayReslut" object:nil];
-//    
-//    [center addObserver:self selector:@selector(wexinPaySuccesAction:) name:@"wexinResult" object:nil];
 
 }
 
-//#pragma mark - 支付成功时候的回调
-//- (void)receiveNotificiation:(NSNotification*)info{
-//    NSLog(@"%@",info);
-//    
-//    
-//    NSDictionary *dataDic = info.userInfo;
-//    PayDetailViewController *payDetailViewVC = [[PayDetailViewController alloc]init];
-//    // 没有商品名称
-//    payDetailViewVC.shopName =@"测试数据";
-//    payDetailViewVC.orderNumber =dataDic[@"out_trade_no"];
-//    payDetailViewVC.tradingTime =dataDic[@"timestamp"];
-//    payDetailViewVC.payStatus = @"已支付";
-//    payDetailViewVC.payType = @"支付宝";
-//    payDetailViewVC.money = dataDic[@"total_amount"];
-//    [self.navigationController pushViewController:payDetailViewVC animated:YES];
-//}
-//#pragma makr - 微信支付成功的回调
-//- (void)wexinPaySuccesAction:(NSNotification *)info
-//{ UserInfo *userinfo = [UserInfo currentAccount];
-//    NSString *url = [NSString stringWithFormat:@"%@api/wxappnotify.php",baseUrl];
-//    NSDictionary *params = @{@"user_id":userinfo.user_id,@"order_id":info.userInfo[@"order_id"]};
-//    [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
-//        NSLog(@"微信支付回调请求数据成功%@",responseObject);
-//        if ([responseObject[@"pay_status"] isEqualToString:@"1"]) {
-//            NSDictionary *dataDic = [NSDictionary dictionaryWithDictionary:responseObject];
-//            PayDetailViewController *payDetailViewVC = [[PayDetailViewController alloc]init];
-//            // 没有商品名称
-//            payDetailViewVC.shopName =@"测试数据";
-//            payDetailViewVC.orderNumber =dataDic[@"sn"];
-//            NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-//            [formatter setDateStyle:NSDateFormatterMediumStyle];
-//            [formatter setTimeStyle:NSDateFormatterShortStyle];
-//            [formatter setDateFormat:@"yyyyMMddHHMMss"];
-//            NSDate *date = [formatter dateFromString:dataDic[@"pay_time"]];
-//            payDetailViewVC.tradingTime =[NSString stringWithFormat:@"%@",date];
-//            payDetailViewVC.payStatus = @"已支付";
-//            payDetailViewVC.payType = @"微信";
-//            payDetailViewVC.money = dataDic[@"pay_fee"];
-//            [self.navigationController pushViewController:payDetailViewVC animated:YES];
-//            
-//        }
-//        
-//    } enError:^(NSError *error) {
-//        NSLog(@"微信支付回调请求数据失败%@",error);
-//    }];
-//}
 // 加载数据
 - (void)loadData
 {
@@ -546,17 +493,7 @@ static NSString *identier = @"orderNewCell";
     NSDictionary *params = @{@"user_id":userInfo.user_id,@"page":@"1",@"status":status};
     [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
         NSLog(@"%@数据成功%@",title,responseObject);
-        //获取订单数据数组
-//        NSMutableArray *arr = [[NSMutableArray alloc]init];
-//        for (  OrderListSectionModel *model in self.sectionModelArr) {
-//            NSString *str = [NSString stringWithFormat:@"%@",model.ord_status];
-//            if ([str isEqualToString:self.currentStatus]) {
-//                [arr addObject:model];
-//            }
-//        }
-//        if (arr.count == 0) {
-//            [self emptyDataOperation];
-//        }
+  
 
         NSMutableArray *array = responseObject[@"order"];
         if (array.count == 0) {
@@ -584,45 +521,6 @@ static NSString *identier = @"orderNewCell";
     }];
 
 }
-//#pragma mark - 删除订单
-///** 
-// @param Oid 订单id
-// @param act 操作类型
-//  @param title 调取的是哪个接口
-// */
-//- (void)orderRequestDataWithOid:(NSString *)Oid andActstr:(NSString *)act andActstr:(NSString *)title
-//{
-//    
-//     //清空数据源
-//    [self.sectionModelArr removeAllObjects];
-//    
-//    // 请求数据
-//    NSString *url = [NSString stringWithFormat:@"%@api/order.php",baseUrl];
-//    UserInfo *userInfo = [UserInfo currentAccount];
-//    NSDictionary *params = @{@"user_id":userInfo.user_id,@"oid":Oid,@"act":@"del"};
-//    [YNTNetworkManager requestPOSTwithURLStr:url paramDic:params finish:^(id responseObject) {
-//        NSLog(@"%@请求数据成功%@",title,responseObject);
-//        //获取订单数据数组
-//        NSMutableArray *array = responseObject[@"order"];
-//        for (NSDictionary *dic in array) {
-//            OrderListSectionModel *model = [[OrderListSectionModel alloc]init];
-//            [model setValuesForKeysWithDictionary:dic];
-//            [self.sectionModelArr addObject:model];
-//        }
-//        if (self.tableView) {
-//            [self.tableView reloadData];
-//        }else{
-//            [self setUpTitleBtn];
-//            [self setUpTableView];
-//        }
-//        
-//    } enError:^(NSError *error) {
-//        NSLog(@"%@请求数据成功%@",title,error);
-//
-//    }];
-//    
-//
-//}
 #pragma mark - 支付操作
 - (void)payRequestDataWithOrderID:(NSString *)orderid
 {
@@ -675,30 +573,6 @@ static NSString *identier = @"orderNewCell";
     
 }
 
-//- (void)payBtnAction:(UIButton *)sender
-//{
-//    NSLog(@"立即付款");
-//    if ([self.pay_id isEqualToString:@"2"]) {
-//        // 支付宝支付
-//        NSString *sign = self.payDic[@"sign"];
-//        
-//        [self doAlipayPay:sign];
-//        
-//        
-//        
-//        
-//    }
-//    if ([self.pay_id isEqualToString:@"1"]) {
-//        // 微信支付
-//        NSDictionary *data = self.payDic[@"sign"];
-//        
-//        [self WXZhiFUWith:data];
-//        
-//    }
-//    
-//    
-//    
-//}
 
 
 - (void)WXZhiFUWith:(id) data{

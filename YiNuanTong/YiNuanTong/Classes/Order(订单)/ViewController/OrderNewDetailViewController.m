@@ -128,7 +128,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
     if (self.oftenSettingTableBlock) {
         self.oftenSettingTableBlock();
     }
-  //  [self.tableView removeFromSuperview];
+
 
 }
 - (void)viewDidLoad {
@@ -218,18 +218,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
         self.shipnamelab.text = [NSString stringWithFormat:@"(%@)",self.dataDic[@"shippingname"]];
         self.payNameLab.text =[NSString stringWithFormat:@"(%@)",self.dataDic[@"payname"]];
             self.orderStatus = [NSString stringWithFormat:@"%@",self.dataDic[@"order_status"]];
-//        if ([self.orderStatus isEqualToString:@"2"]) {
-//            self.payView.weChatPayBtn.hidden = YES;
-//            self.payView.aliPayBtn.hidden = YES;
-//            self.shipView.ziquBtn.hidden = YES;
-//            self.shipView.mianfeiBtn.hidden = YES;
-//        }
-//        if ([self.orderStatus isEqualToString:@"3"]) {
-//            self.payView.weChatPayBtn.hidden = YES;
-//            self.payView.aliPayBtn.hidden = YES;
-//            self.shipView.ziquBtn.hidden = YES;
-//            self.shipView.mianfeiBtn.hidden = YES;
-//        }
+
         
 
     } enError:^(NSError *error) {
@@ -327,7 +316,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
                     self.tableView.frame = rec;
                     
                 };
-              //  [self.navigationController pushViewController:addressVC animated:YES];
+           
                 
             }
             
@@ -564,10 +553,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
     
     
 
-//    OrderConfirmViewController *confirmVC = [[OrderConfirmViewController alloc]init];
-//    [self.navigationController pushViewController:confirmVC animated:YES];
-    
-  
+
    
 }
 
@@ -838,8 +824,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
                 
                 [self.tableView reloadData];
                 
-                //                NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:self.sectionModelArray.count -2];
-                //                [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+          
             };
         }else{
             OrderNewDetailSectionModel*payModel = self.sectionModelArr[self.sectionModelArr.count -1];
@@ -1021,19 +1006,7 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
         NSString *status = [NSString stringWithFormat:@"%@",responseObject[@"status"]];
         [self loadData];
         
-//        if ([title isEqualToString:@"修改支付宝"]) {
-//            if ([status isEqualToString:@"1"]) {
-//             self.pay_id = @"2";
-//            }
-//        }
-//        if ([title isEqualToString:@"修改微信"]) {
-//            if ([status isEqualToString:@"1"]) {
-//                self.pay_id = @"1";
-//            }
-//
-//        }
-//
-//
+
     } enError:^(NSError *error) {
         NSLog(@"%@请求数据失败%@",title,error);
     }];
@@ -1252,19 +1225,19 @@ static NSString *identifierSectionShippCell = @"confirmCellSectionShippCell";
             case WXSuccess:{
                 strMsg = @"恭喜您，支付成功!";
                 
-                // [MYNotificationCenter postNotificationName:@"weixinPaystatusSuccess" object:nil userInfo:@{@"status":@"success"}];
+           
                 
                 break;
             }
             case WXErrCodeUserCancel:{
                 strMsg = @"已取消支付!";
-                // [MYNotificationCenter postNotificationName:@"weixinPaystatusSuccess" object:nil userInfo:@{@"status":@"cancle"}];
+      
                 break;
             }
             default:{
                 
                 strMsg = [NSString stringWithFormat:@"支付失败 !"];
-                //   [MYNotificationCenter postNotificationName:@"weixinPaystatusSuccess" object:nil userInfo:@{@"status":@"cancle"}];
+               
                 break;
             }
         }

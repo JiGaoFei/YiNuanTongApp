@@ -62,7 +62,7 @@ static NSString *writePaymentCell = @"writePaymentCell";
     // 加载子视图
     [self setUpChildrenViews];
     [self setUpFooterViews];
-    // Do any additional setup after loading the view.
+  
 }
 /**
  *加载子视图
@@ -246,10 +246,7 @@ static NSString *writePaymentCell = @"writePaymentCell";
     
     if (indexPath.row == 1) {
     BirthdayDatePickView *datePickVC = [[BirthdayDatePickView alloc] initWithFrame:self.view.bounds];
-    //距离当前日期的年份差（设置最大可选日期）
-   //  datePickVC.maxYear = 0;
-    //设置最小可选日期(年分差)
-    //datePickVC.minYear = 0;
+ 
        ;
 
     // datePickVC.date = [NSDate date];
@@ -264,7 +261,7 @@ static NSString *writePaymentCell = @"writePaymentCell";
     };
     //配置属性
     [datePickVC configuration];
-    // [[UIApplication sharedApplication].keyWindow addSubview:datePickVC];
+   
     [self.view addSubview:datePickVC];
 }
 }

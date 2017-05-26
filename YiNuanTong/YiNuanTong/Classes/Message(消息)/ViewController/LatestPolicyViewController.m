@@ -31,7 +31,7 @@ static NSString *identifier = @"identifier";
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"系统公告";
+    self.title = @"最新政策";
     [self loadData];
     [self setUpChildViews];
 }

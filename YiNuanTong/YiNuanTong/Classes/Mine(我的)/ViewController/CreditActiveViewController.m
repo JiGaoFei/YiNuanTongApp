@@ -32,10 +32,7 @@
     
     [self.view addSubview:bigView];
     
-    
-    
-    
-    // 创建图片
+        // 创建图片
     UIImageView *imgView = [YNTUITools createImageView:CGRectMake(140 *kWidthScale, 59 *kPlus *kHeightScale, 85 *kPlus *kWidthScale, 85 *kPlus *kHeightScale) bgColor:nil imageName:@"表情"];
     [bigView addSubview:imgView];
     

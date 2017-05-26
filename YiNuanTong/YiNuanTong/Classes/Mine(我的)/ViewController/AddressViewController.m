@@ -139,9 +139,7 @@ static NSString *addressCell = @"addressCell";
     self.tableView.dataSource = self;
     self.tableView.emptyDataSetSource = self;
     self.tableView.emptyDataSetDelegate = self;
-       // 表尾视图
-    //UIView *footView = [self setUpFootViews];
-    //self.tableView.tableFooterView = footView;
+    
     // 注册cell
     [self.tableView registerClass:[AddressCell class] forCellReuseIdentifier:addressCell];
     [self.view addSubview:self.tableView];
@@ -175,7 +173,7 @@ static NSString *addressCell = @"addressCell";
         [cell.defaultBtn setImage:selectedImage forState:UIControlStateNormal];
     }
     
-    //__weak typeof(cell) weakSelf = cell;
+ 
     UserInfo *userInfo = [UserInfo currentAccount];
     // 设置默认
     cell.buttonClicked = ^(NSInteger index){

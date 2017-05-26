@@ -85,20 +85,7 @@
     bigTwoview.backgroundColor = [UIColor whiteColor];
     
     [self.view addSubview:bigTwoview];
-    // 创建商品lab
-   // UILabel *goodsNameLab = [YNTUITools createLabel:CGRectMake(46 * kPlus *kWidthScale, 20 *kHeightScale, 70 *kWidthScale, 15 *kHeightScale) text:@"" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15];
-  //  goodsNameLab.text = [NSString stringWithFormat:@"商品名称:%@",self.shopName];
-
-   
-   // [bigTwoview addSubview:goodsNameLab];
-    
-//    UILabel *goodsDetailNameLab = [YNTUITools createLabel:CGRectMake((46 * kPlus+80) *kWidthScale, 20, KScreenW - (2 * kPlus*46 + 80)*kWidthScale, 14 *kHeightScale) text:@"" textAlignment:NSTextAlignmentRight textColor:CGRGray bgColor:nil font:14];
-//    if (KScreenW == 320) {
-//        goodsNameLab.font =[UIFont systemFontOfSize:12];
-//    }
-//    [bigTwoview addSubview:goodsDetailNameLab];
-//
-    
+      
     
     //创建订货单号lab
     UILabel *goodsOrderNameLab = [YNTUITools createLabel:CGRectMake(46 * kPlus *kWidthScale, 45 *kHeightScale, 70 *kWidthScale, 15*kHeightScale) text:@"订货单号:" textAlignment:NSTextAlignmentLeft textColor:nil bgColor:nil font:15];
